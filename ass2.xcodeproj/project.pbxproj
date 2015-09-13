@@ -413,6 +413,7 @@
 				B65A545C1BA59F6D00FE0A8A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B65A545D1BA59F6D00FE0A8A /* Build configuration list for PBXNativeTarget "ass2Tests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +422,7 @@
 				B65A545F1BA59F6D00FE0A8A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

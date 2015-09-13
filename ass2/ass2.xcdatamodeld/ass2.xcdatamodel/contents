@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Clipping" representedClassName="PRODUCT_MODULE_NAME.Clipping" syncable="YES">
+        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="clipping" inverseEntity="Collection" syncable="YES"/>
+    </entity>
+    <entity name="Collection" representedClassName="PRODUCT_MODULE_NAME.Collection" syncable="YES">
+        <attribute name="img" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="clipping" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Clipping" inverseName="owner" inverseEntity="Clipping" syncable="YES"/>
+    </entity>
+    <entity name="Entity" syncable="YES"/>
+    <elements>
+        <element name="Collection" positionX="-36" positionY="9" width="128" height="73"/>
+        <element name="Clipping" positionX="-20" positionY="270" width="128" height="58"/>
+        <element name="Entity" positionX="18" positionY="189" width="128" height="43"/>
+    </elements>
 </model>
