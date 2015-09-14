@@ -7,12 +7,18 @@
 //
 
 import UIKit
-
+import CoreData
 class ViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+		
+		
+		var collection_1 = ScrapbookModel()
+		
+		collection_1.addentitys()
+		
 	}
 
 	override func didReceiveMemoryWarning() {

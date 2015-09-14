@@ -11,7 +11,7 @@ import CoreData
 
 class Collection: NSManagedObject {
 
-    
+    @NSManaged var name: String
     @NSManaged var clipping: NSSet
 
 }

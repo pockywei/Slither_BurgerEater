@@ -11,6 +11,9 @@ import CoreData
 
 class Clipping: NSManagedObject {
 
-    @NSManaged var owner: NSManagedObject
+    @NSManaged var date_created: NSDate
+    @NSManaged var img: String
+    @NSManaged var notes: String
+    @NSManaged var owner: Collection
 
 }
