@@ -14,11 +14,12 @@
 		B65A54481BA59F6D00FE0A8A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B65A54471BA59F6D00FE0A8A /* Images.xcassets */; };
 		B65A544B1BA59F6D00FE0A8A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65A54491BA59F6D00FE0A8A /* LaunchScreen.xib */; };
 		B65A54571BA59F6D00FE0A8A /* ass2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54561BA59F6D00FE0A8A /* ass2Tests.swift */; };
-		B65A54731BA5A8C500FE0A8A /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54721BA5A8C500FE0A8A /* Collection.swift */; };
-		B65A54741BA5A8C500FE0A8A /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54721BA5A8C500FE0A8A /* Collection.swift */; };
-		B65A54761BA5A8C600FE0A8A /* Clipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54751BA5A8C600FE0A8A /* Clipping.swift */; };
-		B65A54771BA5A8C600FE0A8A /* Clipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54751BA5A8C600FE0A8A /* Clipping.swift */; };
 		B65A54791BA5A97000FE0A8A /* ScrapbookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54781BA5A97000FE0A8A /* ScrapbookModel.swift */; };
+		B6FC137E1BAADCFD0022E709 /* sam.png in Resources */ = {isa = PBXBuildFile; fileRef = B6FC137D1BAADCFD0022E709 /* sam.png */; settings = {ASSET_TAGS = (); }; };
+		B6FC13831BAAE8170022E709 /* Clipping+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC137F1BAAE8170022E709 /* Clipping+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		B6FC13841BAAE8170022E709 /* Clipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13801BAAE8170022E709 /* Clipping.swift */; settings = {ASSET_TAGS = (); }; };
+		B6FC13851BAAE8170022E709 /* Collection+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13811BAAE8170022E709 /* Collection+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
+		B6FC13861BAAE8170022E709 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13821BAAE8170022E709 /* Collection.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,9 +44,12 @@
 		B65A54501BA59F6D00FE0A8A /* ass2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ass2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65A54551BA59F6D00FE0A8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B65A54561BA59F6D00FE0A8A /* ass2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ass2Tests.swift; sourceTree = "<group>"; };
-		B65A54721BA5A8C500FE0A8A /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
-		B65A54751BA5A8C600FE0A8A /* Clipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clipping.swift; sourceTree = "<group>"; };
 		B65A54781BA5A97000FE0A8A /* ScrapbookModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrapbookModel.swift; sourceTree = "<group>"; };
+		B6FC137D1BAADCFD0022E709 /* sam.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sam.png; sourceTree = "<group>"; };
+		B6FC137F1BAAE8170022E709 /* Clipping+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Clipping+CoreDataProperties.swift"; path = "../Clipping+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B6FC13801BAAE8170022E709 /* Clipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Clipping.swift; path = ../Clipping.swift; sourceTree = "<group>"; };
+		B6FC13811BAAE8170022E709 /* Collection+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Collection+CoreDataProperties.swift"; path = "../Collection+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B6FC13821BAAE8170022E709 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Collection.swift; path = ../Collection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,7 @@
 		B65A542F1BA59F6D00FE0A8A = {
 			isa = PBXGroup;
 			children = (
+				B6FC137D1BAADCFD0022E709 /* sam.png */,
 				B65A543A1BA59F6D00FE0A8A /* ass2 */,
 				B65A54531BA59F6D00FE0A8A /* ass2Tests */,
 				B65A54391BA59F6D00FE0A8A /* Products */,
@@ -87,14 +92,16 @@
 		B65A543A1BA59F6D00FE0A8A /* ass2 */ = {
 			isa = PBXGroup;
 			children = (
+				B6FC137F1BAAE8170022E709 /* Clipping+CoreDataProperties.swift */,
+				B6FC13801BAAE8170022E709 /* Clipping.swift */,
+				B6FC13811BAAE8170022E709 /* Collection+CoreDataProperties.swift */,
+				B6FC13821BAAE8170022E709 /* Collection.swift */,
 				B65A543D1BA59F6D00FE0A8A /* AppDelegate.swift */,
 				B65A54421BA59F6D00FE0A8A /* ViewController.swift */,
 				B65A54441BA59F6D00FE0A8A /* Main.storyboard */,
 				B65A54471BA59F6D00FE0A8A /* Images.xcassets */,
 				B65A54491BA59F6D00FE0A8A /* LaunchScreen.xib */,
 				B65A543F1BA59F6D00FE0A8A /* ass2.xcdatamodeld */,
-				B65A54751BA5A8C600FE0A8A /* Clipping.swift */,
-				B65A54721BA5A8C500FE0A8A /* Collection.swift */,
 				B65A543B1BA59F6D00FE0A8A /* Supporting Files */,
 				B65A54781BA5A97000FE0A8A /* ScrapbookModel.swift */,
 			);
@@ -170,7 +177,9 @@
 		B65A54301BA59F6D00FE0A8A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = WEI;
 				TargetAttributes = {
 					B65A54371BA59F6D00FE0A8A = {
@@ -209,6 +218,7 @@
 				B65A54461BA59F6D00FE0A8A /* Main.storyboard in Resources */,
 				B65A544B1BA59F6D00FE0A8A /* LaunchScreen.xib in Resources */,
 				B65A54481BA59F6D00FE0A8A /* Images.xcassets in Resources */,
+				B6FC137E1BAADCFD0022E709 /* sam.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,12 +236,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6FC13851BAAE8170022E709 /* Collection+CoreDataProperties.swift in Sources */,
+				B6FC13831BAAE8170022E709 /* Clipping+CoreDataProperties.swift in Sources */,
 				B65A54791BA5A97000FE0A8A /* ScrapbookModel.swift in Sources */,
 				B65A54431BA59F6D00FE0A8A /* ViewController.swift in Sources */,
-				B65A54761BA5A8C600FE0A8A /* Clipping.swift in Sources */,
 				B65A54411BA59F6D00FE0A8A /* ass2.xcdatamodeld in Sources */,
 				B65A543E1BA59F6D00FE0A8A /* AppDelegate.swift in Sources */,
-				B65A54731BA5A8C500FE0A8A /* Collection.swift in Sources */,
+				B6FC13841BAAE8170022E709 /* Clipping.swift in Sources */,
+				B6FC13861BAAE8170022E709 /* Collection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +252,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B65A54571BA59F6D00FE0A8A /* ass2Tests.swift in Sources */,
-				B65A54741BA5A8C500FE0A8A /* Collection.swift in Sources */,
-				B65A54771BA5A8C600FE0A8A /* Clipping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +306,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -362,6 +373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ass2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.uow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -372,6 +384,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ass2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.uow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -390,6 +403,7 @@
 				);
 				INFOPLIST_FILE = ass2Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.uow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ass2.app/ass2";
 			};
@@ -405,6 +419,7 @@
 				);
 				INFOPLIST_FILE = ass2Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "au.edu.uow.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ass2.app/ass2";
 			};
