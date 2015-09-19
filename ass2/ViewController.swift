@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -110,13 +110,27 @@ class ViewController: UIViewController {
 //			collection_arr.deleteCollection(collection_arr.return_all_collection()[i])
 //		}
 		
-		collection_arr.deleteCoreDataObjects_clippings()
-		collection_arr.deleteCoreDataObjects_collection()
+		//collection_arr.deleteCoreDataObjects_clippings()
+		//collection_arr.deleteCoreDataObjects_collection()
+
 	}
 	
 	override func didReceiveMemoryWarning() {
 				super.didReceiveMemoryWarning()
 				// Dispose of any resources that can be recreated.
+	}
+	
+	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+		
+		let mealDetailViewController = segue.destinationViewController as! UINavigationController
+		let CollectionListController = mealDetailViewController.topViewController as! CollectionListViewController
+		
+		CollectionListController.loadCollection()
+		// Get the cell that generated this segue.
+		
+		
+		
+		
 	}
 	
 	

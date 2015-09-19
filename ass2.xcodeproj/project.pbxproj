@@ -20,6 +20,8 @@
 		B6FC13841BAAE8170022E709 /* Clipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13801BAAE8170022E709 /* Clipping.swift */; settings = {ASSET_TAGS = (); }; };
 		B6FC13851BAAE8170022E709 /* Collection+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13811BAAE8170022E709 /* Collection+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		B6FC13861BAAE8170022E709 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13821BAAE8170022E709 /* Collection.swift */; settings = {ASSET_TAGS = (); }; };
+		B6FC138A1BAC3F1F0022E709 /* CollectionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13891BAC3F1F0022E709 /* CollectionListViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		B6FC138C1BAC48D50022E709 /* ClippingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC138B1BAC48D50022E709 /* ClippingListViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +52,8 @@
 		B6FC13801BAAE8170022E709 /* Clipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Clipping.swift; path = ../Clipping.swift; sourceTree = "<group>"; };
 		B6FC13811BAAE8170022E709 /* Collection+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Collection+CoreDataProperties.swift"; path = "../Collection+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B6FC13821BAAE8170022E709 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Collection.swift; path = ../Collection.swift; sourceTree = "<group>"; };
+		B6FC13891BAC3F1F0022E709 /* CollectionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionListViewController.swift; sourceTree = "<group>"; };
+		B6FC138B1BAC48D50022E709 /* ClippingListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClippingListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 				B65A543F1BA59F6D00FE0A8A /* ass2.xcdatamodeld */,
 				B65A543B1BA59F6D00FE0A8A /* Supporting Files */,
 				B65A54781BA5A97000FE0A8A /* ScrapbookModel.swift */,
+				B6FC13891BAC3F1F0022E709 /* CollectionListViewController.swift */,
+				B6FC138B1BAC48D50022E709 /* ClippingListViewController.swift */,
 			);
 			path = ass2;
 			sourceTree = "<group>";
@@ -242,7 +248,9 @@
 				B65A54431BA59F6D00FE0A8A /* ViewController.swift in Sources */,
 				B65A54411BA59F6D00FE0A8A /* ass2.xcdatamodeld in Sources */,
 				B65A543E1BA59F6D00FE0A8A /* AppDelegate.swift in Sources */,
+				B6FC138A1BAC3F1F0022E709 /* CollectionListViewController.swift in Sources */,
 				B6FC13841BAAE8170022E709 /* Clipping.swift in Sources */,
+				B6FC138C1BAC48D50022E709 /* ClippingListViewController.swift in Sources */,
 				B6FC13861BAAE8170022E709 /* Collection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
