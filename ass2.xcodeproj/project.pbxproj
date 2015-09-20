@@ -15,6 +15,9 @@
 		B65A544B1BA59F6D00FE0A8A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B65A54491BA59F6D00FE0A8A /* LaunchScreen.xib */; };
 		B65A54571BA59F6D00FE0A8A /* ass2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54561BA59F6D00FE0A8A /* ass2Tests.swift */; };
 		B65A54791BA5A97000FE0A8A /* ScrapbookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65A54781BA5A97000FE0A8A /* ScrapbookModel.swift */; };
+		B685AB5F1BAD6B240003CF72 /* ClippingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685AB5E1BAD6B240003CF72 /* ClippingDetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		B685AB631BAD72390003CF72 /* createClipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685AB621BAD72390003CF72 /* createClipping.swift */; settings = {ASSET_TAGS = (); }; };
+		B6DDB0BE1BAEA45F004613D7 /* defaultPhoto.png in Resources */ = {isa = PBXBuildFile; fileRef = B6DDB0BD1BAEA45F004613D7 /* defaultPhoto.png */; settings = {ASSET_TAGS = (); }; };
 		B6FC137E1BAADCFD0022E709 /* sam.png in Resources */ = {isa = PBXBuildFile; fileRef = B6FC137D1BAADCFD0022E709 /* sam.png */; settings = {ASSET_TAGS = (); }; };
 		B6FC13831BAAE8170022E709 /* Clipping+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC137F1BAAE8170022E709 /* Clipping+CoreDataProperties.swift */; settings = {ASSET_TAGS = (); }; };
 		B6FC13841BAAE8170022E709 /* Clipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FC13801BAAE8170022E709 /* Clipping.swift */; settings = {ASSET_TAGS = (); }; };
@@ -47,6 +50,9 @@
 		B65A54551BA59F6D00FE0A8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B65A54561BA59F6D00FE0A8A /* ass2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ass2Tests.swift; sourceTree = "<group>"; };
 		B65A54781BA5A97000FE0A8A /* ScrapbookModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrapbookModel.swift; sourceTree = "<group>"; };
+		B685AB5E1BAD6B240003CF72 /* ClippingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClippingDetailViewController.swift; sourceTree = "<group>"; };
+		B685AB621BAD72390003CF72 /* createClipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = createClipping.swift; sourceTree = "<group>"; };
+		B6DDB0BD1BAEA45F004613D7 /* defaultPhoto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultPhoto.png; sourceTree = "<group>"; };
 		B6FC137D1BAADCFD0022E709 /* sam.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sam.png; sourceTree = "<group>"; };
 		B6FC137F1BAAE8170022E709 /* Clipping+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Clipping+CoreDataProperties.swift"; path = "../Clipping+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B6FC13801BAAE8170022E709 /* Clipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Clipping.swift; path = ../Clipping.swift; sourceTree = "<group>"; };
@@ -77,6 +83,7 @@
 		B65A542F1BA59F6D00FE0A8A = {
 			isa = PBXGroup;
 			children = (
+				B6DDB0BD1BAEA45F004613D7 /* defaultPhoto.png */,
 				B6FC137D1BAADCFD0022E709 /* sam.png */,
 				B65A543A1BA59F6D00FE0A8A /* ass2 */,
 				B65A54531BA59F6D00FE0A8A /* ass2Tests */,
@@ -110,6 +117,8 @@
 				B65A54781BA5A97000FE0A8A /* ScrapbookModel.swift */,
 				B6FC13891BAC3F1F0022E709 /* CollectionListViewController.swift */,
 				B6FC138B1BAC48D50022E709 /* ClippingListViewController.swift */,
+				B685AB5E1BAD6B240003CF72 /* ClippingDetailViewController.swift */,
+				B685AB621BAD72390003CF72 /* createClipping.swift */,
 			);
 			path = ass2;
 			sourceTree = "<group>";
@@ -221,6 +230,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6DDB0BE1BAEA45F004613D7 /* defaultPhoto.png in Resources */,
 				B65A54461BA59F6D00FE0A8A /* Main.storyboard in Resources */,
 				B65A544B1BA59F6D00FE0A8A /* LaunchScreen.xib in Resources */,
 				B65A54481BA59F6D00FE0A8A /* Images.xcassets in Resources */,
@@ -246,7 +256,9 @@
 				B6FC13831BAAE8170022E709 /* Clipping+CoreDataProperties.swift in Sources */,
 				B65A54791BA5A97000FE0A8A /* ScrapbookModel.swift in Sources */,
 				B65A54431BA59F6D00FE0A8A /* ViewController.swift in Sources */,
+				B685AB5F1BAD6B240003CF72 /* ClippingDetailViewController.swift in Sources */,
 				B65A54411BA59F6D00FE0A8A /* ass2.xcdatamodeld in Sources */,
+				B685AB631BAD72390003CF72 /* createClipping.swift in Sources */,
 				B65A543E1BA59F6D00FE0A8A /* AppDelegate.swift in Sources */,
 				B6FC138A1BAC3F1F0022E709 /* CollectionListViewController.swift in Sources */,
 				B6FC13841BAAE8170022E709 /* Clipping.swift in Sources */,
