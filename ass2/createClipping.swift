@@ -10,9 +10,11 @@ import Foundation
 import UIKit
 class createClipping:UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 	var scrk = ScrapbookModel()
-	var coll : Collection?
+	var coll_create : Collection?
 	@IBOutlet weak var notes: UITextField!
 	@IBOutlet weak var save: UIBarButtonItem!
+	
+	
 	
 	@IBOutlet weak var imgview: UIImageView!
 	var imageurl : NSURL?
@@ -29,17 +31,13 @@ class createClipping:UIViewController, UITextFieldDelegate, UIImagePickerControl
 		}
 	}
 	
-	@IBAction func save_press(sender: AnyObject) {
-		if let note = notes.text{
-			
-			 scrk.addentity2(imageurl!.absoluteString, Des: note)
-		}
-		
-	}
+	
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		print("lllllllllllllllllllll")
+		print(coll_create?.name)
 		self.imgview.userInteractionEnabled = true
 		var tapGesture = UITapGestureRecognizer(target: self, action: Selector("handleTap:"))
 		imgview.addGestureRecognizer(tapGesture)
@@ -111,11 +109,28 @@ class createClipping:UIViewController, UITextFieldDelegate, UIImagePickerControl
 	
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if save === sender {
+			print("sender")
 			if let notes = notes.text {
-				if let image = imageurl {
-					clip = scrk.addentity2(image.absoluteString, Des: notes)
-					scrk.add_Clip2Collection(clip!,coll: coll!)
+				if notes != ""
+				{
+					if let image = imageurl {
+						clip = scrk.addentity2(image.absoluteString, Des: notes)
+						scrk.add_Clip2Collection(clip!,coll: coll_create!)
+					}
 				}
+				else
+				{
+					let refreshAlert = UIAlertController(title: "Warning", message: "Lack of notes", preferredStyle: UIAlertControllerStyle.Alert)
+					
+					
+					
+					refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+						print("Handle Cancel Logic here")
+					}))
+					
+					presentViewController(refreshAlert, animated: true, completion: nil)
+				}
+				
 			}
 		}
 	}

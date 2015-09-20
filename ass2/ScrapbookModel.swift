@@ -185,7 +185,7 @@ class ScrapbookModel{
 		{
 			if fetchedCones[i].owner == coll
 			{
-				fetchedresult[i]=fetchedCones[i]
+				fetchedresult.append(fetchedCones[i])   
 			}
 			
 		}

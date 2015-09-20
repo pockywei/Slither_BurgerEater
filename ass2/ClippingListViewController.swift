@@ -15,14 +15,20 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 	
 	
 	var clipping = [Clipping]()
+	var coll : Collection?
+	@IBOutlet weak var colltitle: UINavigationItem!
+	
 	
 	@IBOutlet weak var searchbar: UISearchBar!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+		//print("kkkkkkkkkkkkkkkkkkkkkkkkkk")
+		//print(coll?.name)
 		//self.clipping=scrpbk.return_all_clippings()
+		
 		searchbar.delegate = self
+		colltitle.title = coll?.name
 		//navigationItem.leftBarButtonItem=editButtonItem()
 		self.tableView.reloadData()
 		
@@ -89,11 +95,22 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 	
 	func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
 		
+		if coll?.name != "All Clippings"
+		{
+			filtered = scrpbk.Search_in_coll(searchText, coll: coll!)
+
+			
+		}
+		else{
+			filtered = scrpbk.Search(searchText)
+					}
+		//filtered = scrpbk.Search(searchText)
 		
-		filtered = scrpbk.Search(searchText)
-		if(filtered.count == 0){
-			searchActive = false;
-		} else {
+		if(searchText == "")
+		{
+			searchActive = false
+		}
+		else {
 			searchActive = true;
 		}
 		self.tableView.reloadData()
@@ -209,25 +226,32 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 				let view = segue.destinationViewController as! UINavigationController
 				let mealDetailViewController = view.topViewController as! ClippingDetailViewController
 				
+				
 				// Get the cell that generated this segue.
 				if let selectedMealCell = sender as? UITableViewCell {
 					let indexPath = tableView.indexPathForCell(selectedMealCell)!
 					if(searchActive){
 					let selectedMeal = filtered[indexPath.row]
 						mealDetailViewController.clip = selectedMeal
-						mealDetailViewController
+						mealDetailViewController.coll_detail = coll
+						
 					}
 					else{
 						let selectedMeal = clipping[indexPath.row]
 						mealDetailViewController.clip = selectedMeal
+						mealDetailViewController.coll_detail = coll
+						
 					}
 					
 					
 					
 				}
 			}
-		else if segue.identifier == "AddItem" {
-			print("Adding new meal.")
+		else if segue.identifier == "edit_clipp" {
+			let view = segue.destinationViewController as! UINavigationController
+				let createclipping = view.topViewController as! createClipping
+				createclipping.coll_create = coll
+				
 		}
 	}
 	

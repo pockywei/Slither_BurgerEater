@@ -20,8 +20,10 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
 		
 		
 		//Create two Collections (named “A” and “B”)
-		
-		//collection_arr.addentitys("All Clippings")
+		if(collection_arr.return_all_collection().count == 0)
+		{
+			collection_arr.addentitys("All Clippings")
+		}
 		//let As:Collection = collection_arr.addentitys("A")
 		//var Bs:Collection = collection_arr.addentitys("B")
 		

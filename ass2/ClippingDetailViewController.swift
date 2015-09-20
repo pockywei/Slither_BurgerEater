@@ -14,7 +14,7 @@ class ClippingDetailViewController:UIViewController, UITextFieldDelegate, UIImag
 {
 	var scrack = ScrapbookModel()
 	var clip : Clipping?
-
+	var coll_detail : Collection?
 	
 	
 	
@@ -40,7 +40,7 @@ class ClippingDetailViewController:UIViewController, UITextFieldDelegate, UIImag
 		
 		if let meal = clip {
 			
-			clip_img.image = UIImage(named: meal.img!)
+			//clip_img.image = UIImage(named: meal.img!)
 			
 			let url = NSURL(string: meal.img!)
 			let assetsLibrary = ALAssetsLibrary()

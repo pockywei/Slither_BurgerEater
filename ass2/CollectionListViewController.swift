@@ -47,8 +47,11 @@ class CollectionListViewController:UITableViewController{
 			print("Done !!")
 			print("Item : \(tField.text)")
 			
-			
+			if(tField.text != "All Clippings")
+			{
 			self.coll.append(self.scrpbk.addentitys(tField.text!))
+			}
+			
 			self.tableView.reloadData()
 			
 			
@@ -150,6 +153,7 @@ class CollectionListViewController:UITableViewController{
 				print(selectedMealCell.textLabel!.text!)
 				print("%%%%%%%%%%%%%%%%%%%%")
 				let selectedMeal = coll[indexPath.row]
+				CollectionListController.coll = selectedMeal
 				
 			}
 			
