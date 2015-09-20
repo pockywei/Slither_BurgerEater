@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AssetsLibrary
 
 class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 	
@@ -23,6 +24,7 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 		//self.clipping=scrpbk.return_all_clippings()
 		searchbar.delegate = self
 		//navigationItem.leftBarButtonItem=editButtonItem()
+		self.tableView.reloadData()
 		
 	}
 	
@@ -135,14 +137,36 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 			if(searchActive){
 				let meal = filtered[indexPath.row]
 				cell.textLabel!.text = meal.notes
-				cell.imageView?.image=UIImage(named: meal.img!)
+				//cell.imageView?.image=UIImage(named: meal.img!)
+				
+				let url = NSURL(string: meal.img!)
+				let assetsLibrary = ALAssetsLibrary()
+				var loadError: NSError?
+				assetsLibrary.assetForURL(url, resultBlock: { (asset) -> Void in
+					cell.imageView!.image = UIImage(CGImage: asset.defaultRepresentation().fullResolutionImage().takeUnretainedValue())
+					}, failureBlock: { (error) -> Void in
+						loadError = error;
+				})
 				
 			} else {
 				
 				//print(clipping[j].owner?.name)
 				let meal = clipping[indexPath.row]
 				cell.textLabel!.text = meal.notes
-				cell.imageView?.image=UIImage(named: meal.img!)
+				//cell.imageView?.image=UIImage(named: meal.img!)
+				
+				let url = NSURL(string: meal.img!)
+				
+				
+				let assetsLibrary = ALAssetsLibrary()
+				var loadError: NSError?
+				assetsLibrary.assetForURL(url, resultBlock: { (asset) -> Void in
+					if let cells = cell.imageView{
+					cells.image = UIImage(CGImage: asset.defaultRepresentation().fullResolutionImage().takeUnretainedValue())
+					}
+					}, failureBlock: { (error) -> Void in
+						loadError = error;
+				})
 			}
 		}
 		
@@ -191,6 +215,7 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 					if(searchActive){
 					let selectedMeal = filtered[indexPath.row]
 						mealDetailViewController.clip = selectedMeal
+						mealDetailViewController
 					}
 					else{
 						let selectedMeal = clipping[indexPath.row]
@@ -206,6 +231,13 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 		}
 	}
 	
+	@IBAction func unwindToMealList(sender: UIStoryboardSegue) {
+		if let sourceViewController = sender.sourceViewController as? createClipping, clip_temp = sourceViewController.clip {
+			let newIndexPath = NSIndexPath(forRow: clipping.count, inSection: 0)
+			clipping.append(clip_temp)
+			tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+		}
+	}
 	
 	
 	

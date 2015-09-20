@@ -128,7 +128,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
 		let mealDetailViewController = segue.destinationViewController as! UINavigationController
 		let CollectionListController = mealDetailViewController.topViewController as! CollectionListViewController
 		
-		CollectionListController.loadCollection()
+				
 		
 		// Get the cell that generated this segue.
 		

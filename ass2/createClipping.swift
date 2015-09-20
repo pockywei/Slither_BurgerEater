@@ -9,11 +9,13 @@
 import Foundation
 import UIKit
 class createClipping:UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-	
+	var scrk = ScrapbookModel()
+	var coll : Collection?
 	@IBOutlet weak var notes: UITextField!
 	@IBOutlet weak var save: UIBarButtonItem!
 	
 	@IBOutlet weak var imgview: UIImageView!
+	var imageurl : NSURL?
 	
 	var clip : Clipping?
 	@IBAction func Back(sender: AnyObject) {
@@ -28,6 +30,11 @@ class createClipping:UIViewController, UITextFieldDelegate, UIImagePickerControl
 	}
 	
 	@IBAction func save_press(sender: AnyObject) {
+		if let note = notes.text{
+			
+			 scrk.addentity2(imageurl!.absoluteString, Des: note)
+		}
+		
 	}
 	
 	
@@ -89,6 +96,7 @@ class createClipping:UIViewController, UITextFieldDelegate, UIImagePickerControl
 	
 	func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
 		// The info dictionary contains multiple representations of the image, and this uses the original.
+		imageurl = info[UIImagePickerControllerReferenceURL] as? NSURL
 		let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
 		
 		// Set photoImageView to display the selected image.
@@ -103,13 +111,12 @@ class createClipping:UIViewController, UITextFieldDelegate, UIImagePickerControl
 	
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if save === sender {
-			let note = notes.text ?? ""
-			let photo = imgview.image
-			let date = NSDate()
-			// Set the meal to be passed to MealListTableViewController after the unwind segue.
-			clip?.notes=note
-			//clip?.img = imgview.image
-			clip?.date_created = date
+			if let notes = notes.text {
+				if let image = imageurl {
+					clip = scrk.addentity2(image.absoluteString, Des: notes)
+					scrk.add_Clip2Collection(clip!,coll: coll!)
+				}
+			}
 		}
 	}
 	

@@ -139,6 +139,9 @@ class CollectionListViewController:UITableViewController{
 	
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "coll2clip" {
+			let mealDetailViewController = segue.destinationViewController as! UINavigationController
+			let CollectionListController = mealDetailViewController.topViewController as! ClippingListViewController
+			
 			//let mealDetailViewController = segue.destinationViewController as! ClippingListViewController
 			var collselect=""
 			if let selectedMealCell = sender as? UITableViewCell {
@@ -146,11 +149,12 @@ class CollectionListViewController:UITableViewController{
 				collselect=selectedMealCell.textLabel!.text!
 				print(selectedMealCell.textLabel!.text!)
 				print("%%%%%%%%%%%%%%%%%%%%")
+				let selectedMeal = coll[indexPath.row]
 				
 			}
 			
-			let mealDetailViewController = segue.destinationViewController as! UINavigationController
-			let CollectionListController = mealDetailViewController.topViewController as! ClippingListViewController
+			
+			
 			
 			CollectionListController.loadColippings(collselect)
 			// Get the cell that generated this segue.

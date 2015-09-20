@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-
+import AssetsLibrary
 
 class ClippingDetailViewController:UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
@@ -41,6 +41,17 @@ class ClippingDetailViewController:UIViewController, UITextFieldDelegate, UIImag
 		if let meal = clip {
 			
 			clip_img.image = UIImage(named: meal.img!)
+			
+			let url = NSURL(string: meal.img!)
+			let assetsLibrary = ALAssetsLibrary()
+			var loadError: NSError?
+			assetsLibrary.assetForURL(url, resultBlock: { (asset) -> Void in
+				self.clip_img.image = UIImage(CGImage: asset.defaultRepresentation().fullResolutionImage().takeUnretainedValue())
+				}, failureBlock: { (error) -> Void in
+					loadError = error;
+			})
+			
+			
 			clip_text.text = meal.notes
 			
 			
@@ -58,6 +69,7 @@ class ClippingDetailViewController:UIViewController, UITextFieldDelegate, UIImag
 	}
 	
 
+	
 	
 	
 
