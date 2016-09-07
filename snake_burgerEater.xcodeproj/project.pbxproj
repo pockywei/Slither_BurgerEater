@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B6994E031D7FB19C00201A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E021D7FB19C00201A4E /* AppDelegate.swift */; };
-		B6994E051D7FB19C00201A4E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B6994E041D7FB19C00201A4E /* GameScene.sks */; };
 		B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E061D7FB19C00201A4E /* GameScene.swift */; };
 		B6994E091D7FB19C00201A4E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E081D7FB19C00201A4E /* GameViewController.swift */; };
 		B6994E0C1D7FB19C00201A4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6994E0A1D7FB19C00201A4E /* Main.storyboard */; };
@@ -16,6 +15,10 @@
 		B6994E111D7FB19C00201A4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6994E0F1D7FB19C00201A4E /* LaunchScreen.storyboard */; };
 		B6994E1C1D7FB19C00201A4E /* snake_burgerEaterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E1B1D7FB19C00201A4E /* snake_burgerEaterTests.swift */; };
 		B6994E271D7FB19C00201A4E /* snake_burgerEaterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E261D7FB19C00201A4E /* snake_burgerEaterUITests.swift */; };
+		B6994E351D7FB22400201A4E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B6994E341D7FB22400201A4E /* GameScene.sks */; };
+		B6994E371D7FB23500201A4E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6994E361D7FB23500201A4E /* Images.xcassets */; };
+		B6994E391D7FB28F00201A4E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6994E381D7FB28F00201A4E /* Info.plist */; };
+		B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3A1D7FB2B700201A4E /* MenuScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,19 +41,21 @@
 /* Begin PBXFileReference section */
 		B6994DFF1D7FB19C00201A4E /* snake_burgerEater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snake_burgerEater.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6994E021D7FB19C00201A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B6994E041D7FB19C00201A4E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		B6994E061D7FB19C00201A4E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		B6994E081D7FB19C00201A4E /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		B6994E0B1D7FB19C00201A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B6994E0D1D7FB19C00201A4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6994E101D7FB19C00201A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B6994E121D7FB19C00201A4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6994E171D7FB19C00201A4E /* snake_burgerEaterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = snake_burgerEaterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6994E1B1D7FB19C00201A4E /* snake_burgerEaterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snake_burgerEaterTests.swift; sourceTree = "<group>"; };
 		B6994E1D1D7FB19C00201A4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6994E221D7FB19C00201A4E /* snake_burgerEaterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = snake_burgerEaterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6994E261D7FB19C00201A4E /* snake_burgerEaterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snake_burgerEaterUITests.swift; sourceTree = "<group>"; };
 		B6994E281D7FB19C00201A4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6994E341D7FB22400201A4E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		B6994E361D7FB23500201A4E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B6994E381D7FB28F00201A4E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6994E3A1D7FB2B700201A4E /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,14 +106,16 @@
 		B6994E011D7FB19C00201A4E /* snake_burgerEater */ = {
 			isa = PBXGroup;
 			children = (
+				B6994E3A1D7FB2B700201A4E /* MenuScene.swift */,
+				B6994E381D7FB28F00201A4E /* Info.plist */,
+				B6994E361D7FB23500201A4E /* Images.xcassets */,
+				B6994E341D7FB22400201A4E /* GameScene.sks */,
 				B6994E021D7FB19C00201A4E /* AppDelegate.swift */,
-				B6994E041D7FB19C00201A4E /* GameScene.sks */,
 				B6994E061D7FB19C00201A4E /* GameScene.swift */,
 				B6994E081D7FB19C00201A4E /* GameViewController.swift */,
 				B6994E0A1D7FB19C00201A4E /* Main.storyboard */,
 				B6994E0D1D7FB19C00201A4E /* Assets.xcassets */,
 				B6994E0F1D7FB19C00201A4E /* LaunchScreen.storyboard */,
-				B6994E121D7FB19C00201A4E /* Info.plist */,
 			);
 			path = snake_burgerEater;
 			sourceTree = "<group>";
@@ -238,7 +245,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6994E051D7FB19C00201A4E /* GameScene.sks in Resources */,
+				B6994E351D7FB22400201A4E /* GameScene.sks in Resources */,
+				B6994E371D7FB23500201A4E /* Images.xcassets in Resources */,
+				B6994E391D7FB28F00201A4E /* Info.plist in Resources */,
 				B6994E111D7FB19C00201A4E /* LaunchScreen.storyboard in Resources */,
 				B6994E0E1D7FB19C00201A4E /* Assets.xcassets in Resources */,
 				B6994E0C1D7FB19C00201A4E /* Main.storyboard in Resources */,
@@ -267,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */,
+				B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */,
 				B6994E091D7FB19C00201A4E /* GameViewController.swift in Sources */,
 				B6994E031D7FB19C00201A4E /* AppDelegate.swift in Sources */,
 			);
