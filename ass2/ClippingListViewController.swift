@@ -78,7 +78,8 @@ class ClippingListViewController: UITableViewController ,UISearchBarDelegate{
 	var filtered = [Clipping]()
 	
 	func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-		searchActive = true;
+		searchActive = false;
+		print("beginEd")
 	}
 	
 	func searchBarTextDidEndEditing(searchBar: UISearchBar) {

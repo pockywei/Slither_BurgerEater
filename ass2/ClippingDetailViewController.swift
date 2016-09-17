@@ -23,10 +23,12 @@ class ClippingDetailViewController:UIViewController, UITextFieldDelegate, UIImag
 	@IBOutlet weak var clip_text: UITextView!
 	@IBAction func backicon(sender: AnyObject) {
 		let isPresentingInAddMealMode = presentingViewController is UINavigationController
-		
+		print("1")
 		if isPresentingInAddMealMode {
+			print("2")
 			dismissViewControllerAnimated(true, completion: nil)
 		} else {
+			print("3")
 			navigationController!.popViewControllerAnimated(true)
 		}
 
