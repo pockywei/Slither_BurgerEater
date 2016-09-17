@@ -13,11 +13,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	// MARK: - Instance Variables
 	
 	let playerSpeed: CGFloat = 150.0
-	let zombieSpeed: CGFloat = 75.0
+	let AI_snakeSpeed: CGFloat = 75.0
 	
 	var goal: SKSpriteNode?
 	var player: SKSpriteNode?
-	var zombies: [SKSpriteNode] = []
+	var AI_snakes: [SKSpriteNode] = []
 	
 	var lastTouch: CGPoint? = nil
 	
@@ -30,11 +30,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		
 		
-		// Setup zombies
+		// Setup AI_snakes
 		for child in self.children {
-			if child.name == "zombie" {
+			if child.name == "AI_snake" {
 				if let child = child as? SKSpriteNode {
-					zombies.append(child)
+					AI_snakes.append(child)
 				}
 			}
 		}
@@ -75,7 +75,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	override func didSimulatePhysics() {
 		if let _ = player {
 			updatePlayer()
-			updateZombies()
+			updateAI_snakes()
 		}
 	}
 	
@@ -114,22 +114,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
 	
-	// Updates the position of all zombies by moving towards the player
-	func updateZombies() {
+	// Updates the position of all AI_snakes by moving towards the player
+	func updateAI_snakes() {
 		let targetPosition = player!.position
 		
-		for zombie in zombies {
-			let currentPosition = zombie.position
+		for AI_snake in AI_snakes {
+			let currentPosition = AI_snake.position
 			
 			let angle = atan2(currentPosition.y - targetPosition.y, currentPosition.x - targetPosition.x) + CGFloat(M_PI)
 			let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0.0)
-			zombie.runAction(rotateAction)
+			AI_snake.runAction(rotateAction)
 			
-			let velocotyX = zombieSpeed * cos(angle)
-			let velocityY = zombieSpeed * sin(angle)
+			let velocotyX = AI_snakeSpeed * cos(angle)
+			let velocityY = AI_snakeSpeed * sin(angle)
 			
 			let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
-			zombie.physicsBody!.velocity = newVelocity;
+			AI_snake.physicsBody!.velocity = newVelocity;
 		}
 	}
 	
@@ -152,8 +152,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		
 		// 3. react to the contact between the two nodes
 		if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
-			secondBody.categoryBitMask == zombies[0].physicsBody?.categoryBitMask {
-			// Player & Zombie
+			secondBody.categoryBitMask == AI_snakes[0].physicsBody?.categoryBitMask {
+			// Player & AI_snake
 			gameOver(false)
 		} else if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
 			secondBody.categoryBitMask == goal?.physicsBody?.categoryBitMask {
@@ -168,7 +168,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 	private func gameOver(didWin: Bool) {
 		print("- - - Game Ended - - -")
 		let menuScene = MenuScene(size: self.size)
-		menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
+		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
 		let transition = SKTransition.flipVerticalWithDuration(1.0)
 		menuScene.scaleMode = SKSceneScaleMode.AspectFill
 		self.scene!.view?.presentScene(menuScene, transition: transition)

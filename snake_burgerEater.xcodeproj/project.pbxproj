@@ -19,6 +19,7 @@
 		B6994E371D7FB23500201A4E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6994E361D7FB23500201A4E /* Images.xcassets */; };
 		B6994E391D7FB28F00201A4E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6994E381D7FB28F00201A4E /* Info.plist */; };
 		B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3A1D7FB2B700201A4E /* MenuScene.swift */; };
+		B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		B6994E361D7FB23500201A4E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B6994E381D7FB28F00201A4E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6994E3A1D7FB2B700201A4E /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
+		B6994E3D1D8D240800201A4E /* snake_burgerEater.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = snake_burgerEater.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				B6994E061D7FB19C00201A4E /* GameScene.swift */,
 				B6994E081D7FB19C00201A4E /* GameViewController.swift */,
 				B6994E0A1D7FB19C00201A4E /* Main.storyboard */,
+				B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */,
 				B6994E0D1D7FB19C00201A4E /* Assets.xcassets */,
 				B6994E0F1D7FB19C00201A4E /* LaunchScreen.storyboard */,
 			);
@@ -275,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */,
 				B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */,
 				B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */,
 				B6994E091D7FB19C00201A4E /* GameViewController.swift in Sources */,
@@ -523,6 +527,19 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B6994E3D1D8D240800201A4E /* snake_burgerEater.xcdatamodel */,
+			);
+			currentVersion = B6994E3D1D8D240800201A4E /* snake_burgerEater.xcdatamodel */;
+			path = snake_burgerEater.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B6994DF71D7FB19C00201A4E /* Project object */;
 }
