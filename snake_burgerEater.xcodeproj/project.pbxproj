@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B61B9DFE1D8FBFC9004DA828 /* Player+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */; };
+		B61B9DFF1D8FBFC9004DA828 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B9DFD1D8FBFC9004DA828 /* Player.swift */; };
+		B61B9E3E1D8FD358004DA828 /* MainScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B61B9E3D1D8FD358004DA828 /* MainScene.sks */; };
 		B6994E031D7FB19C00201A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E021D7FB19C00201A4E /* AppDelegate.swift */; };
 		B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E061D7FB19C00201A4E /* GameScene.swift */; };
 		B6994E091D7FB19C00201A4E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E081D7FB19C00201A4E /* GameViewController.swift */; };
@@ -20,6 +23,7 @@
 		B6994E391D7FB28F00201A4E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6994E381D7FB28F00201A4E /* Info.plist */; };
 		B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3A1D7FB2B700201A4E /* MenuScene.swift */; };
 		B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */; };
+		B6F139F01D90182C00429B68 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F139EF1D90182C00429B68 /* MainScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +44,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B61B9DFD1D8FBFC9004DA828 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		B61B9E3D1D8FD358004DA828 /* MainScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = MainScene.sks; path = ../MainScene.sks; sourceTree = "<group>"; };
 		B6994DFF1D7FB19C00201A4E /* snake_burgerEater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snake_burgerEater.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6994E021D7FB19C00201A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6994E061D7FB19C00201A4E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -58,6 +65,7 @@
 		B6994E381D7FB28F00201A4E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6994E3A1D7FB2B700201A4E /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		B6994E3D1D8D240800201A4E /* snake_burgerEater.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = snake_burgerEater.xcdatamodel; sourceTree = "<group>"; };
+		B6F139EF1D90182C00429B68 /* MainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +96,8 @@
 		B6994DF61D7FB19C00201A4E = {
 			isa = PBXGroup;
 			children = (
+				B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */,
+				B61B9DFD1D8FBFC9004DA828 /* Player.swift */,
 				B6994E011D7FB19C00201A4E /* snake_burgerEater */,
 				B6994E1A1D7FB19C00201A4E /* snake_burgerEaterTests */,
 				B6994E251D7FB19C00201A4E /* snake_burgerEaterUITests */,
@@ -108,17 +118,19 @@
 		B6994E011D7FB19C00201A4E /* snake_burgerEater */ = {
 			isa = PBXGroup;
 			children = (
-				B6994E3A1D7FB2B700201A4E /* MenuScene.swift */,
 				B6994E381D7FB28F00201A4E /* Info.plist */,
 				B6994E361D7FB23500201A4E /* Images.xcassets */,
+				B61B9E3D1D8FD358004DA828 /* MainScene.sks */,
 				B6994E341D7FB22400201A4E /* GameScene.sks */,
 				B6994E021D7FB19C00201A4E /* AppDelegate.swift */,
-				B6994E061D7FB19C00201A4E /* GameScene.swift */,
 				B6994E081D7FB19C00201A4E /* GameViewController.swift */,
 				B6994E0A1D7FB19C00201A4E /* Main.storyboard */,
 				B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */,
 				B6994E0D1D7FB19C00201A4E /* Assets.xcassets */,
 				B6994E0F1D7FB19C00201A4E /* LaunchScreen.storyboard */,
+				B6994E061D7FB19C00201A4E /* GameScene.swift */,
+				B6F139EF1D90182C00429B68 /* MainScene.swift */,
+				B6994E3A1D7FB2B700201A4E /* MenuScene.swift */,
 			);
 			path = snake_burgerEater;
 			sourceTree = "<group>";
@@ -252,6 +264,7 @@
 				B6994E371D7FB23500201A4E /* Images.xcassets in Resources */,
 				B6994E391D7FB28F00201A4E /* Info.plist in Resources */,
 				B6994E111D7FB19C00201A4E /* LaunchScreen.storyboard in Resources */,
+				B61B9E3E1D8FD358004DA828 /* MainScene.sks in Resources */,
 				B6994E0E1D7FB19C00201A4E /* Assets.xcassets in Resources */,
 				B6994E0C1D7FB19C00201A4E /* Main.storyboard in Resources */,
 			);
@@ -280,7 +293,10 @@
 			files = (
 				B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */,
 				B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */,
+				B61B9DFE1D8FBFC9004DA828 /* Player+CoreDataProperties.swift in Sources */,
 				B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */,
+				B61B9DFF1D8FBFC9004DA828 /* Player.swift in Sources */,
+				B6F139F01D90182C00429B68 /* MainScene.swift in Sources */,
 				B6994E091D7FB19C00201A4E /* GameViewController.swift in Sources */,
 				B6994E031D7FB19C00201A4E /* AppDelegate.swift in Sources */,
 			);
@@ -509,6 +525,7 @@
 				B6994E2D1D7FB19C00201A4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B6994E2E1D7FB19C00201A4E /* Build configuration list for PBXNativeTarget "snake_burgerEaterTests" */ = {
 			isa = XCConfigurationList;
@@ -517,6 +534,7 @@
 				B6994E301D7FB19C00201A4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B6994E311D7FB19C00201A4E /* Build configuration list for PBXNativeTarget "snake_burgerEaterUITests" */ = {
 			isa = XCConfigurationList;
@@ -525,6 +543,7 @@
 				B6994E331D7FB19C00201A4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

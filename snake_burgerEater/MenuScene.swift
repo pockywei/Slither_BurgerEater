@@ -17,6 +17,8 @@ class MenuScene: SKScene {
 	
 	
     self.backgroundColor = SKColor(red: 0, green:0, blue:0, alpha: 1)
+	
+	
     
     // Setup label
     let label = SKLabelNode(text: "Press anywhere to play again!")
@@ -34,11 +36,12 @@ class MenuScene: SKScene {
   }
   
   override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    let gameScene = GameScene(fileNamed: "GameScene")
-    let transition = SKTransition.flipVerticalWithDuration(1.0)
+    let mainScene = MainScene(fileNamed: "MainScene")
+    let transition = SKTransition.fadeWithDuration(1)
     let skView = self.view as SKView!
-    gameScene?.scaleMode = .AspectFill
-    skView.presentScene(gameScene!, transition: transition)
+    mainScene?.scaleMode = .AspectFill
+	
+    skView.presentScene(mainScene!, transition: transition)
   }
   
 }

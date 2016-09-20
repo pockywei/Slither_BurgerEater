@@ -7,11 +7,18 @@
 //
 
 import SpriteKit
+import UIKit
+import CoreData
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
 	
 	// MARK: - Instance Variables
+	//var Database_player = Player()// in the database
 	
+	
+
+	
+	//Set game paramter
 	let playerSpeed: CGFloat = 150.0
 	let AI_snakeSpeed: CGFloat = 75.0
 	
@@ -162,6 +169,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		}
 	}
 	
+
 	
 	// MARK: Helper Functions
 	
@@ -169,9 +177,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 		print("- - - Game Ended - - -")
 		let menuScene = MenuScene(size: self.size)
 		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
-		let transition = SKTransition.flipVerticalWithDuration(1.0)
+		let transition = SKTransition.fadeWithDuration(1)
 		menuScene.scaleMode = SKSceneScaleMode.AspectFill
 		self.scene!.view?.presentScene(menuScene, transition: transition)
+		
+
 	}
 	
 }
