@@ -29,7 +29,7 @@ extension SKNode {
 
 class GameViewController: UIViewController {
 	
-	@IBOutlet weak var Back_to_firstScreen: UIButton!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		

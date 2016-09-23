@@ -26,6 +26,8 @@ class MenuScene: SKScene {
     label.fontSize = 55
     label.fontColor = UIColor.whiteColor()
     label.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+	
+	
     
     // Play sound
     if let soundToPlay = soundToPlay {

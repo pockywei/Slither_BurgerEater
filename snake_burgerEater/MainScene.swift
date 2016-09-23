@@ -8,14 +8,26 @@
 
 import Foundation
 import SpriteKit
-
+import UIKit
 class MainScene:SKScene {
 	
 	var inputText:UITextField?
-	var aButton = SKShapeNode(circleOfRadius:50) //改成方形
 	
+	var Play_ai: SKLabelNode!
+	
+	var Multi_mode: SKLabelNode!
+	
+	
+	
+	var change_mode = SKShapeNode(circleOfRadius:50)
+	
+	
+	var change_skin = SKShapeNode(circleOfRadius:50)
 	
 	override func didMoveToView(view: SKView) {
+		
+		
+		
 		
 		
 		inputText = UITextField(frame: CGRect(x:105,y:420,width:200,height:40))//如何居中
@@ -23,11 +35,33 @@ class MainScene:SKScene {
 		inputText!.backgroundColor = UIColor.whiteColor()
 		inputText!.placeholder="Username"
 		
-		aButton.fillColor = SKColor.redColor()
-		aButton.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
-		sleep(1/2)
 		
-		self.addChild(aButton)
+		
+		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
+		Play_ai.text = "Play with AI"
+		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+		addChild(Play_ai)
+		
+		Multi_mode = SKLabelNode(fontNamed: "Chalkduster")
+		Multi_mode.text = "Online Game"
+		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)+150)
+		addChild(Multi_mode)
+		
+		
+		
+		change_mode.position = CGPoint(x: CGRectGetMinX(self.frame)+85, y: CGRectGetMinY(self.frame)+85)
+		change_mode.fillColor = UIColor.whiteColor()
+		addChild(change_mode)
+		
+		
+		
+		change_skin.position = CGPoint(x: CGRectGetMaxX(self.frame)-100, y: CGRectGetMinY(self.frame)+85)
+		change_skin.fillColor = UIColor.whiteColor()
+		addChild(change_skin)
+		
+		
+		
+		
 		
 	}
 	
@@ -47,13 +81,15 @@ class MainScene:SKScene {
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		for touch: AnyObject in touches {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
-			if CGRectContainsPoint(aButton.frame, position) {
+			if CGRectContainsPoint(Play_ai.frame, position) {
 				let gameScene = GameScene(fileNamed: "GameScene")
 				inputText?.hidden = true
 				let transition = SKTransition.fadeWithDuration(1)
 				let skView = self.view as SKView!
 				gameScene?.scaleMode = .AspectFill
-				skView.presentScene(gameScene!, transition: transition)
+				dispatch_async(dispatch_get_main_queue(), { 
+					skView.presentScene(gameScene!, transition: transition)
+				})
 				
 			}
 		}
