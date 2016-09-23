@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B600CF611D955E2400AC2D3D /* ChangeGameModelScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B600CF601D955E2400AC2D3D /* ChangeGameModelScene.sks */; };
 		B61B9DFE1D8FBFC9004DA828 /* Player+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */; };
 		B61B9DFF1D8FBFC9004DA828 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B9DFD1D8FBFC9004DA828 /* Player.swift */; };
 		B61B9E3E1D8FD358004DA828 /* MainScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B61B9E3D1D8FD358004DA828 /* MainScene.sks */; };
+		B68575EC1D9540C7004B81F6 /* ChangeSkinScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B68575EB1D9540C7004B81F6 /* ChangeSkinScene.sks */; };
+		B68575EE1D95438F004B81F6 /* ChangeSkinScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68575ED1D95438F004B81F6 /* ChangeSkinScene.swift */; };
 		B6994E031D7FB19C00201A4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E021D7FB19C00201A4E /* AppDelegate.swift */; };
 		B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E061D7FB19C00201A4E /* GameScene.swift */; };
 		B6994E091D7FB19C00201A4E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E081D7FB19C00201A4E /* GameViewController.swift */; };
@@ -44,9 +47,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B600CF601D955E2400AC2D3D /* ChangeGameModelScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ChangeGameModelScene.sks; sourceTree = "<group>"; };
 		B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B61B9DFD1D8FBFC9004DA828 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		B61B9E3D1D8FD358004DA828 /* MainScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = MainScene.sks; path = ../MainScene.sks; sourceTree = "<group>"; };
+		B68575EB1D9540C7004B81F6 /* ChangeSkinScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ChangeSkinScene.sks; sourceTree = "<group>"; };
+		B68575ED1D95438F004B81F6 /* ChangeSkinScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSkinScene.swift; sourceTree = "<group>"; };
 		B6994DFF1D7FB19C00201A4E /* snake_burgerEater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snake_burgerEater.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6994E021D7FB19C00201A4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6994E061D7FB19C00201A4E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -120,17 +126,20 @@
 			children = (
 				B6994E381D7FB28F00201A4E /* Info.plist */,
 				B6994E361D7FB23500201A4E /* Images.xcassets */,
+				B6994E021D7FB19C00201A4E /* AppDelegate.swift */,
+				B6994E0A1D7FB19C00201A4E /* Main.storyboard */,
 				B61B9E3D1D8FD358004DA828 /* MainScene.sks */,
 				B6994E341D7FB22400201A4E /* GameScene.sks */,
-				B6994E021D7FB19C00201A4E /* AppDelegate.swift */,
+				B68575EB1D9540C7004B81F6 /* ChangeSkinScene.sks */,
+				B600CF601D955E2400AC2D3D /* ChangeGameModelScene.sks */,
 				B6994E081D7FB19C00201A4E /* GameViewController.swift */,
-				B6994E0A1D7FB19C00201A4E /* Main.storyboard */,
 				B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */,
 				B6994E0D1D7FB19C00201A4E /* Assets.xcassets */,
 				B6994E0F1D7FB19C00201A4E /* LaunchScreen.storyboard */,
 				B6994E061D7FB19C00201A4E /* GameScene.swift */,
 				B6F139EF1D90182C00429B68 /* MainScene.swift */,
 				B6994E3A1D7FB2B700201A4E /* MenuScene.swift */,
+				B68575ED1D95438F004B81F6 /* ChangeSkinScene.swift */,
 			);
 			path = snake_burgerEater;
 			sourceTree = "<group>";
@@ -263,10 +272,12 @@
 				B6994E351D7FB22400201A4E /* GameScene.sks in Resources */,
 				B6994E371D7FB23500201A4E /* Images.xcassets in Resources */,
 				B6994E391D7FB28F00201A4E /* Info.plist in Resources */,
+				B68575EC1D9540C7004B81F6 /* ChangeSkinScene.sks in Resources */,
 				B6994E111D7FB19C00201A4E /* LaunchScreen.storyboard in Resources */,
 				B61B9E3E1D8FD358004DA828 /* MainScene.sks in Resources */,
 				B6994E0E1D7FB19C00201A4E /* Assets.xcassets in Resources */,
 				B6994E0C1D7FB19C00201A4E /* Main.storyboard in Resources */,
+				B600CF611D955E2400AC2D3D /* ChangeGameModelScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */,
+				B68575EE1D95438F004B81F6 /* ChangeSkinScene.swift in Sources */,
 				B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */,
 				B61B9DFE1D8FBFC9004DA828 /* Player+CoreDataProperties.swift in Sources */,
 				B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */,

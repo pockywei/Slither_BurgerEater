@@ -91,6 +91,16 @@ class MainScene:SKScene {
 					skView.presentScene(gameScene!, transition: transition)
 				})
 				
+			}else if CGRectContainsPoint(change_mode.frame, position) {
+				let changeSkinScene = ChangeSkinScene(fileNamed: "ChangeSkinScene")
+				inputText?.hidden = true
+				let transition = SKTransition.fadeWithDuration(1)
+				let skView = self.view as SKView!
+				changeSkinScene?.scaleMode = .AspectFill
+				dispatch_async(dispatch_get_main_queue(), {
+					skView.presentScene(changeSkinScene!, transition: transition)
+				})
+			
 			}
 		}
 	}
