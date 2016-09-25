@@ -16,7 +16,7 @@ class ChangeSkinScene: SKScene {
 
 	
 	
-	var count=0
+	var count : Int?
 	var soundToPlay: String?
 	var Snake_with_Skin: SKSpriteNode?
 	var Back_button: SKSpriteNode?
@@ -38,11 +38,30 @@ class ChangeSkinScene: SKScene {
 		
 		right_button = self.childNodeWithName("right_button") as? SKSpriteNode
 		
-		if let highscore = userDefaults.valueForKey("skin") {
-			Snake_with_Skin!.runAction(highscore as! SKAction)
+		if let count_skinAnyobj = userDefaults.valueForKey("skin") {
+			let count_skin = count_skinAnyobj as! Int
+			switch count_skin {
+			case 0:
+				Snake_with_Skin!.runAction(Actionred)
+				count=count_skin
+				break
+			case 1:
+				Snake_with_Skin!.runAction(Actionblue)
+				count=count_skin
+				break
+			case 2:
+				Snake_with_Skin!.runAction(Actionwhite)
+				count=count_skin
+				break
+			default:
+				Snake_with_Skin!.runAction(Actionbrown)
+				count=count_skin
+				break
+			}
 		}
 		else {
-			Snake_with_Skin!.runAction(Actionred)
+			count=0
+			Snake_with_Skin!.runAction(Actionwhite)
 		}
 		
 	}
@@ -63,7 +82,7 @@ class ChangeSkinScene: SKScene {
 			}else if CGRectContainsPoint(left_button!.frame, position) {
 				
 				
-				count=(count-1)
+				count=(count!-1)
 				
 				if(count<0)
 				{
@@ -71,25 +90,25 @@ class ChangeSkinScene: SKScene {
 				}
 				
 				print(count)
-				switch count {
+				switch count! {
 				case 0:
 					Snake_with_Skin!.runAction(Actionred)
-					userDefaults.setValue(Actionred, forKey: "skin")
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 					break
 				case 1:
 					Snake_with_Skin!.runAction(Actionblue)
-					userDefaults.setValue(Actionblue, forKey: "skin")
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 					break
 				case 2:
 					Snake_with_Skin!.runAction(Actionwhite)
-					userDefaults.setValue(Actionwhite, forKey: "skin")
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 					break
 				default:
 					Snake_with_Skin!.runAction(Actionbrown)
-					userDefaults.setValue(Actionbrown, forKey: "skin")
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 					break
 				}
@@ -100,25 +119,26 @@ class ChangeSkinScene: SKScene {
 				
 				
 				
-				count=(count+1)%4
+				count=(count!+1)%4
 				
 				print(count)
-				switch count {
+				switch count! {
 				case 0:
 					Snake_with_Skin!.runAction(Actionred)
-					userDefaults.setValue(Actionred, forKey: "skin")
+					
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 				case 1:
 					Snake_with_Skin!.runAction(Actionblue)
-					userDefaults.setValue(Actionblue, forKey: "skin")
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 				case 2:
 					Snake_with_Skin!.runAction(Actionwhite)
-					userDefaults.setValue(Actionwhite, forKey: "skin")
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 				default:
 					Snake_with_Skin!.runAction(Actionbrown)
-					userDefaults.setValue(Actionbrown, forKey: "skin")
+					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 				}
 				

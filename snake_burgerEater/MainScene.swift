@@ -19,18 +19,20 @@ class MainScene:SKScene {
 	
 	
 	
-	var change_mode = SKShapeNode(circleOfRadius:50)
+	var change_mode = SKSpriteNode()
 	
 	
-	var change_skin = SKShapeNode(circleOfRadius:50)
+	var change_skin = SKSpriteNode()
 	
 	override func didMoveToView(view: SKView) {
 		
+		change_skin = self.childNodeWithName("change_skin") as! SKSpriteNode
+		change_mode = self.childNodeWithName("setting") as! SKSpriteNode
 		
 		
 		
 		
-		inputText = UITextField(frame: CGRect(x:105,y:420,width:200,height:40))//如何居中
+		inputText = UITextField(frame: CGRect(x:85,y:420,width:200,height:40))//如何居中
 		self.view!.addSubview(inputText!)
 		inputText!.backgroundColor = UIColor.whiteColor()
 		inputText!.placeholder="Username"
@@ -44,22 +46,10 @@ class MainScene:SKScene {
 		
 		Multi_mode = SKLabelNode(fontNamed: "Chalkduster")
 		Multi_mode.text = "Online Game"
+		
 		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)+150)
 		addChild(Multi_mode)
-		
-		
-		
-		change_mode.position = CGPoint(x: CGRectGetMinX(self.frame)+85, y: CGRectGetMinY(self.frame)+85)
-		change_mode.fillColor = UIColor.whiteColor()
-		addChild(change_mode)
-		
-		
-		
-		change_skin.position = CGPoint(x: CGRectGetMaxX(self.frame)-100, y: CGRectGetMinY(self.frame)+85)
-		change_skin.fillColor = UIColor.whiteColor()
-		addChild(change_skin)
-		
-		
+	
 		
 		
 		

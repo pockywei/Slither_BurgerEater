@@ -19,7 +19,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 
 	
 	//Set game paramter
-	let playerSpeed: CGFloat = 150.0
+	var playerSpeed: CGFloat = 150.0
 	let AI_snakeSpeed: CGFloat = 75.0
 	
 	var goal: SKSpriteNode?
@@ -59,6 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		handleTouches(touches)
+		playerSpeed = 300.0
 	}
 	
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -67,6 +68,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		handleTouches(touches)
+		playerSpeed = 150.0
 	}
 	
 	private func handleTouches(touches: Set<UITouch>) {
@@ -96,6 +98,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	func updatePlayer() {
 		if let touch = lastTouch {
 			let currentPosition = player!.position
+			
+			
 			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
 				
 				let angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
@@ -183,5 +187,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 
 	}
+	
+	
 	
 }
