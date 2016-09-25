@@ -20,13 +20,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	//Set game paramter
 	var playerSpeed: CGFloat = 150.0
+	
+	//这是AI的速度
 	let AI_snakeSpeed: CGFloat = 75.0
 	
-	var goal: SKSpriteNode?
+	//这是我们的蛇
 	var player: SKSpriteNode?
+	
+	//加速按钮
 	var speed_up: SKSpriteNode?
+	
+	//这是AI snake 的数组
 	var AI_snakes: [SKSpriteNode] = []
 	
+	//最后触碰的点
 	var lastTouch: CGPoint? = nil
 	
 	
@@ -36,17 +43,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		
 		// Setup player
-		
+		//开启多点触控模式
 		self.view?.multipleTouchEnabled = true
+		
+		//实例化player，从scene里面提取名字叫player的node
 		player = self.childNodeWithName("player") as? SKSpriteNode
 		
+		//同理
 		speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
 		
 		
 		//set player Skin and Model
+		
+		//设置用户的皮肤和操作模式
 		setDefaultSkin(player!)
 		setDefaultModel(player!)
 		
+		//到这里位置，我们的用户是一个sknode，我们的用户颜色有了。
 		
 		
 		// Setup AI_snakes
@@ -69,9 +82,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	// MARK: Touch Handling
 	
+	//这是函数是你刚tap下去就会发生的事
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		handleTouches(touches)
 		
+		//这是当用户按到加速按钮时的时候，会加速的
 		for touch: AnyObject in touches {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
 			if CGRectContainsPoint(speed_up!.frame, position) {
@@ -86,11 +101,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		handleTouches(touches)
 	}
 	
+	
+	//这个是你放手的时候，才会执行的
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		handleTouches(touches)
 		playerSpeed = 150.0
 	}
 	
+	
+	//主要是更新最后的tap 点坐标，lastTouch是个全局变量
 	private func handleTouches(touches: Set<UITouch>) {
 		for touch in touches {
 			let touchLocation = touch.locationInNode(self)
@@ -192,10 +211,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			secondBody.categoryBitMask == AI_snakes[0].physicsBody?.categoryBitMask {
 			// Player & AI_snake
 			gameOver(false)
-		} else if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
-			secondBody.categoryBitMask == goal?.physicsBody?.categoryBitMask {
-			// Player & Goal
-			gameOver(true)
 		}
 	}
 	
