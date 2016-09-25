@@ -13,6 +13,7 @@ class MainScene:SKScene {
 	
 	var inputText:UITextField?
 	
+	
 	var Play_ai: SKLabelNode!
 	
 	var Multi_mode: SKLabelNode!
@@ -26,11 +27,12 @@ class MainScene:SKScene {
 	
 	override func didMoveToView(view: SKView) {
 		
-//		let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+		
+//		let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainScene.dismissKeyboard))
 //		view.addGestureRecognizer(tap)
 	
 	
-	
+		
 		// in your viewDidLoad:
 		
 //		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification,object: nil)
@@ -76,9 +78,9 @@ class MainScene:SKScene {
 	}
 	
 	
-//	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)  {
-//		/* Called when a touch begins */
-//		
+	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)  {
+		/* Called when a touch begins */
+		 view!.endEditing(true)
 //		for touch: AnyObject in touches {
 //			let position = touch.locationInNode(self) // Get the x,y point of the touch
 //			if CGRectContainsPoint(aButton.frame, position) { // Detect if that point is inside our button
@@ -86,7 +88,7 @@ class MainScene:SKScene {
 //				self.view?.presentScene(gameScene, transition: SKTransition.doorsCloseHorizontalWithDuration(0.35)) // Performs the transition of scene if the button was touch
 //			}
 //		}
-//	}
+	}
 
 
 
@@ -124,6 +126,11 @@ class MainScene:SKScene {
 				})
 			}
 		}
+	}
+	
+	func dismissKeyboard() {
+		//Causes the view (or one of its embedded text fields) to resign the first responder status.
+		view!.endEditing(true)
 	}
 	
 	
