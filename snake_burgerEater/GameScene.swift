@@ -24,6 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	var goal: SKSpriteNode?
 	var player: SKSpriteNode?
+	var speed_up: SKSpriteNode?
 	var AI_snakes: [SKSpriteNode] = []
 	
 	var lastTouch: CGPoint? = nil
@@ -32,8 +33,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	// MARK: - SKScene
 	
 	override func didMoveToView(view: SKView) {
+		
+		
 		// Setup player
+		
+		self.view?.multipleTouchEnabled = true
 		player = self.childNodeWithName("player") as? SKSpriteNode
+		
+		speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
+		
+		
+		//set player Skin and Model
+		setDefaultSkin(player!)
+		setDefaultModel(player!)
 		
 		
 		
@@ -59,7 +71,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		handleTouches(touches)
-		playerSpeed = 300.0
+		
+		for touch: AnyObject in touches {
+			let position = touch.locationInNode(self) // Get the x,y point of the touch
+			if CGRectContainsPoint(speed_up!.frame, position) {
+				print(position)
+				playerSpeed = 300.0
+			}
+		}
+		
 	}
 	
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -161,6 +181,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			secondBody = contact.bodyA
 		}
 		
+		print("=========")
+		print(firstBody.categoryBitMask)
+		print(player?.physicsBody?.categoryBitMask)
+		print(secondBody.categoryBitMask)
+		print(AI_snakes[0].physicsBody?.categoryBitMask)
+		print("==========")
 		// 3. react to the contact between the two nodes
 		if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
 			secondBody.categoryBitMask == AI_snakes[0].physicsBody?.categoryBitMask {
@@ -174,7 +200,64 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
 	
 
-	
+	//Set default skin
+	func setDefaultSkin(player:SKSpriteNode){
+		let userDefaults = NSUserDefaults.standardUserDefaults()
+		
+		if let count_skinAnyobj = userDefaults.valueForKey("skin") {
+			print(count_skinAnyobj)
+			let count_skin = count_skinAnyobj as! Int
+			switch count_skin {
+			case 0:
+				//Snake_with_Skin!.runAction(Actionred)
+				player.color=UIColor.redColor()
+				break
+			case 1:
+				//Snake_with_Skin!.runAction(Actionblue)
+				player.color=UIColor.blueColor()
+				break
+			case 2:
+				//Snake_with_Skin!.runAction(Actionwhite)
+				player.color=UIColor.whiteColor()
+				break
+			default:
+				//Snake_with_Skin!.runAction(Actionbrown)
+				player.color=UIColor.brownColor()
+				break
+			}
+		}
+		else {
+			player.color=UIColor.whiteColor()
+			print("No color")
+		}
+
+	}
+	//Set default model
+	func setDefaultModel(player:SKSpriteNode){
+		let userDefaults = NSUserDefaults.standardUserDefaults()
+		
+		if let count_modelAnyobj = userDefaults.valueForKey("model") {
+			print(count_modelAnyobj)
+			let count_model = count_modelAnyobj as! String
+			switch count_model {
+			case "Arrow_model":
+				
+				break
+			case "Rocker_model":
+				
+				break
+			
+			default:
+				
+				break
+			}
+		}
+		else {
+			//set normal way
+			print("Normal_model")
+		}
+
+	}
 	// MARK: Helper Functions
 	
 	private func gameOver(didWin: Bool) {

@@ -17,7 +17,7 @@ class MainScene:SKScene {
 	
 	var Multi_mode: SKLabelNode!
 	
-	
+	var kbframe : CGRect?
 	
 	var change_mode = SKSpriteNode()
 	
@@ -26,13 +26,33 @@ class MainScene:SKScene {
 	
 	override func didMoveToView(view: SKView) {
 		
+//		let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+//		view.addGestureRecognizer(tap)
+	
+	
+	
+		// in your viewDidLoad:
+		
+//		NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification,object: nil)
+//		
+//		// later in your class:
+//		
+//		func keyboardWillShow(notification: NSNotification) {
+//			kbframe = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+//			// do stuff with the frame...
+//			
+//		}
+		
+		
+		
+		
 		change_skin = self.childNodeWithName("change_skin") as! SKSpriteNode
 		change_mode = self.childNodeWithName("setting") as! SKSpriteNode
 		
 		
 		
 		
-		inputText = UITextField(frame: CGRect(x:85,y:420,width:200,height:40))//如何居中
+		inputText = UITextField(frame: CGRect(x:85,y:320,width:200,height:40))//如何居中
 		self.view!.addSubview(inputText!)
 		inputText!.backgroundColor = UIColor.whiteColor()
 		inputText!.placeholder="Username"
@@ -41,13 +61,13 @@ class MainScene:SKScene {
 		
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
 		Play_ai.text = "Play with AI"
-		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-300)
 		addChild(Play_ai)
 		
 		Multi_mode = SKLabelNode(fontNamed: "Chalkduster")
 		Multi_mode.text = "Online Game"
 		
-		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)+150)
+		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-450)
 		addChild(Multi_mode)
 	
 		
@@ -67,7 +87,9 @@ class MainScene:SKScene {
 //			}
 //		}
 //	}
-	
+
+
+
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		for touch: AnyObject in touches {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch

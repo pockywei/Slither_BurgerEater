@@ -24,7 +24,7 @@ class ChangeSkinScene: SKScene {
 	var left_button: SKSpriteNode?
 	var right_button: SKSpriteNode?
 	
-	let Actionwhite = SKAction.colorizeWithColor(SKColor.whiteColor(), colorBlendFactor: 1.0, duration: 0.5)
+	let Actionwhite = SKAction.colorizeWithColor(SKColor.grayColor(), colorBlendFactor: 1.0, duration: 0.5)
 	let Actionbrown = SKAction.colorizeWithColor(SKColor.brownColor(), colorBlendFactor: 1.0, duration: 0.5)
 	let Actionblue = SKAction.colorizeWithColor(SKColor.blueColor(), colorBlendFactor: 1.0, duration: 0.5)
 	let Actionred = SKAction.colorizeWithColor(SKColor.redColor(), colorBlendFactor: 1.0, duration: 0.5)

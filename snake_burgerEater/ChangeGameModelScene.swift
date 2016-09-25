@@ -11,14 +11,14 @@ import SpriteKit
 
 class ChangeGameModelScene: SKScene {
 	
-	
+	let userDefaults = NSUserDefaults.standardUserDefaults()
 	var Snake_with_Skin: SKSpriteNode?
 	var Back_button: SKSpriteNode?
 	var Rocker_model: SKSpriteNode?
 	var Arrow_model: SKSpriteNode?
 	var Narmal_model: SKSpriteNode?
 
-	var Model: [String] = ["O","A","C"]
+	//var Model: [String] = ["O","A","C"]
 	
 	
 	override func didMoveToView(view: SKView) {
@@ -49,11 +49,20 @@ class ChangeGameModelScene: SKScene {
 					skView.presentScene(mainScene!, transition: transition)
 				})
 			}else if CGRectContainsPoint(Rocker_model!.frame, position) {
+				userDefaults.setValue("Rocker_model", forKey: "model")
+				userDefaults.synchronize() // don't forget this!!!!
+
 				
 				
 			}else if CGRectContainsPoint(Arrow_model!.frame, position) {
+				userDefaults.setValue("Arrow_model", forKey: "model")
+				userDefaults.synchronize() // don't forget this!!!!
+
 				
-			}else if CGRectContainsPoint(Arrow_model!.frame, position) {
+			}else if CGRectContainsPoint(Narmal_model!.frame, position) {
+				userDefaults.setValue("Narmal_model", forKey: "model")
+				userDefaults.synchronize() // don't forget this!!!!
+
 			
 			}
 			
