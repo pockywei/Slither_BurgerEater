@@ -186,6 +186,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	// MARK: - SKPhysicsContactDelegate
 	
+	
+	//搞懂这个函数。
 	func didBeginContact(contact: SKPhysicsContact) {
 		// 1. Create local variables for two physics bodies
 		var firstBody: SKPhysicsBody
@@ -200,12 +202,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			secondBody = contact.bodyA
 		}
 		
-		print("=========")
-		print(firstBody.categoryBitMask)
-		print(player?.physicsBody?.categoryBitMask)
-		print(secondBody.categoryBitMask)
-		print(AI_snakes[0].physicsBody?.categoryBitMask)
-		print("==========")
 		// 3. react to the contact between the two nodes
 		if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
 			secondBody.categoryBitMask == AI_snakes[0].physicsBody?.categoryBitMask {
@@ -233,7 +229,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				break
 			case 2:
 				//Snake_with_Skin!.runAction(Actionwhite)
-				player.color=UIColor.whiteColor()
+				player.color=UIColor.grayColor()
 				break
 			default:
 				//Snake_with_Skin!.runAction(Actionbrown)
@@ -242,7 +238,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 		}
 		else {
-			player.color=UIColor.whiteColor()
+			player.color=UIColor.grayColor()
 			print("No color")
 		}
 
@@ -277,6 +273,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	private func gameOver(didWin: Bool) {
 		print("- - - Game Ended - - -")
+		
+		
 		let menuScene = MenuScene(size: self.size)
 		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
 		let transition = SKTransition.fadeWithDuration(1)
@@ -284,6 +282,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		self.scene!.view?.presentScene(menuScene, transition: transition)
 		
 
+	}
+	
+	
+	
+	func deCodeJsonData(){
+		
+	
 	}
 	
 	

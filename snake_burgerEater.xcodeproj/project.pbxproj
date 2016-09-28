@@ -19,8 +19,6 @@
 		B6994E0C1D7FB19C00201A4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6994E0A1D7FB19C00201A4E /* Main.storyboard */; };
 		B6994E0E1D7FB19C00201A4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6994E0D1D7FB19C00201A4E /* Assets.xcassets */; };
 		B6994E111D7FB19C00201A4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B6994E0F1D7FB19C00201A4E /* LaunchScreen.storyboard */; };
-		B6994E1C1D7FB19C00201A4E /* snake_burgerEaterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E1B1D7FB19C00201A4E /* snake_burgerEaterTests.swift */; };
-		B6994E271D7FB19C00201A4E /* snake_burgerEaterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E261D7FB19C00201A4E /* snake_burgerEaterUITests.swift */; };
 		B6994E351D7FB22400201A4E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B6994E341D7FB22400201A4E /* GameScene.sks */; };
 		B6994E371D7FB23500201A4E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6994E361D7FB23500201A4E /* Images.xcassets */; };
 		B6994E391D7FB28F00201A4E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6994E381D7FB28F00201A4E /* Info.plist */; };
@@ -29,23 +27,6 @@
 		B6AD5C3A1D966E660038044F /* ChangeGameModelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */; };
 		B6F139F01D90182C00429B68 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F139EF1D90182C00429B68 /* MainScene.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		B6994E181D7FB19C00201A4E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B6994DF71D7FB19C00201A4E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B6994DFE1D7FB19C00201A4E;
-			remoteInfo = snake_burgerEater;
-		};
-		B6994E231D7FB19C00201A4E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B6994DF71D7FB19C00201A4E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B6994DFE1D7FB19C00201A4E;
-			remoteInfo = snake_burgerEater;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B600CF601D955E2400AC2D3D /* ChangeGameModelScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ChangeGameModelScene.sks; sourceTree = "<group>"; };
@@ -61,12 +42,6 @@
 		B6994E0B1D7FB19C00201A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B6994E0D1D7FB19C00201A4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6994E101D7FB19C00201A4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B6994E171D7FB19C00201A4E /* snake_burgerEaterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = snake_burgerEaterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B6994E1B1D7FB19C00201A4E /* snake_burgerEaterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snake_burgerEaterTests.swift; sourceTree = "<group>"; };
-		B6994E1D1D7FB19C00201A4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6994E221D7FB19C00201A4E /* snake_burgerEaterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = snake_burgerEaterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B6994E261D7FB19C00201A4E /* snake_burgerEaterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = snake_burgerEaterUITests.swift; sourceTree = "<group>"; };
-		B6994E281D7FB19C00201A4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6994E341D7FB22400201A4E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		B6994E361D7FB23500201A4E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B6994E381D7FB28F00201A4E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -84,20 +59,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B6994E141D7FB19C00201A4E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B6994E1F1D7FB19C00201A4E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -107,8 +68,6 @@
 				B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */,
 				B61B9DFD1D8FBFC9004DA828 /* Player.swift */,
 				B6994E011D7FB19C00201A4E /* snake_burgerEater */,
-				B6994E1A1D7FB19C00201A4E /* snake_burgerEaterTests */,
-				B6994E251D7FB19C00201A4E /* snake_burgerEaterUITests */,
 				B6994E001D7FB19C00201A4E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -117,8 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				B6994DFF1D7FB19C00201A4E /* snake_burgerEater.app */,
-				B6994E171D7FB19C00201A4E /* snake_burgerEaterTests.xctest */,
-				B6994E221D7FB19C00201A4E /* snake_burgerEaterUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,24 +104,6 @@
 			path = snake_burgerEater;
 			sourceTree = "<group>";
 		};
-		B6994E1A1D7FB19C00201A4E /* snake_burgerEaterTests */ = {
-			isa = PBXGroup;
-			children = (
-				B6994E1B1D7FB19C00201A4E /* snake_burgerEaterTests.swift */,
-				B6994E1D1D7FB19C00201A4E /* Info.plist */,
-			);
-			path = snake_burgerEaterTests;
-			sourceTree = "<group>";
-		};
-		B6994E251D7FB19C00201A4E /* snake_burgerEaterUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B6994E261D7FB19C00201A4E /* snake_burgerEaterUITests.swift */,
-				B6994E281D7FB19C00201A4E /* Info.plist */,
-			);
-			path = snake_burgerEaterUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -185,42 +124,6 @@
 			productReference = B6994DFF1D7FB19C00201A4E /* snake_burgerEater.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B6994E161D7FB19C00201A4E /* snake_burgerEaterTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B6994E2E1D7FB19C00201A4E /* Build configuration list for PBXNativeTarget "snake_burgerEaterTests" */;
-			buildPhases = (
-				B6994E131D7FB19C00201A4E /* Sources */,
-				B6994E141D7FB19C00201A4E /* Frameworks */,
-				B6994E151D7FB19C00201A4E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B6994E191D7FB19C00201A4E /* PBXTargetDependency */,
-			);
-			name = snake_burgerEaterTests;
-			productName = snake_burgerEaterTests;
-			productReference = B6994E171D7FB19C00201A4E /* snake_burgerEaterTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		B6994E211D7FB19C00201A4E /* snake_burgerEaterUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B6994E311D7FB19C00201A4E /* Build configuration list for PBXNativeTarget "snake_burgerEaterUITests" */;
-			buildPhases = (
-				B6994E1E1D7FB19C00201A4E /* Sources */,
-				B6994E1F1D7FB19C00201A4E /* Frameworks */,
-				B6994E201D7FB19C00201A4E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B6994E241D7FB19C00201A4E /* PBXTargetDependency */,
-			);
-			name = snake_burgerEaterUITests;
-			productName = snake_burgerEaterUITests;
-			productReference = B6994E221D7FB19C00201A4E /* snake_burgerEaterUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -234,16 +137,6 @@
 					B6994DFE1D7FB19C00201A4E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 92ADNDK6T8;
-					};
-					B6994E161D7FB19C00201A4E = {
-						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 92ADNDK6T8;
-						TestTargetID = B6994DFE1D7FB19C00201A4E;
-					};
-					B6994E211D7FB19C00201A4E = {
-						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 92ADNDK6T8;
-						TestTargetID = B6994DFE1D7FB19C00201A4E;
 					};
 				};
 			};
@@ -261,8 +154,6 @@
 			projectRoot = "";
 			targets = (
 				B6994DFE1D7FB19C00201A4E /* snake_burgerEater */,
-				B6994E161D7FB19C00201A4E /* snake_burgerEaterTests */,
-				B6994E211D7FB19C00201A4E /* snake_burgerEaterUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -281,20 +172,6 @@
 				B6994E0E1D7FB19C00201A4E /* Assets.xcassets in Resources */,
 				B6994E0C1D7FB19C00201A4E /* Main.storyboard in Resources */,
 				B600CF611D955E2400AC2D3D /* ChangeGameModelScene.sks in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B6994E151D7FB19C00201A4E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B6994E201D7FB19C00201A4E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,36 +195,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B6994E131D7FB19C00201A4E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B6994E1C1D7FB19C00201A4E /* snake_burgerEaterTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B6994E1E1D7FB19C00201A4E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B6994E271D7FB19C00201A4E /* snake_burgerEaterUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B6994E191D7FB19C00201A4E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B6994DFE1D7FB19C00201A4E /* snake_burgerEater */;
-			targetProxy = B6994E181D7FB19C00201A4E /* PBXContainerItemProxy */;
-		};
-		B6994E241D7FB19C00201A4E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B6994DFE1D7FB19C00201A4E /* snake_burgerEater */;
-			targetProxy = B6994E231D7FB19C00201A4E /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B6994E0A1D7FB19C00201A4E /* Main.storyboard */ = {
@@ -474,54 +322,6 @@
 			};
 			name = Release;
 		};
-		B6994E2F1D7FB19C00201A4E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = snake_burgerEaterTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/snake_burgerEater.app/snake_burgerEater";
-			};
-			name = Debug;
-		};
-		B6994E301D7FB19C00201A4E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = snake_burgerEaterTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/snake_burgerEater.app/snake_burgerEater";
-			};
-			name = Release;
-		};
-		B6994E321D7FB19C00201A4E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = snake_burgerEaterUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = snake_burgerEater;
-			};
-			name = Debug;
-		};
-		B6994E331D7FB19C00201A4E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = snake_burgerEaterUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = snake_burgerEater;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -539,24 +339,6 @@
 			buildConfigurations = (
 				B6994E2C1D7FB19C00201A4E /* Debug */,
 				B6994E2D1D7FB19C00201A4E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B6994E2E1D7FB19C00201A4E /* Build configuration list for PBXNativeTarget "snake_burgerEaterTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B6994E2F1D7FB19C00201A4E /* Debug */,
-				B6994E301D7FB19C00201A4E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B6994E311D7FB19C00201A4E /* Build configuration list for PBXNativeTarget "snake_burgerEaterUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B6994E321D7FB19C00201A4E /* Debug */,
-				B6994E331D7FB19C00201A4E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
