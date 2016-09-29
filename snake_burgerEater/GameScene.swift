@@ -22,7 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	var playerSpeed: CGFloat = 150.0
 	
 	//这是AI的速度
-	let AI_snakeSpeed: CGFloat = 75.0
+	let AI_snakeSpeed: CGFloat = 35.0
 	
 	//这是我们的蛇
 	var player: SKSpriteNode?
@@ -32,12 +32,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	//这是AI snake 的数组
 	var AI_snakes: [SKSpriteNode] = []
+    
+    //food array
+    var foods: [SKSpriteNode] = []
 	
 	//最后触碰的点
 	var lastTouch: CGPoint? = nil
-	
+    
 	
 	// MARK: - SKScene
+    
+    func random() -> CGFloat {
+        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+    }
+    
+    func random(min min: CGFloat, max: CGFloat) -> CGFloat {
+        return random() * (max - min) + min
+    }
 	
 	override func didMoveToView(view: SKView) {
 		
@@ -52,25 +63,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		//同理
 		speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
 		
-		
+        // Initialize 3 food in the scene
+        addFood(3)
+        
+        //示例化AI_snake和food
+        for child in self.children {
+            if child.name == "AI_snake" {
+                if let child = child as? SKSpriteNode {
+                    AI_snakes.append(child)
+                }
+            
+            }
+            /*
+            else if child.name == "food"{
+                if let child = child as? SKSpriteNode{
+                    foods.append(child)
+                }
+            }
+            */
+        }
+        
+        
+        
+        
+        
+		//*/
+        
 		//set player Skin and Model
-		
 		//设置用户的皮肤和操作模式
 		setDefaultSkin(player!)
 		setDefaultModel(player!)
 		
 		//到这里位置，我们的用户是一个sknode，我们的用户颜色有了。
-		
-		
-		// Setup AI_snakes
-		for child in self.children {
-			if child.name == "AI_snake" {
-				if let child = child as? SKSpriteNode {
-					AI_snakes.append(child)
-				}
-			}
-		}
-		
 		
 		// Setup physics world's contact delegate
 		physicsWorld.contactDelegate = self
@@ -78,6 +102,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		// Setup initial camera position
 		updateCamera()
 	}
+    
+    // Add food when food is eaten by user
+    func addFood(n: Int){
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        let width = screenSize.width
+        let height = screenSize.height
+        for var i = 1; i <= n; i++ {
+            let food = SKSpriteNode(imageNamed:"food")
+            food.color = UIColor(red:0.44, green:0.61, blue:0.41, alpha:1.0)
+            
+            var foodx = random(min:50, max: width-50)
+            var foody = random(min:50, max: height-50)
+            
+            food.position = CGPoint(x: foodx, y: foody)
+            
+            food.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: 40, height: 40))
+            food.physicsBody?.dynamic = false
+            food.physicsBody?.categoryBitMask = 3
+            food.physicsBody?.contactTestBitMask = 1
+            addChild(food)
+        }
+    }
+    
+    func addAI_snake(n: Int){
+        // To be finished later
+    }
 	
 	
 	// MARK: Touch Handling
@@ -90,11 +140,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		for touch: AnyObject in touches {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
 			if CGRectContainsPoint(speed_up!.frame, position) {
-				print(position)
+				//print(position)
 				playerSpeed = 300.0
 			}
 		}
-		
 	}
 	
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -119,7 +168,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	
 	// MARK - Updates
-	
 	override func didSimulatePhysics() {
 		if let _ = player {
 			updatePlayer()
@@ -157,7 +205,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 		}
 	}
-	
+    
+    
+    
 	func updateCamera() {
 		if let camera = camera {
 			camera.position = CGPoint(x: player!.position.x, y: player!.position.y)
@@ -182,36 +232,50 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			AI_snake.physicsBody!.velocity = newVelocity;
 		}
 	}
-	
+    
+    /*
+    // Delete food from scene when snake hit food, and lengthen snake
+    func updateFoods(){
+        for food in foods{
+     
+        }
+    }
+	*/
 	
 	// MARK: - SKPhysicsContactDelegate
-	
+	// Collision detect, including user hit by AI_snake and user eat food.
 	func didBeginContact(contact: SKPhysicsContact) {
+        
 		// 1. Create local variables for two physics bodies
 		var firstBody: SKPhysicsBody
 		var secondBody: SKPhysicsBody
+        
+		// 2. Make sure the user object is always stored in "firstBody"
+        if contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask <= 4{
+            if contact.bodyA.categoryBitMask == 1{
+                firstBody = contact.bodyA
+                secondBody = contact.bodyB
+            } else{
+                firstBody = contact.bodyB
+                secondBody = contact.bodyA
+            }
+            
+            
+            // 3. Proceed based on which object the user hits
+            if secondBody.categoryBitMask == 2{
+                print("Snake just got hit by a AI_snake")
+                //gameOver(false)
+            } else{
+                print("Snake just eat a food")
+                self.player!.size = CGSize(width: player!.frame.size.width*1.002, height: player!.frame.size.height*1.002)
+                secondBody.node!.removeFromParent()
+                addFood(1)
+            }
+        }
 		
-		// 2. Assign the two physics bodies so that the one with the lower category is always stored in firstBody
-		if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-			firstBody = contact.bodyA
-			secondBody = contact.bodyB
-		} else {
-			firstBody = contact.bodyB
-			secondBody = contact.bodyA
-		}
-		
-		print("=========")
-		print(firstBody.categoryBitMask)
-		print(player?.physicsBody?.categoryBitMask)
-		print(secondBody.categoryBitMask)
-		print(AI_snakes[0].physicsBody?.categoryBitMask)
-		print("==========")
-		// 3. react to the contact between the two nodes
-		if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
-			secondBody.categoryBitMask == AI_snakes[0].physicsBody?.categoryBitMask {
-			// Player & AI_snake
-			gameOver(false)
-		}
+        
+        
+        
 	}
 	
 
@@ -220,7 +284,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		let userDefaults = NSUserDefaults.standardUserDefaults()
 		
 		if let count_skinAnyobj = userDefaults.valueForKey("skin") {
-			print(count_skinAnyobj)
+			//print(count_skinAnyobj)
 			let count_skin = count_skinAnyobj as! Int
 			switch count_skin {
 			case 0:
@@ -243,7 +307,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 		else {
 			player.color=UIColor.whiteColor()
-			print("No color")
+			//print("No color")
 		}
 
 	}
@@ -252,7 +316,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		let userDefaults = NSUserDefaults.standardUserDefaults()
 		
 		if let count_modelAnyobj = userDefaults.valueForKey("model") {
-			print(count_modelAnyobj)
+			//print(count_modelAnyobj)
 			let count_model = count_modelAnyobj as! String
 			switch count_model {
 			case "Arrow_model":
@@ -269,21 +333,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 		else {
 			//set normal way
-			print("Normal_model")
+			//print("Normal_model")
 		}
 
 	}
 	// MARK: Helper Functions
-	
+	// gameOver(false) means game is over, true means not over
 	private func gameOver(didWin: Bool) {
-		print("- - - Game Ended - - -")
+		//print("- - - Game Ended - - -")
 		let menuScene = MenuScene(size: self.size)
 		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
 		let transition = SKTransition.fadeWithDuration(1)
 		menuScene.scaleMode = SKSceneScaleMode.AspectFill
 		self.scene!.view?.presentScene(menuScene, transition: transition)
-		
-
 	}
 	
 	

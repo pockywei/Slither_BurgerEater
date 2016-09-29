@@ -13,7 +13,6 @@ class MainScene:SKScene {
 	
 	var inputText:UITextField?
 	
-	
 	var Play_ai: SKLabelNode!
 	
 	var Multi_mode: SKLabelNode!
@@ -22,8 +21,10 @@ class MainScene:SKScene {
 	
 	var change_mode = SKSpriteNode()
 	
-	
 	var change_skin = SKSpriteNode()
+    
+    
+    
 	
 	override func didMoveToView(view: SKView) {
 		
@@ -59,8 +60,6 @@ class MainScene:SKScene {
 		inputText!.backgroundColor = UIColor.whiteColor()
 		inputText!.placeholder="Username"
 		
-		
-		
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
 		Play_ai.text = "Play with AI"
 		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-300)
@@ -71,10 +70,6 @@ class MainScene:SKScene {
 		
 		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-450)
 		addChild(Multi_mode)
-	
-		
-		
-		
 	}
 	
 	
