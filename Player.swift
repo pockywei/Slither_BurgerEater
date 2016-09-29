@@ -8,10 +8,13 @@
 
 import Foundation
 import CoreData
+import SpriteKit
 
-
-class Player: NSManagedObject {
+class Player {
 
 // Insert code here to add functionality to your managed object subclass
 
+    var player: SKSpriteNode?
+    var eatFood: SKSpriteNode?
+    
 }

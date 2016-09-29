@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B600CF611D955E2400AC2D3D /* ChangeGameModelScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B600CF601D955E2400AC2D3D /* ChangeGameModelScene.sks */; };
-		B61B9DFE1D8FBFC9004DA828 /* Player+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */; };
 		B61B9DFF1D8FBFC9004DA828 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61B9DFD1D8FBFC9004DA828 /* Player.swift */; };
 		B61B9E3E1D8FD358004DA828 /* MainScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B61B9E3D1D8FD358004DA828 /* MainScene.sks */; };
 		B68575EC1D9540C7004B81F6 /* ChangeSkinScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B68575EB1D9540C7004B81F6 /* ChangeSkinScene.sks */; };
@@ -49,7 +48,6 @@
 
 /* Begin PBXFileReference section */
 		B600CF601D955E2400AC2D3D /* ChangeGameModelScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ChangeGameModelScene.sks; sourceTree = "<group>"; };
-		B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Player+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B61B9DFD1D8FBFC9004DA828 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		B61B9E3D1D8FD358004DA828 /* MainScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = MainScene.sks; path = ../MainScene.sks; sourceTree = "<group>"; };
 		B68575EB1D9540C7004B81F6 /* ChangeSkinScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ChangeSkinScene.sks; sourceTree = "<group>"; };
@@ -104,7 +102,7 @@
 		B6994DF61D7FB19C00201A4E = {
 			isa = PBXGroup;
 			children = (
-				B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */,
+				CA768C191D9BA27E00DAD2B0 /* GameStateExchange */,
 				B61B9DFD1D8FBFC9004DA828 /* Player.swift */,
 				B6994E011D7FB19C00201A4E /* snake_burgerEater */,
 				B6994E1A1D7FB19C00201A4E /* snake_burgerEaterTests */,
@@ -163,6 +161,13 @@
 				B6994E281D7FB19C00201A4E /* Info.plist */,
 			);
 			path = snake_burgerEaterUITests;
+			sourceTree = "<group>";
+		};
+		CA768C191D9BA27E00DAD2B0 /* GameStateExchange */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = GameStateExchange;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,15 +239,18 @@
 					B6994DFE1D7FB19C00201A4E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 92ADNDK6T8;
+						LastSwiftMigration = 0800;
 					};
 					B6994E161D7FB19C00201A4E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 92ADNDK6T8;
+						LastSwiftMigration = 0800;
 						TestTargetID = B6994DFE1D7FB19C00201A4E;
 					};
 					B6994E211D7FB19C00201A4E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 92ADNDK6T8;
+						LastSwiftMigration = 0800;
 						TestTargetID = B6994DFE1D7FB19C00201A4E;
 					};
 				};
@@ -308,7 +316,6 @@
 				B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */,
 				B68575EE1D95438F004B81F6 /* ChangeSkinScene.swift in Sources */,
 				B6994E071D7FB19C00201A4E /* GameScene.swift in Sources */,
-				B61B9DFE1D8FBFC9004DA828 /* Player+CoreDataProperties.swift in Sources */,
 				B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */,
 				B61B9DFF1D8FBFC9004DA828 /* Player.swift in Sources */,
 				B6AD5C3A1D966E660038044F /* ChangeGameModelScene.swift in Sources */,
@@ -460,6 +467,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -471,6 +479,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -483,6 +492,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/snake_burgerEater.app/snake_burgerEater";
 			};
 			name = Debug;
@@ -495,6 +505,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/snake_burgerEater.app/snake_burgerEater";
 			};
 			name = Release;
@@ -507,6 +518,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = snake_burgerEater;
 			};
 			name = Debug;
@@ -518,6 +530,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEaterUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = snake_burgerEater;
 			};
 			name = Release;

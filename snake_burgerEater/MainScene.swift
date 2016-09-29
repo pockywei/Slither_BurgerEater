@@ -25,7 +25,7 @@ class MainScene:SKScene {
 	
 	var change_skin = SKSpriteNode()
 	
-	override func didMoveToView(view: SKView) {
+	override func didMove(to view: SKView) {
 		
 		
 //		let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainScene.dismissKeyboard))
@@ -48,28 +48,28 @@ class MainScene:SKScene {
 		
 		
 		
-		change_skin = self.childNodeWithName("change_skin") as! SKSpriteNode
-		change_mode = self.childNodeWithName("setting") as! SKSpriteNode
+		change_skin = self.childNode(withName: "change_skin") as! SKSpriteNode
+		change_mode = self.childNode(withName: "setting") as! SKSpriteNode
 		
 		
 		
 		
 		inputText = UITextField(frame: CGRect(x:85,y:320,width:200,height:40))//如何居中
 		self.view!.addSubview(inputText!)
-		inputText!.backgroundColor = UIColor.whiteColor()
+		inputText!.backgroundColor = UIColor.white
 		inputText!.placeholder="Username"
 		
 		
 		
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
 		Play_ai.text = "Play with AI"
-		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-300)
+		Play_ai.position = CGPoint(x: self.frame.midX, y: self.frame.midY-300)
 		addChild(Play_ai)
 		
 		Multi_mode = SKLabelNode(fontNamed: "Chalkduster")
 		Multi_mode.text = "Online Game"
 		
-		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-450)
+		Multi_mode.position = CGPoint(x: self.frame.midX, y: self.frame.midY-450)
 		addChild(Multi_mode)
 	
 		
@@ -78,7 +78,7 @@ class MainScene:SKScene {
 	}
 	
 	
-	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)  {
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)  {
 		/* Called when a touch begins */
 		 view!.endEditing(true)
 //		for touch: AnyObject in touches {
@@ -92,37 +92,37 @@ class MainScene:SKScene {
 
 
 
-	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for touch: AnyObject in touches {
-			let position = touch.locationInNode(self) // Get the x,y point of the touch
-			if CGRectContainsPoint(Play_ai.frame, position) {
+			let position = touch.location(in: self) // Get the x,y point of the touch
+			if Play_ai.frame.contains(position) {
 				let gameScene = GameScene(fileNamed: "GameScene")
-				inputText?.hidden = true
-				let transition = SKTransition.fadeWithDuration(1)
+				inputText?.isHidden = true
+				let transition = SKTransition.fade(withDuration: 1)
 				let skView = self.view as SKView!
-				gameScene?.scaleMode = .AspectFill
-				dispatch_async(dispatch_get_main_queue(), { 
-					skView.presentScene(gameScene!, transition: transition)
+				gameScene?.scaleMode = .aspectFill
+				DispatchQueue.main.async(execute: { 
+					skView?.presentScene(gameScene!, transition: transition)
 				})
 				
-			}else if CGRectContainsPoint(change_skin.frame, position) {
+			}else if change_skin.frame.contains(position) {
 				let changeSkinScene = ChangeSkinScene(fileNamed: "ChangeSkinScene")
-				inputText?.hidden = true
-				let transition = SKTransition.fadeWithDuration(1)
+				inputText?.isHidden = true
+				let transition = SKTransition.fade(withDuration: 1)
 				let skView = self.view as SKView!
-				changeSkinScene?.scaleMode = .AspectFill
-				dispatch_async(dispatch_get_main_queue(), {
-					skView.presentScene(changeSkinScene!, transition: transition)
+				changeSkinScene?.scaleMode = .aspectFill
+				DispatchQueue.main.async(execute: {
+					skView?.presentScene(changeSkinScene!, transition: transition)
 				})
 			
-			}else if CGRectContainsPoint(change_mode.frame, position) {
+			}else if change_mode.frame.contains(position) {
 				let changeGameModelScene = ChangeGameModelScene(fileNamed: "ChangeGameModelScene")
-				inputText?.hidden = true
-				let transition = SKTransition.fadeWithDuration(1)
+				inputText?.isHidden = true
+				let transition = SKTransition.fade(withDuration: 1)
 				let skView = self.view as SKView!
-				changeGameModelScene?.scaleMode = .AspectFill
-				dispatch_async(dispatch_get_main_queue(), {
-					skView.presentScene(changeGameModelScene!, transition: transition)
+				changeGameModelScene?.scaleMode = .aspectFill
+				DispatchQueue.main.async(execute: {
+					skView?.presentScene(changeGameModelScene!, transition: transition)
 				})
 			}
 		}

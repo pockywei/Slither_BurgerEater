@@ -39,18 +39,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	// MARK: - SKScene
 	
-	override func didMoveToView(view: SKView) {
+	override func didMove(to view: SKView) {
 		
 		
 		// Setup player
 		//开启多点触控模式
-		self.view?.multipleTouchEnabled = true
+		self.view?.isMultipleTouchEnabled = true
 		
 		//实例化player，从scene里面提取名字叫player的node
-		player = self.childNodeWithName("player") as? SKSpriteNode
+		player = self.childNode(withName: "player") as? SKSpriteNode
 		
 		//同理
-		speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
+		speed_up = self.childNode(withName: "speed_up") as? SKSpriteNode
 		
 		
 		//set player Skin and Model
@@ -83,13 +83,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	// MARK: Touch Handling
 	
 	//这是函数是你刚tap下去就会发生的事
-	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		handleTouches(touches)
 		
 		//这是当用户按到加速按钮时的时候，会加速的
 		for touch: AnyObject in touches {
-			let position = touch.locationInNode(self) // Get the x,y point of the touch
-			if CGRectContainsPoint(speed_up!.frame, position) {
+			let position = touch.location(in: self) // Get the x,y point of the touch
+			if speed_up!.frame.contains(position) {
 				print(position)
 				playerSpeed = 300.0
 			}
@@ -97,22 +97,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 	}
 	
-	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 		handleTouches(touches)
 	}
 	
 	
 	//这个是你放手的时候，才会执行的
-	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		handleTouches(touches)
 		playerSpeed = 150.0
 	}
 	
 	
 	//主要是更新最后的tap 点坐标，lastTouch是个全局变量
-	private func handleTouches(touches: Set<UITouch>) {
+	fileprivate func handleTouches(_ touches: Set<UITouch>) {
 		for touch in touches {
-			let touchLocation = touch.locationInNode(self)
+			let touchLocation = touch.location(in: self)
 			lastTouch = touchLocation
 		}
 	}
@@ -128,7 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
 	
 	// Determines if the player's position should be updated
-	private func shouldMove(currentPosition currentPosition: CGPoint, touchPosition: CGPoint) -> Bool {
+	fileprivate func shouldMove(currentPosition: CGPoint, touchPosition: CGPoint) -> Bool {
 		return abs(currentPosition.x - touchPosition.x) > player!.frame.width / 2 ||
 			abs(currentPosition.y - touchPosition.y) > player!.frame.height/2
 	}
@@ -142,9 +142,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
 				
 				let angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
-				let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
+				let rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0)
 				
-				player!.runAction(rotateAction)
+				player!.run(rotateAction)
 				
 				let velocotyX = playerSpeed * cos(angle)
 				let velocityY = playerSpeed * sin(angle)
@@ -153,7 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				player!.physicsBody!.velocity = newVelocity;
 				updateCamera()
 			} else {
-				player!.physicsBody!.resting = true
+				player!.physicsBody!.isResting = true
 			}
 		}
 	}
@@ -172,8 +172,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			let currentPosition = AI_snake.position
 			
 			let angle = atan2(currentPosition.y - targetPosition.y, currentPosition.x - targetPosition.x) + CGFloat(M_PI)
-			let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0.0)
-			AI_snake.runAction(rotateAction)
+			let rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
+			AI_snake.run(rotateAction)
 			
 			let velocotyX = AI_snakeSpeed * cos(angle)
 			let velocityY = AI_snakeSpeed * sin(angle)
@@ -186,7 +186,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	// MARK: - SKPhysicsContactDelegate
 	
-	func didBeginContact(contact: SKPhysicsContact) {
+	func didBegin(_ contact: SKPhysicsContact) {
 		// 1. Create local variables for two physics bodies
 		var firstBody: SKPhysicsBody
 		var secondBody: SKPhysicsBody
@@ -216,42 +216,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 
 	//Set default skin
-	func setDefaultSkin(player:SKSpriteNode){
-		let userDefaults = NSUserDefaults.standardUserDefaults()
+	func setDefaultSkin(_ player:SKSpriteNode){
+		let userDefaults = UserDefaults.standard
 		
-		if let count_skinAnyobj = userDefaults.valueForKey("skin") {
+		if let count_skinAnyobj = userDefaults.value(forKey: "skin") {
 			print(count_skinAnyobj)
 			let count_skin = count_skinAnyobj as! Int
 			switch count_skin {
 			case 0:
 				//Snake_with_Skin!.runAction(Actionred)
-				player.color=UIColor.redColor()
+				player.color=UIColor.red
 				break
 			case 1:
 				//Snake_with_Skin!.runAction(Actionblue)
-				player.color=UIColor.blueColor()
+				player.color=UIColor.blue
 				break
 			case 2:
 				//Snake_with_Skin!.runAction(Actionwhite)
-				player.color=UIColor.whiteColor()
+				player.color=UIColor.white
 				break
 			default:
 				//Snake_with_Skin!.runAction(Actionbrown)
-				player.color=UIColor.brownColor()
+				player.color=UIColor.brown
 				break
 			}
 		}
 		else {
-			player.color=UIColor.whiteColor()
+			player.color=UIColor.white
 			print("No color")
 		}
 
 	}
 	//Set default model
-	func setDefaultModel(player:SKSpriteNode){
-		let userDefaults = NSUserDefaults.standardUserDefaults()
+	func setDefaultModel(_ player:SKSpriteNode){
+		let userDefaults = UserDefaults.standard
 		
-		if let count_modelAnyobj = userDefaults.valueForKey("model") {
+		if let count_modelAnyobj = userDefaults.value(forKey: "model") {
 			print(count_modelAnyobj)
 			let count_model = count_modelAnyobj as! String
 			switch count_model {
@@ -275,12 +275,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
 	// MARK: Helper Functions
 	
-	private func gameOver(didWin: Bool) {
+	fileprivate func gameOver(_ didWin: Bool) {
 		print("- - - Game Ended - - -")
 		let menuScene = MenuScene(size: self.size)
 		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
-		let transition = SKTransition.fadeWithDuration(1)
-		menuScene.scaleMode = SKSceneScaleMode.AspectFill
+		let transition = SKTransition.fade(withDuration: 1)
+		menuScene.scaleMode = SKSceneScaleMode.aspectFill
 		self.scene!.view?.presentScene(menuScene, transition: transition)
 		
 

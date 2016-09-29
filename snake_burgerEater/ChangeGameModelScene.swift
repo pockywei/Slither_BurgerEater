@@ -11,7 +11,7 @@ import SpriteKit
 
 class ChangeGameModelScene: SKScene {
 	
-	let userDefaults = NSUserDefaults.standardUserDefaults()
+	let userDefaults = UserDefaults.standard
 	var Snake_with_Skin: SKSpriteNode?
 	var Back_button: SKSpriteNode?
 	var Rocker_model: SKSpriteNode?
@@ -21,45 +21,45 @@ class ChangeGameModelScene: SKScene {
 	//var Model: [String] = ["O","A","C"]
 	
 	
-	override func didMoveToView(view: SKView) {
+	override func didMove(to view: SKView) {
 		
 		
 		
-		Back_button = self.childNodeWithName("Back_button") as? SKSpriteNode
+		Back_button = self.childNode(withName: "Back_button") as? SKSpriteNode
 		
-		Rocker_model = self.childNodeWithName("Rocker_model") as? SKSpriteNode
+		Rocker_model = self.childNode(withName: "Rocker_model") as? SKSpriteNode
 		
-		Arrow_model = self.childNodeWithName("Arrow_model") as? SKSpriteNode
+		Arrow_model = self.childNode(withName: "Arrow_model") as? SKSpriteNode
 		
-		Narmal_model = self.childNodeWithName("Narmal_model") as? SKSpriteNode
+		Narmal_model = self.childNode(withName: "Narmal_model") as? SKSpriteNode
 		
 	}
 	
 	
-	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 		for touch: AnyObject in touches {
-			let position = touch.locationInNode(self) // Get the x,y point of the touch
-			if CGRectContainsPoint(Back_button!.frame, position) {
+			let position = touch.location(in: self) // Get the x,y point of the touch
+			if Back_button!.frame.contains(position) {
 				let mainScene = MainScene(fileNamed: "MainScene")
 				//inputText?.hidden = true
-				let transition = SKTransition.fadeWithDuration(1)
+				let transition = SKTransition.fade(withDuration: 1)
 				let skView = self.view as SKView!
-				mainScene?.scaleMode = .AspectFill
-				dispatch_async(dispatch_get_main_queue(), {
-					skView.presentScene(mainScene!, transition: transition)
+				mainScene?.scaleMode = .aspectFill
+				DispatchQueue.main.async(execute: {
+					skView?.presentScene(mainScene!, transition: transition)
 				})
-			}else if CGRectContainsPoint(Rocker_model!.frame, position) {
+			}else if Rocker_model!.frame.contains(position) {
 				userDefaults.setValue("Rocker_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
 
 				
 				
-			}else if CGRectContainsPoint(Arrow_model!.frame, position) {
+			}else if Arrow_model!.frame.contains(position) {
 				userDefaults.setValue("Arrow_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
 
 				
-			}else if CGRectContainsPoint(Narmal_model!.frame, position) {
+			}else if Narmal_model!.frame.contains(position) {
 				userDefaults.setValue("Narmal_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
 
