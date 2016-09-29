@@ -13,18 +13,23 @@ import CoreData
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
 	
 	
+	
+	
 	var stickActive : Bool = false
 	
 	//load user default
-	let userDefaults = NSUserDefaults.standardUserDefaults()
+	//let userDefaults = NSUserDefaults.standardUserDefaults()
 	// MARK: - Instance Variables
 	//var Database_player = Player()// in the database
 	
 	let base = SKSpriteNode(imageNamed:"circle")
 	let ball = SKSpriteNode(imageNamed:"ball")
 	
+	
+	
 	//Set game paramter
-	var playerSpeed: CGFloat = 150.0
+	//var playerSpeed: CGFloat = 150.0
+	
 	
 	//这是AI的速度
 	let AI_snakeSpeed: CGFloat = 75.0
@@ -33,7 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	var speed_up: SKSpriteNode?
 	
 	//这是我们的蛇
-	var player_snakes: [SKShapeNode]=[]
+	var player_snake: [SKShapeNode]=[]
 	
 	//这是AI snake 的数组
 	var AI : [[SKShapeNode]] = []
@@ -44,13 +49,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	var foods: [SKSpriteNode] = []
 	
 	//最后触碰的点
-	var lastTouch: CGPoint? = nil
+	//var lastTouch: CGPoint? = nil
 	
+	var player = Player()
 	
 	// MARK: - SKScene
 	
 	override func didMoveToView(view: SKView) {
 		
+		
+		
+		
+		
+		player.playersnakes = player_snake
+		
+		player.userDefaults = NSUserDefaults.standardUserDefaults()
+		
+		player.playerSpeed = 150.0
 		
 		// Setup player
 		//开启多点触控模式
@@ -79,7 +94,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		//set player Skin and Model
 		
 		//设置用户的皮肤和操作模式
-		setDefaultSkin(player_snakes)
+		setDefaultSkin(player.playersnakes)
 		setDefaultModel()
 		
 		//到这里位置，我们的用户是一个sknode，我们的用户颜色有了。
@@ -125,7 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	//这是函数是你刚tap下去就会发生的事
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		
-		if let count_modelAnyobj = userDefaults.valueForKey("model")
+		if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
 		{
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
@@ -158,14 +173,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
 			if CGRectContainsPoint(speed_up!.frame, position) {
 				print(position)
-				playerSpeed = 300.0
+				 player.playerSpeed = 300.0
 			}
 		}
 		
 	}
 	
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-		if let count_modelAnyobj = userDefaults.valueForKey("model")
+		if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
 		{
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
@@ -190,7 +205,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	//这个是你放手的时候，才会执行的
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-		if let count_modelAnyobj = userDefaults.valueForKey("model")
+		if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
 		{
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
@@ -215,7 +230,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			handleTouches(touches)
 		}
 		
-		playerSpeed = 150.0
+		player.playerSpeed = 150.0
 	}
 	
 	//摇杆模式的函数
@@ -255,7 +270,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 			for touch in touches {
 				let touchLocation = touch.locationInNode(self)
-				lastTouch = touchLocation
+				player.lastTouch = touchLocation
 			}
 		
 	}
@@ -266,7 +281,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	override func didSimulatePhysics() {
 		
-			if let count_modelAnyobj = userDefaults.valueForKey("model")
+			if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
 			{
 				if (count_modelAnyobj as! String) == "Rocker_model"
 				{
@@ -293,16 +308,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	// Determines if the player's position should be updated
 	private func shouldMove(currentPosition currentPosition: CGPoint, touchPosition: CGPoint) -> Bool {
-		return abs(currentPosition.x - touchPosition.x) > player_snakes[0].frame.width / 2 ||
-			abs(currentPosition.y - touchPosition.y) > player_snakes[0].frame.height/2
+		return abs(currentPosition.x - touchPosition.x) > player.playersnakes[0].frame.width / 2 ||
+			abs(currentPosition.y - touchPosition.y) > player.playersnakes[0].frame.height/2
 	}
 	
 	// Updates the player's position by moving towards the last touch made
 	func updatePlayer() {
-		if let touch = lastTouch {
+		if let touch = player.lastTouch {
 			
 			//这里是吧第一个蛇头的点，给到当前的current
-			let currentPosition = player_snakes[0].position
+			let currentPosition = player.playersnakes[0].position
 			
 			
 			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
@@ -310,21 +325,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				let angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
 				let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
 				
-				player_snakes[0].runAction(rotateAction)
+				player.playersnakes[0].runAction(rotateAction)
 				
-				let velocotyX = playerSpeed * cos(angle)
-				let velocityY = playerSpeed * sin(angle)
+				let velocotyX = player.playerSpeed! * cos(angle)
+				let velocityY = player.playerSpeed! * sin(angle)
 				
 				let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
 				
-				for(var i=0;i<player_snakes.count;i++){
-					player_snakes[i].physicsBody!.velocity = newVelocity;
+				for(var i=0;i<player.playersnakes.count;i += 1){
+					player.playersnakes[i].physicsBody!.velocity = newVelocity;
 				}
 				
 				updateCamera()
 			} else {
-				for(var i=0;i<player_snakes.count;i++){
-					player_snakes[i].physicsBody!.resting = true
+				for(var i=0;i<player.playersnakes.count;i++){
+					player.playersnakes[i].physicsBody!.resting = true
 				}
 				
 				
@@ -334,13 +349,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	func updateCamera() {
 		if let camera = camera {
-			camera.position = CGPoint(x: player_snakes[0].position.x, y: player_snakes[0].position.y)
+			camera.position = CGPoint(x: player.playersnakes[0].position.x, y: player.playersnakes[0].position.y)
 		}
 	}
 	
 	// Updates the position of all AI_snakes by moving towards the player
 	func updateAI_snakes() {
-		let targetPosition = player_snakes[0].position
+		let targetPosition = player.playersnakes[0].position
 		
 		for AI_snake in AI_snakes {
 			let currentPosition = AI_snake.position
@@ -519,7 +534,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			snake.physicsBody?.affectedByGravity = false
 			snake.physicsBody?.allowsRotation = false
 			addChild(snake)
-			player_snakes.append(snake)
+			player.playersnakes.append(snake)
 			
 		}
 
@@ -574,7 +589,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	func setDefaultModel(){
 		
 		
-		if let count_modelAnyobj = userDefaults.valueForKey("model") {
+		if let count_modelAnyobj = player.userDefaults!.valueForKey("model") {
 			print(count_modelAnyobj)
 			let count_model = count_modelAnyobj as! String
 			switch count_model {
