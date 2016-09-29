@@ -137,6 +137,7 @@
 					B6994DFE1D7FB19C00201A4E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 92ADNDK6T8;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -308,6 +309,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -319,6 +321,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

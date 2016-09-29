@@ -12,11 +12,16 @@ import CoreData
 
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
 	
+	
+	var stickActive : Bool = false
+	
+	//load user default
+	let userDefaults = NSUserDefaults.standardUserDefaults()
 	// MARK: - Instance Variables
 	//var Database_player = Player()// in the database
 	
-	
-
+	let base = SKSpriteNode(imageNamed:"circle")
+	let ball = SKSpriteNode(imageNamed:"ball")
 	
 	//Set game paramter
 	var playerSpeed: CGFloat = 150.0
@@ -24,14 +29,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	//这是AI的速度
 	let AI_snakeSpeed: CGFloat = 75.0
 	
-	//这是我们的蛇
-	var player: SKSpriteNode?
-	
 	//加速按钮
 	var speed_up: SKSpriteNode?
 	
+	//这是我们的蛇
+	var player_snakes: [SKShapeNode]=[]
+	
 	//这是AI snake 的数组
-	var AI_snakes: [SKSpriteNode] = []
+	var AI_snakes: [SKShapeNode] = []
+	
+	//food array
+	var foods: [SKSpriteNode] = []
 	
 	//最后触碰的点
 	var lastTouch: CGPoint? = nil
@@ -46,8 +54,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		//开启多点触控模式
 		self.view?.multipleTouchEnabled = true
 		
-		//实例化player，从scene里面提取名字叫player的node
-		player = self.childNodeWithName("player") as? SKSpriteNode
+		// Build user snake array
+		for var i = 0; i <= 2; i++ {
+			let snake = SKShapeNode(circleOfRadius: 10)
+			snake.fillColor = UIColor(red:0.91, green:0.89, blue:0.49, alpha:1.0)
+			snake.position = CGPoint(x:200+i*5, y:200)
+			snake.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+			snake.physicsBody?.dynamic = true
+			snake.physicsBody?.categoryBitMask = 1
+			snake.physicsBody?.contactTestBitMask = 0
+			snake.physicsBody?.affectedByGravity = false
+			snake.physicsBody?.allowsRotation = false
+			addChild(snake)
+			player_snakes.append(snake)
+			
+		}
+		
+		// Build AI snake array
+		for var i = 0; i <= 2; i++ {
+			let ai = SKShapeNode(circleOfRadius: 10)
+			ai.fillColor = UIColor(red:0.96, green:0.41, blue:0.41, alpha:1.0)
+			
+			var aix = random(min:100, max:screenSize().0-100)
+			var aiy = random(min:100, max:screenSize().1-100)
+			ai.position = CGPoint(x:aix, y:aiy)
+			
+			ai.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+			ai.physicsBody?.dynamic = true
+			ai.physicsBody?.categoryBitMask = 2
+			ai.physicsBody?.contactTestBitMask = 1
+			ai.physicsBody?.affectedByGravity = false
+			ai.physicsBody?.allowsRotation = false
+			
+			addChild(ai)
+			AI_snakes.append(ai)
+
+		}
+		
+		
+		addFood(20)
+
+		
+		
+		
 		
 		//同理
 		speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
@@ -56,20 +105,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		//set player Skin and Model
 		
 		//设置用户的皮肤和操作模式
-		setDefaultSkin(player!)
-		setDefaultModel(player!)
+		setDefaultSkin(player_snakes)
+		setDefaultModel()
 		
 		//到这里位置，我们的用户是一个sknode，我们的用户颜色有了。
 		
 		
-		// Setup AI_snakes
-		for child in self.children {
-			if child.name == "AI_snake" {
-				if let child = child as? SKSpriteNode {
-					AI_snakes.append(child)
-				}
-			}
-		}
+//		// Setup AI_snakes
+//		for child in self.children {
+//			if child.name == "AI_snake" {
+//				if let child = child as? SKSpriteNode {
+//					AI_snakes.append(child)
+//				}
+//			}
+//		}
 		
 		
 		// Setup physics world's contact delegate
@@ -80,11 +129,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
 	
 	
-	// MARK: Touch Handling
+
+	// Helper functions, to generate random CGPoints
+	func random() -> CGFloat {
+		return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
+	}
+	
+	func random(min min: CGFloat, max: CGFloat) -> CGFloat {
+		return random() * (max - min) + min
+	}
+	
+	func screenSize() -> (CGFloat, CGFloat){
+		let screenSize: CGRect = UIScreen.mainScreen().bounds
+		let width = screenSize.width
+		let height = screenSize.height
+		return (width, height)
+	}
+
+	
 	
 	//这是函数是你刚tap下去就会发生的事
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-		handleTouches(touches)
+		
+		if let count_modelAnyobj = userDefaults.valueForKey("model")
+		{
+			if (count_modelAnyobj as! String) == "Rocker_model"
+			{
+				for touch in (touches ){
+					let location = touch.locationInNode(self)
+					if(CGRectContainsPoint(ball.frame, location)){
+						stickActive = true
+					}else
+					{
+						stickActive=false
+					}
+				}
+			}
+			else if (count_modelAnyobj as! String) == "Arrow_model"
+			{
+				
+			}
+			else
+			{
+				handleTouches(touches)
+			}
+			
+		}
+		else{
+			handleTouches(touches)
+		}
 		
 		//这是当用户按到加速按钮时的时候，会加速的
 		for touch: AnyObject in touches {
@@ -98,45 +191,144 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
 	
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+		if let count_modelAnyobj = userDefaults.valueForKey("model")
+		{
+			if (count_modelAnyobj as! String) == "Rocker_model"
+			{
+				handJoyStick(touches)
+			}
+			else if (count_modelAnyobj as! String) == "Arrow_model"
+			{
+				
+			}
+			else
+			{
+				handleTouches(touches)
+			}
+		
+		}
+		else{
 		handleTouches(touches)
+		}
+		
 	}
 	
 	
 	//这个是你放手的时候，才会执行的
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-		handleTouches(touches)
+		if let count_modelAnyobj = userDefaults.valueForKey("model")
+		{
+			if (count_modelAnyobj as! String) == "Rocker_model"
+			{
+				if(stickActive==true)
+				{
+					let move:SKAction = SKAction.moveTo(base.position, duration: 0.2)
+					move.timingMode = .EaseOut
+					ball.runAction(move)
+				}
+			}
+			else if (count_modelAnyobj as! String) == "Arrow_model"
+			{
+				
+			}
+			else
+			{
+				handleTouches(touches)
+			}
+			
+		}
+		else{
+			handleTouches(touches)
+		}
+		
 		playerSpeed = 150.0
 	}
 	
+	//摇杆模式的函数
+	private func handJoyStick(touches: Set<UITouch>){
+		if(stickActive==true){
+				for touch in touches {
+					let location = touch.locationInNode(self)
+					
+					let v = CGVector(dx:location.x - base.position.x, dy:location.y-base.position.y)
+					let angle = atan2(v.dy,v.dx)
+					
+					let deg = angle*CGFloat(180/M_PI)
+					
+					let length:CGFloat = base.frame.size.height/4
+					let xDist:CGFloat = sin(angle-1.57079633) * length
+					let yDist:CGFloat = cos(angle-1.57079633) * length
+					
+					if(CGRectContainsPoint(base.frame, location)){
+						ball.position = location
+					}else{
+						ball.position = CGPointMake(base.position.x-xDist, base.position.y+yDist)
+					}
+					
+				}
+				
+				
+		
+	
+		}
+		
+		
+	}
 	
 	//主要是更新最后的tap 点坐标，lastTouch是个全局变量
 	private func handleTouches(touches: Set<UITouch>) {
-		for touch in touches {
-			let touchLocation = touch.locationInNode(self)
-			lastTouch = touchLocation
-		}
+		
+		
+			for touch in touches {
+				let touchLocation = touch.locationInNode(self)
+				lastTouch = touchLocation
+			}
+		
 	}
 	
 	
 	// MARK - Updates
 	
+	
 	override func didSimulatePhysics() {
-		if let _ = player {
-			updatePlayer()
+		
+			if let count_modelAnyobj = userDefaults.valueForKey("model")
+			{
+				if (count_modelAnyobj as! String) == "Rocker_model"
+				{
+					
+				}
+				else if (count_modelAnyobj as! String) == "Arrow_model"
+				{
+					
+				}
+				else
+				{
+					updatePlayer()
+				}
+				
+			}
+			else{
+				updatePlayer()
+			}
+			
+			
 			updateAI_snakes()
-		}
+		
 	}
 	
 	// Determines if the player's position should be updated
 	private func shouldMove(currentPosition currentPosition: CGPoint, touchPosition: CGPoint) -> Bool {
-		return abs(currentPosition.x - touchPosition.x) > player!.frame.width / 2 ||
-			abs(currentPosition.y - touchPosition.y) > player!.frame.height/2
+		return abs(currentPosition.x - touchPosition.x) > player_snakes[0].frame.width / 2 ||
+			abs(currentPosition.y - touchPosition.y) > player_snakes[0].frame.height/2
 	}
 	
 	// Updates the player's position by moving towards the last touch made
 	func updatePlayer() {
 		if let touch = lastTouch {
-			let currentPosition = player!.position
+			
+			//这里是吧第一个蛇头的点，给到当前的current
+			let currentPosition = player_snakes[0].position
 			
 			
 			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
@@ -144,29 +336,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				let angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
 				let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
 				
-				player!.runAction(rotateAction)
+				player_snakes[0].runAction(rotateAction)
 				
 				let velocotyX = playerSpeed * cos(angle)
 				let velocityY = playerSpeed * sin(angle)
 				
 				let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
-				player!.physicsBody!.velocity = newVelocity;
+				
+				for(var i=0;i<player_snakes.count;i++){
+					player_snakes[i].physicsBody!.velocity = newVelocity;
+				}
+				
 				updateCamera()
 			} else {
-				player!.physicsBody!.resting = true
+				for(var i=0;i<player_snakes.count;i++){
+					player_snakes[i].physicsBody!.resting = true
+				}
+				
+				
 			}
 		}
 	}
 	
 	func updateCamera() {
 		if let camera = camera {
-			camera.position = CGPoint(x: player!.position.x, y: player!.position.y)
+			camera.position = CGPoint(x: player_snakes[0].position.x, y: player_snakes[0].position.y)
 		}
 	}
 	
 	// Updates the position of all AI_snakes by moving towards the player
 	func updateAI_snakes() {
-		let targetPosition = player!.position
+		let targetPosition = player_snakes[0].position
 		
 		for AI_snake in AI_snakes {
 			let currentPosition = AI_snake.position
@@ -185,34 +385,102 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	
 	// MARK: - SKPhysicsContactDelegate
-	
-	
 	//搞懂这个函数。
 	func didBeginContact(contact: SKPhysicsContact) {
 		// 1. Create local variables for two physics bodies
 		var firstBody: SKPhysicsBody
 		var secondBody: SKPhysicsBody
 		
-		// 2. Assign the two physics bodies so that the one with the lower category is always stored in firstBody
-		if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
-			firstBody = contact.bodyA
-			secondBody = contact.bodyB
-		} else {
-			firstBody = contact.bodyB
-			secondBody = contact.bodyA
-		}
-		
-		// 3. react to the contact between the two nodes
-		if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
-			secondBody.categoryBitMask == AI_snakes[0].physicsBody?.categoryBitMask {
-			// Player & AI_snake
-			gameOver(false)
+		// 2. Make sure the user object is always stored in "firstBody"
+		if contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask <= 4{
+			if contact.bodyA.categoryBitMask == 1{
+				firstBody = contact.bodyA
+				secondBody = contact.bodyB
+			} else{
+				firstBody = contact.bodyB
+				secondBody = contact.bodyA
+			}
+			
+			
+			// 3. Proceed based on which object the user hits
+			if secondBody.categoryBitMask == 2{
+				print("Snake just got hit by a AI_snake")
+				//gameOver(false)
+			} else if(secondBody.categoryBitMask == 3){
+				print("Snake just eat a food")
+				//self.player!.size = CGSize(width: player!.frame.size.width*1.002, height: player!.frame.size.height*1.002)
+				if let foodnode = secondBody.node{
+					
+					foodnode.removeFromParent()
+				}
+				
+				addFood(1)
+			}
 		}
 	}
 	
+	
+	// Add food when food is eaten by user
+	func addFood(n: Int){
+		
+		for var i = 1; i <= n; i++ {
+			let food = SKShapeNode(circleOfRadius: 4)
+			food.fillColor = UIColor(red:0.22, green:0.41, blue:0.41, alpha:1.0)
+			
+			let aix = random(min:100, max:1000)
+			print(screenSize())
+			let aiy = random(min:100, max:1000)
+			food.position = CGPoint(x:aix, y:aiy)
+			
+			food.physicsBody = SKPhysicsBody(circleOfRadius: 3)
+			food.physicsBody?.dynamic = true
+			food.physicsBody?.categoryBitMask = 3
+			food.physicsBody?.contactTestBitMask = 1
+			food.physicsBody?.affectedByGravity = false
+			food.physicsBody?.allowsRotation = false
 
+			addChild(food)
+		}
+	}
+	
+	// Add AI snake
+	func addAiSnake(n: Int){
+		
+		for var i = 0; i <= 2; i++ {
+			let ai = SKShapeNode(circleOfRadius: 10)
+			ai.fillColor = UIColor(red:0.96, green:0.41, blue:0.41, alpha:1.0)
+			
+			var aix = random(min:100, max:screenSize().0-100)
+			var aiy = random(min:100, max:screenSize().1-100)
+			ai.position = CGPoint(x:aix, y:aiy)
+			
+			ai.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+			ai.physicsBody?.dynamic = true
+			ai.physicsBody?.categoryBitMask = 2
+			ai.physicsBody?.contactTestBitMask = 1
+			ai.physicsBody?.affectedByGravity = false
+			ai.physicsBody?.allowsRotation = false
+			
+			addChild(ai)
+			AI_snakes.append(ai)
+			
+		}
+	
+	
+	}
+	
+	
+
+	func addPlayer(n:Int){
+		
+	
+	
+	}
+	
+	
+	
 	//Set default skin
-	func setDefaultSkin(player:SKSpriteNode){
+	func setDefaultSkin(player:[SKShapeNode]){
 		let userDefaults = NSUserDefaults.standardUserDefaults()
 		
 		if let count_skinAnyobj = userDefaults.valueForKey("skin") {
@@ -221,45 +489,61 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			switch count_skin {
 			case 0:
 				//Snake_with_Skin!.runAction(Actionred)
-				player.color=UIColor.redColor()
+				for i in player{
+				i.fillColor=UIColor.redColor()
+				}
 				break
 			case 1:
 				//Snake_with_Skin!.runAction(Actionblue)
-				player.color=UIColor.blueColor()
+				for i in player{
+				i.fillColor=UIColor.blueColor()
+				}
 				break
 			case 2:
 				//Snake_with_Skin!.runAction(Actionwhite)
-				player.color=UIColor.grayColor()
+				for i in player{
+				i.fillColor=UIColor.grayColor()
+				}
 				break
 			default:
 				//Snake_with_Skin!.runAction(Actionbrown)
-				player.color=UIColor.brownColor()
+				for i in player{
+				i.fillColor=UIColor.brownColor()
+				}
 				break
 			}
 		}
 		else {
-			player.color=UIColor.grayColor()
+			for i in player{
+				i.fillColor=UIColor.grayColor()
+			}
 			print("No color")
 		}
 
 	}
 	//Set default model
-	func setDefaultModel(player:SKSpriteNode){
-		let userDefaults = NSUserDefaults.standardUserDefaults()
+	func setDefaultModel(){
+		
 		
 		if let count_modelAnyobj = userDefaults.valueForKey("model") {
 			print(count_modelAnyobj)
 			let count_model = count_modelAnyobj as! String
 			switch count_model {
 			case "Arrow_model":
-				
+				print("Arrow")
 				break
 			case "Rocker_model":
+				base.position = CGPointMake(150, 200)
+				base.size=CGSize(width: 300,height: 300)
+				ball.position = CGPointMake(150,200)
+				ball.size=CGSize(width: 100,height: 100)
+				addChild(base)
+				addChild(ball)
 				
 				break
 			
 			default:
-				
+				print("Default")
 				break
 			}
 		}
@@ -285,8 +569,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
 	
 	
-	
-	func deCodeJsonData(){
+	func handleArrowTap(){
 		
 	
 	}
