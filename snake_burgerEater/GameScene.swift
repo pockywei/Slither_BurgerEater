@@ -55,43 +55,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		self.view?.multipleTouchEnabled = true
 		
 		// Build user snake array
-		for var i = 0; i <= 2; i++ {
-			let snake = SKShapeNode(circleOfRadius: 10)
-			snake.fillColor = UIColor(red:0.91, green:0.89, blue:0.49, alpha:1.0)
-			snake.position = CGPoint(x:200+i*5, y:200)
-			snake.physicsBody = SKPhysicsBody(circleOfRadius: 10)
-			snake.physicsBody?.dynamic = true
-			snake.physicsBody?.categoryBitMask = 1
-			snake.physicsBody?.contactTestBitMask = 0
-			snake.physicsBody?.affectedByGravity = false
-			snake.physicsBody?.allowsRotation = false
-			addChild(snake)
-			player_snakes.append(snake)
-			
-		}
+		addPlayer(2)
 		
 		// Build AI snake array
-		for var i = 0; i <= 2; i++ {
-			let ai = SKShapeNode(circleOfRadius: 10)
-			ai.fillColor = UIColor(red:0.96, green:0.41, blue:0.41, alpha:1.0)
-			
-			var aix = random(min:100, max:screenSize().0-100)
-			var aiy = random(min:100, max:screenSize().1-100)
-			ai.position = CGPoint(x:aix, y:aiy)
-			
-			ai.physicsBody = SKPhysicsBody(circleOfRadius: 10)
-			ai.physicsBody?.dynamic = true
-			ai.physicsBody?.categoryBitMask = 2
-			ai.physicsBody?.contactTestBitMask = 1
-			ai.physicsBody?.affectedByGravity = false
-			ai.physicsBody?.allowsRotation = false
-			
-			addChild(ai)
-			AI_snakes.append(ai)
-
-		}
+		addAiSnake(2)
 		
-		
+		//add food
 		addFood(20)
 
 		
@@ -429,7 +398,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			
 			let aix = random(min:100, max:1000)
 			print(screenSize())
-			let aiy = random(min:100, max:1000)
+			let aiy = random(min:100, max:1920)
 			food.position = CGPoint(x:aix, y:aiy)
 			
 			food.physicsBody = SKPhysicsBody(circleOfRadius: 3)
@@ -446,12 +415,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	// Add AI snake
 	func addAiSnake(n: Int){
 		
-		for var i = 0; i <= 2; i++ {
+		for var i = 0; i <= n; i++ {
 			let ai = SKShapeNode(circleOfRadius: 10)
 			ai.fillColor = UIColor(red:0.96, green:0.41, blue:0.41, alpha:1.0)
 			
-			var aix = random(min:100, max:screenSize().0-100)
-			var aiy = random(min:100, max:screenSize().1-100)
+			var aix = random(min:100, max:1000)
+			var aiy = random(min:100, max:1920)
 			ai.position = CGPoint(x:aix, y:aiy)
 			
 			ai.physicsBody = SKPhysicsBody(circleOfRadius: 10)
@@ -473,7 +442,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 
 	func addPlayer(n:Int){
 		
-	
+		// Build user snake array
+		for var i = 0; i <= n; i++ {
+			let snake = SKShapeNode(circleOfRadius: 10)
+			snake.fillColor = UIColor(red:0.91, green:0.89, blue:0.49, alpha:1.0)
+			snake.position = CGPoint(x:200+i*5, y:200)
+			snake.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+			snake.physicsBody?.dynamic = true
+			snake.physicsBody?.categoryBitMask = 1
+			snake.physicsBody?.contactTestBitMask = 0
+			snake.physicsBody?.affectedByGravity = false
+			snake.physicsBody?.allowsRotation = false
+			addChild(snake)
+			player_snakes.append(snake)
+			
+		}
+
 	
 	}
 	
