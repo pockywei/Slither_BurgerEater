@@ -13,13 +13,13 @@ class MenuScene: SKScene {
 
   var soundToPlay: String?
   
+ 
   override func didMoveToView(view: SKView) {
 	
-	
-    self.backgroundColor = SKColor(red: 0, green:0, blue:0, alpha: 1)
-	
-	
     
+	    self.backgroundColor = SKColor(red: 0, green:0, blue:0, alpha: 1)
+	
+	
     // Setup label
     let label = SKLabelNode(text: "Press anywhere to play again!")
     label.fontName = "AvenirNext-Bold"
@@ -35,9 +35,12 @@ class MenuScene: SKScene {
     }
     
     self.addChild(label)
+    
+    
   }
   
   override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    
     let mainScene = MainScene(fileNamed: "MainScene")
     let transition = SKTransition.fadeWithDuration(1)
     let skView = self.view as SKView!

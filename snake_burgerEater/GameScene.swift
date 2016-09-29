@@ -15,9 +15,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	// MARK: - Instance Variables
 	//var Database_player = Player()// in the database
 	
-	
 
-	
 	//Set game paramter
 	var playerSpeed: CGFloat = 150.0
 	
@@ -210,6 +208,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
 			secondBody.categoryBitMask == AI_snakes[0].physicsBody?.categoryBitMask {
 			// Player & AI_snake
+
 			gameOver(false)
 		}
 	}
@@ -274,9 +273,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 
 	}
 	// MARK: Helper Functions
-	
+    
+    //var Ad:GameViewController!
+    
 	private func gameOver(didWin: Bool) {
 		print("- - - Game Ended - - -")
+        
+        GameViewController().gameOver1()
+        
 		let menuScene = MenuScene(size: self.size)
 		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
 		let transition = SKTransition.fadeWithDuration(1)
@@ -285,7 +289,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 
 	}
-	
-	
-	
+    
+
 }

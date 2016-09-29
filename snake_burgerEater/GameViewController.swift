@@ -8,6 +8,8 @@
 
 import UIKit
 import SpriteKit
+import GoogleMobileAds
+
 
 extension SKNode {
 	
@@ -27,12 +29,16 @@ extension SKNode {
 	
 }
 
-class GameViewController: UIViewController {
+var interstitialAd:GADInterstitial!
+
+class GameViewController: UIViewController ,GADInterstitialDelegate{
 	
-	
+    
 	override func viewDidLoad() {
+        
 		super.viewDidLoad()
-		
+        interstitialAd = createAndLoadInterstitial()
+        
 		if let scene = MainScene.unarchiveFromFile("MainScene") as? MainScene {
 			// Configure the view.
 			let skView = self.view as! SKView
@@ -52,15 +58,7 @@ class GameViewController: UIViewController {
 	override func shouldAutorotate() -> Bool {
 		return true
 	}
-	
-	override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-		if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-			return UIInterfaceOrientationMask.AllButUpsideDown
-		} else {
-			return UIInterfaceOrientationMask.All
-		}
-	}
-	
+		
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Release any cached data, images, etc that aren't in use.
@@ -69,5 +67,28 @@ class GameViewController: UIViewController {
 	override func prefersStatusBarHidden() -> Bool {
 		return true
 	}
-	
+    
+    func createAndLoadInterstitial() -> GADInterstitial {
+        let interstitial = GADInterstitial (adUnitID:"ca-app-pub-3940256099942544/4411468910")
+        interstitial.delegate = self
+        let request : GADRequest = GADRequest()
+        interstitial.loadRequest(request)
+        
+        return interstitial
+    }
+    
+    func interstitialDidDismissScreen(ad: GADInterstitial!) {
+        interstitialAd = createAndLoadInterstitial()
+    }
+    
+
+    
+    func gameOver1() {
+        guard interstitialAd != nil else { return }
+        if interstitialAd.isReady {
+            let currentViewController: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController!
+            interstitialAd.presentFromRootViewController(currentViewController!)
+        }
+
+    }
 }
