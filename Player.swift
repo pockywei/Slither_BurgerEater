@@ -12,7 +12,9 @@ import SpriteKit
 
 class Player: NSManagedObject {
 
-	
 // Insert code here to add functionality to your managed object subclass
-
+    var playerSpeed: CGFloat?
+    var player: SKSpriteNode?
+    var lastTouch: CGPoint?
+    
 }

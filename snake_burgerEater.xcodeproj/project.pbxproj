@@ -26,6 +26,7 @@
 		B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */; };
 		B6AD5C3A1D966E660038044F /* ChangeGameModelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */; };
 		B6F139F01D90182C00429B68 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F139EF1D90182C00429B68 /* MainScene.swift */; };
+		CA23B29B1D9CE2C0007F04DE /* GameStateSychronizor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA23B29A1D9CE2BF007F04DE /* GameStateSychronizor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		B6994E3D1D8D240800201A4E /* snake_burgerEater.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = snake_burgerEater.xcdatamodel; sourceTree = "<group>"; };
 		B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeGameModelScene.swift; sourceTree = "<group>"; };
 		B6F139EF1D90182C00429B68 /* MainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
+		CA23B29A1D9CE2BF007F04DE /* GameStateSychronizor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStateSychronizor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 		B6994DF61D7FB19C00201A4E = {
 			isa = PBXGroup;
 			children = (
+				CA23B2991D9CE219007F04DE /* GameStateSychronizor */,
 				B61B9DFC1D8FBFC9004DA828 /* Player+CoreDataProperties.swift */,
 				B61B9DFD1D8FBFC9004DA828 /* Player.swift */,
 				B6994E011D7FB19C00201A4E /* snake_burgerEater */,
@@ -104,6 +107,14 @@
 			path = snake_burgerEater;
 			sourceTree = "<group>";
 		};
+		CA23B2991D9CE219007F04DE /* GameStateSychronizor */ = {
+			isa = PBXGroup;
+			children = (
+				CA23B29A1D9CE2BF007F04DE /* GameStateSychronizor.swift */,
+			);
+			name = GameStateSychronizor;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -137,6 +148,7 @@
 					B6994DFE1D7FB19C00201A4E = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 92ADNDK6T8;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -191,6 +203,7 @@
 				B6AD5C3A1D966E660038044F /* ChangeGameModelScene.swift in Sources */,
 				B6F139F01D90182C00429B68 /* MainScene.swift in Sources */,
 				B6994E091D7FB19C00201A4E /* GameViewController.swift in Sources */,
+				CA23B29B1D9CE2C0007F04DE /* GameStateSychronizor.swift in Sources */,
 				B6994E031D7FB19C00201A4E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,6 +321,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -319,6 +333,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

@@ -17,7 +17,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	
 
-	
+    var otherPlayers: [String:Player] = [:]
+    
 	//Set game paramter
 	var playerSpeed: CGFloat = 150.0
 	
@@ -133,6 +134,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			abs(currentPosition.y - touchPosition.y) > player!.frame.height/2
 	}
 	
+    func updateOthrsPlayers(playerId:String){
+        
+        if let otherPlayer = otherPlayers[playerId]{
+            if let touch = otherPlayer.lastTouch {
+                let currentPosition = otherPlayer.player?.position
+            
+                if shouldMove(currentPosition: currentPosition!, touchPosition: touch) {
+                
+                    let angle = atan2(currentPosition!.y - touch.y, currentPosition!.x - touch.x) + CGFloat(M_PI)
+                    let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
+                
+                    player!.runAction(rotateAction)
+                
+                    let velocotyX = playerSpeed * cos(angle)
+                    let velocityY = playerSpeed * sin(angle)
+                
+                    let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+                    player!.physicsBody!.velocity = newVelocity;
+                    //updateCamera()
+                } else {
+                    player!.physicsBody!.resting = true
+                }
+            }
+        }
+    }
+    
+    
 	// Updates the player's position by moving towards the last touch made
 	func updatePlayer() {
 		if let touch = lastTouch {
@@ -283,14 +311,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 
 	}
-	
-	
-	
 	func deCodeJsonData(){
 		
 	
 	}
-	
-	
-	
+}
+
+extension GameScene : GameStateSychronizorDelegate{
+    func addPlayer(playerId: String){
+        otherPlayers[playerId] = nil
+        
+    }
+    func deletePlayer(playerId: String) {
+        otherPlayers.removeValueForKey(playerId)
+    }
+    
+    func changeGameState(playerId: String, gameState: String){
+        
+    }
 }
