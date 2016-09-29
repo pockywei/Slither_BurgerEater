@@ -36,6 +36,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	var player_snakes: [SKShapeNode]=[]
 	
 	//这是AI snake 的数组
+	var AI : [[SKShapeNode]] = []
+	
 	var AI_snakes: [SKShapeNode] = []
 	
 	//food array
@@ -57,8 +59,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		// Build user snake array
 		addPlayer(2)
 		
+		
+		
 		// Build AI snake array
-		addAiSnake(2)
+		
+		addAiSnake(20, bitnum: 4)
 		
 		//add food
 		addFood(20)
@@ -360,7 +365,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		var firstBody: SKPhysicsBody
 		var secondBody: SKPhysicsBody
 		
+		
 		// 2. Make sure the user object is always stored in "firstBody"
+		//当两个碰撞在一起的时候，加起来小于4的情况，就是player和食物相遇。
 		if contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask <= 4{
 			if contact.bodyA.categoryBitMask == 1{
 				firstBody = contact.bodyA
@@ -371,11 +378,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 			
 			
+			
+			
+			
 			// 3. Proceed based on which object the user hits
-			if secondBody.categoryBitMask == 2{
-				print("Snake just got hit by a AI_snake")
-				//gameOver(false)
-			} else if(secondBody.categoryBitMask == 3){
+			
+			if(secondBody.categoryBitMask == 3){
 				print("Snake just eat a food")
 				//self.player!.size = CGSize(width: player!.frame.size.width*1.002, height: player!.frame.size.height*1.002)
 				if let foodnode = secondBody.node{
@@ -386,6 +394,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				addFood(1)
 			}
 		}
+			//就是两个碰撞在一起都大于3，说明是AI 和 AI 相遇了
+		else if contact.bodyA.categoryBitMask>=4 && contact.bodyB.categoryBitMask>=4{
+			
+		
+		}
+			//说明1 和 4或者4以上的碰到了。 那就是 自己的头和 AI 的全部
+		else if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask >= 6){
+			if (contact.bodyA.categoryBitMask == 2){
+				//AI 就是BodyB 要死
+			}
+			else if(contact.bodyB.categoryBitMask == 2){
+				// AI 就是BodyA 要死
+			}
+				//如果是bodyA 是头
+			else if(contact.bodyA.categoryBitMask==1){
+				//gameover
+			}
+			else if(contact.bodyB.categoryBitMask==1){
+				//gameover
+			}
+		}
+
+		
+		
 	}
 	
 	
@@ -412,20 +444,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 	}
 	
-	// Add AI snake
-	func addAiSnake(n: Int){
+	// Add one AI snake with length n
+	func radomAddAiSnakePot(n: Int,bitmask:Int){
+		
+		let aix = random(min:100, max:1000)
+		let aiy = random(min:100, max:1920)
 		
 		for var i = 0; i <= n; i++ {
 			let ai = SKShapeNode(circleOfRadius: 10)
 			ai.fillColor = UIColor(red:0.96, green:0.41, blue:0.41, alpha:1.0)
 			
-			var aix = random(min:100, max:1000)
-			var aiy = random(min:100, max:1920)
-			ai.position = CGPoint(x:aix, y:aiy)
+			
+			ai.position = CGPoint(x:Int(aix) + i*5, y:Int(aiy) + i*5)
+			
+			
 			
 			ai.physicsBody = SKPhysicsBody(circleOfRadius: 10)
 			ai.physicsBody?.dynamic = true
-			ai.physicsBody?.categoryBitMask = 2
+			
+			ai.physicsBody?.categoryBitMask = UInt32(bitmask)
+			
 			ai.physicsBody?.contactTestBitMask = 1
 			ai.physicsBody?.affectedByGravity = false
 			ai.physicsBody?.allowsRotation = false
@@ -433,12 +471,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			addChild(ai)
 			AI_snakes.append(ai)
 			
+			
+			
 		}
 	
 	
 	}
 	
+	//按坐标加点
+	func addAisnakePot(postion:CGPoint){
+		
 	
+	}
+	
+	
+	//加入AI snake, n 是数量
+	func addAiSnake(n:Int,bitnum:Int){
+		
+		//bitnum从4开始
+		var bit_num=bitnum
+		for var i = 0; i <= n; i++ {
+			bit_num++
+			// 4 is the length of the AI snake
+			//bitnum is egual and bigger than 4
+			radomAddAiSnakePot(4,bitmask: bit_num)
+		}
+	
+	}
 
 	func addPlayer(n:Int){
 		
@@ -449,7 +508,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			snake.position = CGPoint(x:200+i*5, y:200)
 			snake.physicsBody = SKPhysicsBody(circleOfRadius: 10)
 			snake.physicsBody?.dynamic = true
+			//头是1，身体是2
+			if(i==0){
 			snake.physicsBody?.categoryBitMask = 1
+			}else{
+				snake.physicsBody?.categoryBitMask = 2
+			}
+			
 			snake.physicsBody?.contactTestBitMask = 0
 			snake.physicsBody?.affectedByGravity = false
 			snake.physicsBody?.allowsRotation = false
@@ -541,7 +606,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	private func gameOver(didWin: Bool) {
 		print("- - - Game Ended - - -")
-		
 		
 		let menuScene = MenuScene(size: self.size)
 		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
