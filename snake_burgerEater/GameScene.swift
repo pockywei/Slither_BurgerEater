@@ -12,23 +12,11 @@ import CoreData
 
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
 	
-	
-	
-	
+	/*摇杆的代码*/
 	var stickActive : Bool = false
-	
-	//load user default
-	//let userDefaults = NSUserDefaults.standardUserDefaults()
-	// MARK: - Instance Variables
-	//var Database_player = Player()// in the database
-	
 	let base = SKSpriteNode(imageNamed:"circle")
 	let ball = SKSpriteNode(imageNamed:"ball")
-	
-	
-	
-	//Set game paramter
-	//var playerSpeed: CGFloat = 150.0
+
 	
 	
 	//这是AI的速度
@@ -230,7 +218,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			handleTouches(touches)
 		}
 		
-		player.playerSpeed = 150.0
+		player.playerSpeed = 100.0
 	}
 	
 	//摇杆模式的函数
@@ -302,7 +290,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 			
 			
-			updateAI_snakes()
+			//updateAI_snakes()
 		
 	}
 	
@@ -322,19 +310,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			
 			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
 				
-				let angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
+				var angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
 				let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
 				
-				player.playersnakes[0].runAction(rotateAction)
+				//player.playersnakes[0].runAction(rotateAction)
 				
 				let velocotyX = player.playerSpeed! * cos(angle)
 				let velocityY = player.playerSpeed! * sin(angle)
 				
-				let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
-				
-				for(var i=0;i<player.playersnakes.count;i += 1){
+				var newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+				var i=0
+				for(i=0;i<player.playersnakes.count-1;i += 1){
+					
 					player.playersnakes[i].physicsBody!.velocity = newVelocity;
+					angle = atan2(player.playersnakes[i+1].position.y - player.playersnakes[i].position.y, player.playersnakes[i+1].position.x - player.playersnakes[i].position.x) + CGFloat(M_PI)
+					let velocotyX = player.playerSpeed! * cos(angle)
+					let velocityY = player.playerSpeed! * sin(angle)
+					
+					newVelocity = CGVector(dx: velocotyX, dy: velocityY)
 				}
+				player.playersnakes[i].physicsBody!.velocity = newVelocity;
 				
 				updateCamera()
 			} else {
@@ -379,7 +374,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		// 1. Create local variables for two physics bodies
 		var firstBody: SKPhysicsBody
 		var secondBody: SKPhysicsBody
-		
+		print("hello~~")
 		
 		// 2. Make sure the user object is always stored in "firstBody"
 		//当两个碰撞在一起的时候，加起来小于4的情况，就是player和食物相遇。
