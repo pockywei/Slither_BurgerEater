@@ -136,6 +136,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					let location = touch.locationInNode(self)
 					if(CGRectContainsPoint(ball.frame, location)){
 						stickActive = true
+						handJoyStick(touches)
 					}else
 					{
 						stickActive=false
@@ -202,6 +203,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					let move:SKAction = SKAction.moveTo(base.position, duration: 0.2)
 					move.timingMode = .EaseOut
 					ball.runAction(move)
+					handJoyStick(touches)
 				}
 			}
 			else if (count_modelAnyobj as! String) == "Arrow_model"
@@ -227,12 +229,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				for touch in touches {
 					let location = touch.locationInNode(self)
 					
-					let v = CGVector(dx:location.x - base.position.x, dy:location.y-base.position.y)
+					var v = CGVector(dx:location.x - base.position.x, dy:location.y-base.position.y)
+					
+					
+					
+					
 					let angle = atan2(v.dy,v.dx)
 					
+					var vec = angle*CGFloat(M_PI)
 					let deg = angle*CGFloat(180/M_PI)
 					
 					let length:CGFloat = base.frame.size.height/4
+					
 					let xDist:CGFloat = sin(angle-1.57079633) * length
 					let yDist:CGFloat = cos(angle-1.57079633) * length
 					
@@ -241,10 +249,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					}else{
 						ball.position = CGPointMake(base.position.x-xDist, base.position.y+yDist)
 					}
-					
+					updatePlayerWithKeepMoving(v)
 				}
 				
-				
+		
 		
 	
 		}
@@ -300,10 +308,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			abs(currentPosition.y - touchPosition.y) > player.playersnakes[0].frame.height/2
 	}
 	
+	
+	
+	func updatePlayerWithKeepMoving(v:CGVector){
+		
+		var newVelocity = v
+		var i=0
+		for(i=0;i<player.playersnakes.count-1;i++){
+			
+			
+			player.playersnakes[i].physicsBody!.velocity = newVelocity;
+			var angle = atan2(player.playersnakes[i+1].position.y - player.playersnakes[i].position.y, player.playersnakes[i+1].position.x - player.playersnakes[i].position.x) + CGFloat(M_PI)
+			let velocotyX = base.frame.size.height/4 * cos(angle)
+			let velocityY = base.frame.size.height/4 * sin(angle)
+			
+			newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+
+		}
+		player.playersnakes[i].physicsBody!.velocity = newVelocity;
+		
+	}
+	
+	
+	
+	
+	
+	
 	// Updates the player's position by moving towards the last touch made
 	func updatePlayer() {
 		if let touch = player.lastTouch {
-			
+			print(touch)
 			//这里是吧第一个蛇头的点，给到当前的current
 			let currentPosition = player.playersnakes[0].position
 			
@@ -311,18 +345,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
 				
 				var angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
-				let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
+				//let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
 				
-				//player.playersnakes[0].runAction(rotateAction)
+				
 				
 				let velocotyX = player.playerSpeed! * cos(angle)
+				//print(velocotyX)
 				let velocityY = player.playerSpeed! * sin(angle)
-				
+				//print(velocityY)
 				var newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+				
 				var i=0
 				for(i=0;i<player.playersnakes.count-1;i += 1){
 					
 					player.playersnakes[i].physicsBody!.velocity = newVelocity;
+					
 					angle = atan2(player.playersnakes[i+1].position.y - player.playersnakes[i].position.y, player.playersnakes[i+1].position.x - player.playersnakes[i].position.x) + CGFloat(M_PI)
 					let velocotyX = player.playerSpeed! * cos(angle)
 					let velocityY = player.playerSpeed! * sin(angle)
@@ -374,7 +411,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		// 1. Create local variables for two physics bodies
 		var firstBody: SKPhysicsBody
 		var secondBody: SKPhysicsBody
-		print("hello~~")
+		
 		
 		// 2. Make sure the user object is always stored in "firstBody"
 		//当两个碰撞在一起的时候，加起来小于4的情况，就是player和食物相遇。
@@ -394,7 +431,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			// 3. Proceed based on which object the user hits
 			
 			if(secondBody.categoryBitMask == 3){
-				print("Snake just eat a food")
+				//print("Snake just eat a food")
 				//self.player!.size = CGSize(width: player!.frame.size.width*1.002, height: player!.frame.size.height*1.002)
 				if let foodnode = secondBody.node{
 					
@@ -439,7 +476,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			food.fillColor = UIColor(red:0.22, green:0.41, blue:0.41, alpha:1.0)
 			
 			let aix = random(min:100, max:1000)
-			print(screenSize())
+			//print(screenSize())
 			let aiy = random(min:100, max:1920)
 			food.position = CGPoint(x:aix, y:aiy)
 			
@@ -543,7 +580,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		let userDefaults = NSUserDefaults.standardUserDefaults()
 		
 		if let count_skinAnyobj = userDefaults.valueForKey("skin") {
-			print(count_skinAnyobj)
+			//print(count_skinAnyobj)
 			let count_skin = count_skinAnyobj as! Int
 			switch count_skin {
 			case 0:
@@ -585,7 +622,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		
 		if let count_modelAnyobj = player.userDefaults!.valueForKey("model") {
-			print(count_modelAnyobj)
+			//print(count_modelAnyobj)
 			let count_model = count_modelAnyobj as! String
 			switch count_model {
 			case "Arrow_model":
