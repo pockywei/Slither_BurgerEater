@@ -9,7 +9,10 @@
 import Foundation
 import SpriteKit
 import UIKit
-class MainScene:SKScene {
+class MainScene:SKScene,UITextFieldDelegate {
+	
+	
+	let userDefaults = NSUserDefaults.standardUserDefaults()
 	
 	var inputText:UITextField?
 	
@@ -55,10 +58,16 @@ class MainScene:SKScene {
 		
 		
 		inputText = UITextField(frame: CGRect(x:85,y:320,width:200,height:40))//如何居中
+		
+		inputText!.delegate = self
+		
 		self.view!.addSubview(inputText!)
 		inputText!.backgroundColor = UIColor.whiteColor()
 		inputText!.placeholder="Username"
 		
+		
+		
+
 		
 		
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
@@ -127,6 +136,38 @@ class MainScene:SKScene {
 			}
 		}
 	}
+	
+	func textFieldDidBeginEditing(textField: UITextField) {
+		print("TextField did begin editing method called")
+ }
+ func textFieldDidEndEditing(textField: UITextField) {
+	print(textField.text)
+	userDefaults.setValue(textField.text, forKey: "username")
+ print("TextField did end editing method called")
+ }
+ func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+ print("TextField should begin editing method called")
+ return true;
+ }
+ func textFieldShouldClear(textField: UITextField) -> Bool {
+ print("TextField should clear method called")
+ return true;
+ }
+ func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+ print("TextField should snd editing method called")
+ return true;
+ }
+ func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+ print("While entering the characters this method gets called")
+ return true;
+ }
+ func textFieldShouldReturn(textField: UITextField) -> Bool {
+ print("TextField should return method called")
+ textField.resignFirstResponder();
+ return true;
+ }
+	
+	
 	
 	func dismissKeyboard() {
 		//Causes the view (or one of its embedded text fields) to resign the first responder status.

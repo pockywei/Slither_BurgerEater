@@ -16,6 +16,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	var stickActive : Bool = false
 	let base = SKSpriteNode(imageNamed:"circle")
 	let ball = SKSpriteNode(imageNamed:"ball")
+	
+	let userDefaults = NSUserDefaults.standardUserDefaults()
 
 	
 	
@@ -46,7 +48,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	override func didMoveToView(view: SKView) {
 		
 		
-		
+		if let username = userDefaults.valueForKey("username") {
+			let label = SKLabelNode(text: username as! String)
+			print(username)
+			print("gggggggg")
+			label.fontName = "AvenirNext-Bold"
+			label.fontSize = 40
+			label.fontColor = UIColor.blackColor()
+			label.position = CGPoint(x:200.0, y:100)
+			//addChild(label)
+			
+			// Setup initial camera component
+			setupCamera(label)
+
+
+		}else{
+		print("f+ck")
+		}
 		
 		
 		player.playersnakes = player_snake
@@ -85,27 +103,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		setDefaultSkin(player.playersnakes)
 		setDefaultModel()
 		
-		//到这里位置，我们的用户是一个sknode，我们的用户颜色有了。
-		
-		
-//		// Setup AI_snakes
-//		for child in self.children {
-//			if child.name == "AI_snake" {
-//				if let child = child as? SKSpriteNode {
-//					AI_snakes.append(child)
-//				}
-//			}
-//		}
-		
-		
 		// Setup physics world's contact delegate
 		physicsWorld.contactDelegate = self
 		
-		// Setup initial camera position
-		updateCamera()
 	}
 	
 	
+	//setup camera
+	func setupCamera(label:SKLabelNode){
+		if let camera_frame = camera{
+			camera_frame.addChild(label)
+		}
+	
+	}
 
 	// Helper functions, to generate random CGPoints
 	func random() -> CGFloat {
@@ -263,10 +273,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	//主要是更新最后的tap 点坐标，lastTouch是个全局变量
 	private func handleTouches(touches: Set<UITouch>) {
 		
-		
 			for touch in touches {
+				
 				let touchLocation = touch.locationInNode(self)
-				player.lastTouch = touchLocation
+				if(CGRectContainsPoint(speed_up!.frame, touchLocation) == false)
+				{
+					player.lastTouch = touchLocation
+				}
 			}
 		
 	}
@@ -382,7 +395,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	func updateCamera() {
 		if let camera = camera {
 			camera.position = CGPoint(x: player.playersnakes[0].position.x, y: player.playersnakes[0].position.y)
+			
+			
 		}
+		
 	}
 	
 	// Updates the position of all AI_snakes by moving towards the player
