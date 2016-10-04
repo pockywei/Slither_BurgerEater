@@ -238,10 +238,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					
 					
 					let angle = atan2(v.dy,v.dx)
-					
-					var vec = angle*CGFloat(M_PI)
-					let deg = angle*CGFloat(180/M_PI)
-					
+
 					let length:CGFloat = base.frame.size.height/4
 					
 					let xDist:CGFloat = sin(angle-1.57079633) * length
@@ -435,59 +432,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	//搞懂这个函数。
 	func didBeginContact(contact: SKPhysicsContact) {
 		// 1. Create local variables for two physics bodies
-		var firstBody: SKPhysicsBody
-		var secondBody: SKPhysicsBody
-		
-		
-		// 2. Make sure the user object is always stored in "firstBody"
-		//当两个碰撞在一起的时候，加起来小于4的情况，就是player和食物相遇。
-		if contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask <= 4{
-			if contact.bodyA.categoryBitMask == 1{
-				firstBody = contact.bodyA
-				secondBody = contact.bodyB
-			} else{
-				firstBody = contact.bodyB
-				secondBody = contact.bodyA
-			}
-			
-			
-			
-			
-			
-			// 3. Proceed based on which object the user hits
-			
-			if(secondBody.categoryBitMask == 3){
-				//print("Snake just eat a food")
-				//self.player!.size = CGSize(width: player!.frame.size.width*1.002, height: player!.frame.size.height*1.002)
-				if let foodnode = secondBody.node{
-					
-					foodnode.removeFromParent()
-				}
-				
-				addFood(1)
-			}
-		}
-			//就是两个碰撞在一起都大于3，说明是AI 和 AI 相遇了
-		else if contact.bodyA.categoryBitMask>=4 && contact.bodyB.categoryBitMask>=4{
-			
-		
-		}
-			//说明1 和 4或者4以上的碰到了。 那就是 自己的头和 AI 的全部
-		else if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask >= 6){
-			if (contact.bodyA.categoryBitMask == 2){
-				//AI 就是BodyB 要死
-			}
-			else if(contact.bodyB.categoryBitMask == 2){
-				// AI 就是BodyA 要死
-			}
-				//如果是bodyA 是头
-			else if(contact.bodyA.categoryBitMask==1){
-				//gameover
-			}
-			else if(contact.bodyB.categoryBitMask==1){
-				//gameover
-			}
-		}
 
 		print("hello~~")
 		
@@ -506,7 +450,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             addFood(1)
         }
         else if(contact.bodyA.node?.name == "playerhead"){
-            if(contact.bodyB.node?.name!.containsString("aihead") || contact.bodyB.node?.name! == "aibody"){
+            if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
                 gameOver(false)
             }
         }
@@ -517,7 +461,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             else if((contact.bodyB.node?.name?.containsString("aihead")) != nil){
                 //ai die both
             }
-            else if((contact.bodyB.node?.name?.containsString("aihead")) !=nil || contact.bodyB.node?.name! == "playerbody"){
+            else if((contact.bodyB.node?.name!.containsString("aihead")) != nil || contact.bodyB.node!.name! == "playerbody"){
                 //A snake die
             }
             else if(contact.bodyB.node?.name == "playerhead"){
@@ -618,7 +562,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             bit_num = bit_num*4
 			// 4 is the length of the AI snake
 			//bitnum is egual and bigger than 4
-			radomAddAiSnakePot(4,bitmask: bit_num,i)
+			radomAddAiSnakePot(4,bitmask: bit_num,index: i)
 		}
 	
 	}
