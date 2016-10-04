@@ -12,6 +12,14 @@ import CoreData
 
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
 	
+	var alph = 0.600
+	var beta = 1.000
+	var gama = 1.000
+	
+	
+	var radius = 10.0
+	
+	var foodcount = 0
 	/*摇杆的代码*/
 	var stickActive : Bool = false
 	let base = SKSpriteNode(imageNamed:"circle")
@@ -19,7 +27,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	let userDefaults = NSUserDefaults.standardUserDefaults()
 
-	
+	var color = UIColor.grayColor()
 	
 	//这是AI的速度
 	let AI_snakeSpeed: CGFloat = 75.0
@@ -43,28 +51,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	var player = Player()
 	
+	//init the wall
+	var leftwall = SKSpriteNode()
+	var rightwall = SKSpriteNode()
+	var topwall = SKSpriteNode()
+	var downwall = SKSpriteNode()
+	
 	// MARK: - SKScene
 	
 	override func didMoveToView(view: SKView) {
 		
+		setupCamera()
 		
-		if let username = userDefaults.valueForKey("username") {
-			let label = SKLabelNode(text: username as! String)
-			print(username)
-			print("gggggggg")
-			label.fontName = "AvenirNext-Bold"
-			label.fontSize = 40
-			label.fontColor = UIColor.blackColor()
-			label.position = CGPoint(x:200.0, y:100)
-			//addChild(label)
-			
-			// Setup initial camera component
-			setupCamera(label)
-
-
-		}else{
-		print("f+ck")
-		}
+		leftwall = self.childNodeWithName("leftwall") as! SKSpriteNode
+		rightwall = self.childNodeWithName("rightwall") as! SKSpriteNode
+		topwall = self.childNodeWithName("topwall") as! SKSpriteNode
+		downwall = self.childNodeWithName("downwall") as! SKSpriteNode
+		
 		
 		
 		player.playersnakes = player_snake
@@ -88,7 +91,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		addFood(20)
 
 		//同理
-		speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
+		//speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
     
 		//set player Skin and Model
 		
@@ -103,10 +106,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	
 	//setup camera
-	func setupCamera(label:SKLabelNode){
-		if let camera_frame = camera{
-			camera_frame.addChild(label)
+	func setupCamera(){
+		
+		if let username = userDefaults.valueForKey("username") {
+			let label = SKLabelNode(text: username as! String)
+			print(username)
+			print("gggggggg")
+			label.fontName = "AvenirNext-Bold"
+			label.fontSize = 40
+			label.fontColor = UIColor.whiteColor()
+			label.position.x = (camera?.position.x)! + 150
+			label.position.y = (camera?.position.y)! - 1200
+			//addChild(label)
+			
+			
+			speed_up = SKSpriteNode(imageNamed:"rocket-512")
+			speed_up?.position.x = (camera?.position.x)! - 620
+			speed_up?.position.y = (camera?.position.y)! - 1100
+			
+			
+			
+			speed_up?.size = CGSize(width: 100,height: 100)
+			
+			speed_up?.zPosition = 10
+			
+			
+			// Setup initial camera component
+			
+			
+			
+			if let camera_frame = camera{
+				camera_frame.addChild(label)
+				if let speed = speed_up{
+				camera_frame.addChild(speed_up!)
+				}else{
+					print("no speed up")
+				}
+			}
+			
+		}else{
+			print("f+ck")
 		}
+		
 	
 	}
 
@@ -136,7 +177,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
 				for touch in (touches ){
-					let location = touch.locationInNode(self)
+					let location = touch.locationInNode(camera!)
 					if(CGRectContainsPoint(ball.frame, location)){
 						stickActive = true
 						handJoyStick(touches)
@@ -162,9 +203,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		//这是当用户按到加速按钮时的时候，会加速的
 		for touch: AnyObject in touches {
-			let position = touch.locationInNode(self) // Get the x,y point of the touch
-			if CGRectContainsPoint(speed_up!.frame, position) {
-				print(position)
+			//let position = touch.locationInNode(self) // Get the x,y point of the touch
+			
+			let touchspeed = touch.locationInNode(camera!)
+			if CGRectContainsPoint(speed_up!.frame, touchspeed) {
+				print("HI")
+				//print(position)
 				 player.playerSpeed = 300.0
 			}
 		}
@@ -230,7 +274,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	private func handJoyStick(touches: Set<UITouch>){
 		if(stickActive==true){
 				for touch in touches {
-					let location = touch.locationInNode(self)
+					let location = touch.locationInNode(camera!)
 					
 					var v = CGVector(dx:location.x - base.position.x, dy:location.y-base.position.y)
 					
@@ -264,7 +308,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			for touch in touches {
 				
 				let touchLocation = touch.locationInNode(self)
-				if(CGRectContainsPoint(speed_up!.frame, touchLocation) == false)
+				
+				let touchspeed = touch.locationInNode(camera!)
+				
+				if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false)
 				{
 					player.lastTouch = touchLocation
 				}
@@ -328,17 +375,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	
 	
+	func checkheadposition(head:SKShapeNode){
 	
+		if (head.position.x >= 1024 || head.position.x <= leftwall.frame.width || head.position.y >= (leftwall.frame.height - downwall.frame.height) || head.position.y <= downwall.frame.height){
+			
+			gameOver(false)
+			
+		}
+	
+	}
 	
 	
 	// Updates the player's position by moving towards the last touch made
 	func updatePlayer() {
 		if let touch = player.lastTouch {
-			print(touch)
+			//print(touch)
 			//这里是吧第一个蛇头的点，给到当前的current
 			let currentPosition = player.playersnakes[0].position
-			
-			
+			//print(player.playersnakes[0])
+			checkheadposition(player.playersnakes[0])
 			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
 				
 				var angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
@@ -408,11 +463,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         //var contactTestMask = snake[1].physicsBody?.contactTestBitMask
         
         for var i = 0; i < length; i++ {
-            let snake = SKShapeNode(circleOfRadius: 10)
-            snake.fillColor = UIColor(red:0.6, green:0.89, blue:0.49, alpha:1.0)
-            print(player.playersnakes.count)
+            let snake = SKShapeNode(circleOfRadius: CGFloat(radius))
+            snake.fillColor = color
+            //print(player.playersnakes.count)
             snake.position =  CGPoint(x:player.playersnakes[player.playersnakes.count-1].position.x+5, y:player.playersnakes[player.playersnakes.count-1].position.y+5)
-            snake.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+            snake.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(radius))
             snake.physicsBody?.dynamic = true
             
             snake.name = "playerbody"
@@ -425,8 +480,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             
             player.playersnakes.append(snake)
             addChild(snake)
+			
+			if(foodcount >= 3)
+			{
+				print("opopop")
+				changePlayerSankeWidth()
+				foodcount=0
+			}
         }
     }
+	
+	func changePlayerSankeWidth(){
+	print("hhhhhhhh")
+
+		alph=alph*alph
+		beta = beta + alph*alph
+		for(var i=0;i<player.playersnakes.count;i++)
+		{
+			print("kjkjkj")
+			
+			
+			player.playersnakes[i].setScale(CGFloat(beta))
+			
+		}
+		
+		radius = radius * beta
+	
+	}
     
 	// MARK: - SKPhysicsContactDelegate
 	//搞懂这个函数。
@@ -448,6 +528,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 contact.bodyB.node?.removeFromParent()
             }
             addFood(1)
+			foodcount = foodcount + 1
         }
         else if(contact.bodyA.node?.name == "playerhead"){
             if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
@@ -571,10 +652,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		// Build user snake array
 		for var i = 0; i <= n; i = i+1 {
-			let snake = SKShapeNode(circleOfRadius: 10)
-			snake.fillColor = UIColor(red:0.91, green:0.89, blue:0.49, alpha:1.0)
+			
+			
+			
+			let snake = SKShapeNode(circleOfRadius: CGFloat(radius))
+			snake.fillColor = color
 			snake.position = CGPoint(x:200+i*5, y:200)
-			snake.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+			snake.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(radius))
 			snake.physicsBody?.dynamic = true
 			//头是1，身体是2
 			if(i==0){
@@ -613,24 +697,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				//Snake_with_Skin!.runAction(Actionred)
 				for i in player{
 				i.fillColor=UIColor.redColor()
+					color = i.fillColor
 				}
 				break
 			case 1:
 				//Snake_with_Skin!.runAction(Actionblue)
 				for i in player{
 				i.fillColor=UIColor.blueColor()
+					color = i.fillColor
 				}
 				break
 			case 2:
 				//Snake_with_Skin!.runAction(Actionwhite)
 				for i in player{
 				i.fillColor=UIColor.grayColor()
+					color = i.fillColor
 				}
 				break
 			default:
 				//Snake_with_Skin!.runAction(Actionbrown)
 				for i in player{
 				i.fillColor=UIColor.brownColor()
+					color = i.fillColor
 				}
 				break
 			}
@@ -638,6 +726,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		else {
 			for i in player{
 				i.fillColor=UIColor.grayColor()
+				color = i.fillColor
 			}
 			print("No color")
 		}
