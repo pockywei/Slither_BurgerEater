@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "497279674.74942"
+            timestampString = "497345785.8"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
-            landmarkName = "updatePlayer()"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
+            landmarkName = "updateAI_snakes()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "497279674.74942"
+            timestampString = "497345785.8"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
-            landmarkName = "handJoyStick(touches:)"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
+            landmarkName = "addSnakeLength(snake:length:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

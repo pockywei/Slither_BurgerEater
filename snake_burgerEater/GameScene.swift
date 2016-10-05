@@ -10,6 +10,7 @@ import SpriteKit
 import UIKit
 import CoreData
 
+
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
 	
 	var alph = 0.600
@@ -89,11 +90,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		//add food
 		addFood(20)
-
-		//同理
-		//speed_up = self.childNodeWithName("speed_up") as? SKSpriteNode
-    
-		//set player Skin and Model
 		
 		//设置用户的皮肤和操作模式
 		setDefaultSkin(player.playersnakes)
@@ -105,70 +101,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
 	
 	
-	//setup camera
-	func setupCamera(){
-		
-		if let username = userDefaults.valueForKey("username") {
-			let label = SKLabelNode(text: username as! String)
-			print(username)
-			print("gggggggg")
-			label.fontName = "AvenirNext-Bold"
-			label.fontSize = 40
-			label.fontColor = UIColor.whiteColor()
-			label.position.x = (camera?.position.x)! + 150
-			label.position.y = (camera?.position.y)! - 1200
-			//addChild(label)
-			
-			
-			speed_up = SKSpriteNode(imageNamed:"rocket-512")
-			speed_up?.position.x = (camera?.position.x)! - 620
-			speed_up?.position.y = (camera?.position.y)! - 1100
-			
-			
-			
-			speed_up?.size = CGSize(width: 100,height: 100)
-			
-			speed_up?.zPosition = 10
-			
-			
-			// Setup initial camera component
-			
-			
-			
-			if let camera_frame = camera{
-				camera_frame.addChild(label)
-				if let speed = speed_up{
-				camera_frame.addChild(speed_up!)
-				}else{
-					print("no speed up")
-				}
-			}
-			
-		}else{
-			print("f+ck")
-		}
-		
-	
-	}
 
-	// Helper functions, to generate random CGPoints
-	func random() -> CGFloat {
-		return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
-	}
+	/*=============================神级update函数=====================================================*/
 	
-	func random(min min: CGFloat, max: CGFloat) -> CGFloat {
-		return random() * (max - min) + min
-	}
-	
-	func screenSize() -> (CGFloat, CGFloat){
-		let screenSize: CGRect = UIScreen.mainScreen().bounds
-		let width = screenSize.width
-		let height = screenSize.height
-		return (width, height)
+	override func update(currentTime: NSTimeInterval) {
+		//updatePlayerMoving()
 	}
 
 	
-	
+	/*=============================touch点相关=======================================================*/
 	//这是函数是你刚tap下去就会发生的事
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		
@@ -214,7 +155,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 		
 	}
-	
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
 		{
@@ -237,8 +177,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 		
 	}
-	
-	
 	//这个是你放手的时候，才会执行的
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 		if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
@@ -318,74 +256,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 	}
 	// MARK - Updates
+	/*===============================蛇类通用函数======================================================*/
 	
-	override func didSimulatePhysics() {
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	func addSnakeLength(snake:[SKShapeNode], length:Int){
+		//var bitMask = snake[1].physicsBody?.categoryBitMask
+		//var collisionMask = snake[1].physicsBody?.collisionBitMask
+		//var contactTestMask = snake[1].physicsBody?.contactTestBitMask
 		
-			if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
+		for var i = 0; i < length; i++ {
+			let snake = SKShapeNode(circleOfRadius: CGFloat(radius))
+			snake.fillColor = color
+			//print(player.playersnakes.count)
+			snake.position =  CGPoint(x:player.playersnakes[player.playersnakes.count-1].position.x+5, y:player.playersnakes[player.playersnakes.count-1].position.y+5)
+			snake.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(radius))
+			snake.physicsBody?.dynamic = true
+			
+			snake.name = "playerbody"
+			snake.physicsBody?.categoryBitMask = 0x00000002
+			snake.physicsBody?.collisionBitMask = 0xaaaaaaa8
+			snake.physicsBody?.contactTestBitMask = 0xaaaaaaa8
+			
+			snake.physicsBody?.affectedByGravity = false
+			snake.physicsBody?.allowsRotation = false
+			
+			player.playersnakes.append(snake)
+			addChild(snake)
+			
+			if(foodcount >= 3)
 			{
-				if (count_modelAnyobj as! String) == "Rocker_model"
-				{
-					
-				}
-				else if (count_modelAnyobj as! String) == "Arrow_model"
-				{
-					
-				}
-				else
-				{
-					updatePlayer()
-				}
-				
+				print("opopop")
+				changePlayerSankeWidth()
+				foodcount=0
 			}
-			else{
-				updatePlayer()
-			}
-			
-			
-			//updateAI_snakes()
-		
-	}
-	
-	// Determines if the player's position should be updated
-	private func shouldMove(currentPosition currentPosition: CGPoint, touchPosition: CGPoint) -> Bool {
-		return abs(currentPosition.x - touchPosition.x) > player.playersnakes[0].frame.width / 2 ||
-			abs(currentPosition.y - touchPosition.y) > player.playersnakes[0].frame.height/2
-	}
-	
-	
-	
-	func updatePlayerWithKeepMoving(v:CGVector){
-		
-		var newVelocity = v
-		var i=0
-		for(i=0;i<player.playersnakes.count-1;i++){
-			
-			
-			player.playersnakes[i].physicsBody!.velocity = newVelocity;
-			var angle = atan2(player.playersnakes[i+1].position.y - player.playersnakes[i].position.y, player.playersnakes[i+1].position.x - player.playersnakes[i].position.x) + CGFloat(M_PI)
-			let velocotyX = base.frame.size.height/4 * cos(angle)
-			let velocityY = base.frame.size.height/4 * sin(angle)
-			
-			newVelocity = CGVector(dx: velocotyX, dy: velocityY)
-
 		}
-		player.playersnakes[i].physicsBody!.velocity = newVelocity;
-		
 	}
-	
-	
-	
 	func checkheadposition(head:SKShapeNode){
-	
+		
 		if (head.position.x >= 1024 || head.position.x <= leftwall.frame.width || head.position.y >= (leftwall.frame.height - downwall.frame.height) || head.position.y <= downwall.frame.height){
 			
 			gameOver(false)
 			
 		}
-	
+		
 	}
-	
-	
+
+	/*=============================Player相关=======================================================*/
 	// Updates the player's position by moving towards the last touch made
 	func updatePlayer() {
 		if let touch = player.lastTouch {
@@ -428,16 +344,97 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 		}
 	}
-	
-	func updateCamera() {
-		if let camera = camera {
-			camera.position = CGPoint(x: player.playersnakes[0].position.x, y: player.playersnakes[0].position.y)
+	func addPlayer(n:Int){
+		
+		// Build user snake array
+		for var i = 0; i <= n; i = i+1 {
+			
+			
+			
+			let snake = SKShapeNode(circleOfRadius: CGFloat(radius))
+			snake.fillColor = color
+			snake.position = CGPoint(x:200+i*5, y:200)
+			snake.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(radius))
+			snake.physicsBody?.dynamic = true
+			//头是1，身体是2
+			if(i==0){
+				snake.name = "playerhead"
+				snake.physicsBody?.categoryBitMask = 0x00000001
+				snake.physicsBody?.collisionBitMask = 0x00000004//0xfffffffc
+				snake.physicsBody?.contactTestBitMask = 0xfffffffc
+			}else{
+				snake.name = "playerbody"
+				snake.physicsBody?.categoryBitMask = 0x00000002
+				snake.physicsBody?.collisionBitMask = 0xaaaaaaa8
+				snake.physicsBody?.contactTestBitMask = 0xaaaaaaa8
+			}
+			
+			snake.physicsBody?.affectedByGravity = false
+			snake.physicsBody?.allowsRotation = false
+			addChild(snake)
+			player.playersnakes.append(snake)
+			
+		}
+		
+		
+	}
+	func updatePlayerWithKeepMoving(v:CGVector){
+		
+		var newVelocity = v
+		var i=0
+		for(i=0;i<player.playersnakes.count-1;i++){
+			
+			
+			player.playersnakes[i].physicsBody!.velocity = newVelocity;
+			var angle = atan2(player.playersnakes[i+1].position.y - player.playersnakes[i].position.y, player.playersnakes[i+1].position.x - player.playersnakes[i].position.x) + CGFloat(M_PI)
+			let velocotyX = base.frame.size.height/4 * cos(angle)
+			let velocityY = base.frame.size.height/4 * sin(angle)
+			
+			newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+			
+		}
+		player.playersnakes[i].physicsBody!.velocity = newVelocity;
+		
+	}
+	func updatePlayerMoving(){
+		
+		
+		var i=0
+		for(i=0;i<player.playersnakes.count-1;i++){
+			
+			player.playersnakes[i+1].position.x = player.playersnakes[i].position.x
+			
+			player.playersnakes[i+1].position.y = player.playersnakes[i].position.y
+			
+			
 			
 			
 		}
 		
 	}
+	// Determines if the player's position should be updated
+	private func shouldMove(currentPosition currentPosition: CGPoint, touchPosition: CGPoint) -> Bool {
+		return abs(currentPosition.x - touchPosition.x) > player.playersnakes[0].frame.width / 2 ||
+			abs(currentPosition.y - touchPosition.y) > player.playersnakes[0].frame.height/2
+	}
+	func changePlayerSankeWidth(){
+		print("hhhhhhhh")
+		
+		
+		for(var i=0;i<player.playersnakes.count;i++)
+		{
+			print("kjkjkj")
+			
+			
+			player.playersnakes[i].setScale(1.21)
+			
+		}
+		
+		radius = radius * 1.1
+		
+	}
 	
+	/*=============================AI相关=======================================================*/
 	// Updates the position of all AI_snakes by moving towards the player
 	func updateAI_snakes() {
 		let targetPosition = player.playersnakes[0].position
@@ -456,60 +453,102 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			AI_snake.physicsBody!.velocity = newVelocity;
 		}
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-    func addSnakeLength(snake:[SKShapeNode], length:Int){
-        //var bitMask = snake[1].physicsBody?.categoryBitMask
-        //var collisionMask = snake[1].physicsBody?.collisionBitMask
-        //var contactTestMask = snake[1].physicsBody?.contactTestBitMask
-        
-        for var i = 0; i < length; i++ {
-            let snake = SKShapeNode(circleOfRadius: CGFloat(radius))
-            snake.fillColor = color
-            //print(player.playersnakes.count)
-            snake.position =  CGPoint(x:player.playersnakes[player.playersnakes.count-1].position.x+5, y:player.playersnakes[player.playersnakes.count-1].position.y+5)
-            snake.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(radius))
-            snake.physicsBody?.dynamic = true
-            
-            snake.name = "playerbody"
-            snake.physicsBody?.categoryBitMask = 0x00000002
-            snake.physicsBody?.collisionBitMask = 0xaaaaaaa8
-            snake.physicsBody?.contactTestBitMask = 0xaaaaaaa8
-            
-            snake.physicsBody?.affectedByGravity = false
-            snake.physicsBody?.allowsRotation = false
-            
-            player.playersnakes.append(snake)
-            addChild(snake)
+	// Add one AI snake with length n
+	func radomAddAiSnakePot(n: Int,bitmask:Int, index:Int){
+		
+		let aix = random(min:100, max:1000)
+		let aiy = random(min:100, max:1920)
+		
+		let aiHeadBitMask = UInt32(bitmask)
+		let aiBodyBitMask = aiHeadBitMask << 2
+		for var i = 0; i <= n; i=i+1 {
+			let ai = SKShapeNode(circleOfRadius: 10)
+			ai.fillColor = UIColor(red:0.96, green:0.41, blue:0.41, alpha:1.0)
 			
-			if(foodcount >= 3)
-			{
-				print("opopop")
-				changePlayerSankeWidth()
-				foodcount=0
+			ai.position = CGPoint(x:Int(aix) + i*5, y:Int(aiy) + i*5)
+			
+			ai.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+			ai.physicsBody?.dynamic = true
+			
+			if(i == 1){
+				ai.name = "aihead"+(index as NSNumber).stringValue
+				ai.physicsBody?.categoryBitMask = aiHeadBitMask
+				ai.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask)
+				ai.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask)
+			}else{
+				ai.name = "aibody"
+				ai.physicsBody?.categoryBitMask = aiBodyBitMask
+				ai.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
+				ai.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
 			}
-        }
-    }
-	
-	func changePlayerSankeWidth(){
-	print("hhhhhhhh")
-
-		alph=alph*alph
-		beta = beta + alph*alph
-		for(var i=0;i<player.playersnakes.count;i++)
-		{
-			print("kjkjkj")
 			
+			ai.physicsBody?.affectedByGravity = false
+			ai.physicsBody?.allowsRotation = false
 			
-			player.playersnakes[i].setScale(CGFloat(beta))
+			addChild(ai)
+			AI_snakes.append(ai)
+			AI.append(AI_snakes)
 			
 		}
-		
-		radius = radius * beta
-	
 	}
-    
+	//按坐标加点
+	func addAisnakePot(postion:CGPoint){
+		
+		
+	}
+	//加入AI snake, n 是数量
+	func addAiSnake(n:Int,bitnum:Int){
+		
+		//bitnum从4开始
+		var bit_num=2
+		var snakeNum:Int
+		if(n>14){
+			snakeNum = 14
+		}else{
+			snakeNum = n
+		}
+		
+		for var i = 0; i <= snakeNum; i = i+1 {
+			bit_num = bit_num*4
+			// 4 is the length of the AI snake
+			//bitnum is egual and bigger than 4
+			radomAddAiSnakePot(4,bitmask: bit_num,index: i)
+		}
+		
+	}
+	
+	
+	
+	/*===============================物理碰撞相关=================================================*/
 	// MARK: - SKPhysicsContactDelegate
 	//搞懂这个函数。
+	override func didSimulatePhysics() {
+		
+		if let count_modelAnyobj = player.userDefaults!.valueForKey("model")
+		{
+			if (count_modelAnyobj as! String) == "Rocker_model"
+			{
+				
+			}
+			else if (count_modelAnyobj as! String) == "Arrow_model"
+			{
+				
+			}
+			else
+			{
+				updatePlayer()
+			}
+			
+		}
+		else{
+			updatePlayer()
+		}
+		
+		
+		//updateAI_snakes()
+		
+	}
+
 	func didBeginContact(contact: SKPhysicsContact) {
 		// 1. Create local variables for two physics bodies
 
@@ -557,6 +596,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
 	
 	
+	/*===============================食物相关========================================================*/
+	
 	// Add food when food is eaten by user
 	func addFood(n: Int){
 		
@@ -566,7 +607,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			food.fillColor = UIColor(red:0.22, green:0.41, blue:0.41, alpha:1.0)
 			
 			let aix = random(min:100, max:1000)
-			//print(screenSize())
+			
 			let aiy = random(min:100, max:1920)
 			food.position = CGPoint(x:aix, y:aiy)
 			
@@ -581,110 +622,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 	}
 	
-	// Add one AI snake with length n
-    func radomAddAiSnakePot(n: Int,bitmask:Int, index:Int){
-		
-		let aix = random(min:100, max:1000)
-		let aiy = random(min:100, max:1920)
-		
-        let aiHeadBitMask = UInt32(bitmask)
-        let aiBodyBitMask = aiHeadBitMask << 2
-		for var i = 0; i <= n; i=i+1 {
-			let ai = SKShapeNode(circleOfRadius: 10)
-			ai.fillColor = UIColor(red:0.96, green:0.41, blue:0.41, alpha:1.0)
-			
-			ai.position = CGPoint(x:Int(aix) + i*5, y:Int(aiy) + i*5)
-			
-			ai.physicsBody = SKPhysicsBody(circleOfRadius: 10)
-			ai.physicsBody?.dynamic = true
-            
-            if(i == 1){
-                ai.name = "aihead"+(index as NSNumber).stringValue
-                ai.physicsBody?.categoryBitMask = aiHeadBitMask
-                ai.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask)
-                ai.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask)
-            }else{
-                ai.name = "aibody"
-                ai.physicsBody?.categoryBitMask = aiBodyBitMask
-                ai.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
-                ai.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
-            }
-            
-			ai.physicsBody?.affectedByGravity = false
-			ai.physicsBody?.allowsRotation = false
-			
-			addChild(ai)
-			AI_snakes.append(ai)
-            AI.append(AI_snakes)
-            
-        }
+	/*===================================功能函数======================================================*/
+	// Helper functions, to generate random CGPoints
+	func random() -> CGFloat {
+		return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
 	}
 	
-	//按坐标加点
-	func addAisnakePot(postion:CGPoint){
-		
-	
+	func random(min min: CGFloat, max: CGFloat) -> CGFloat {
+		return random() * (max - min) + min
 	}
 	
-	
-	//加入AI snake, n 是数量
-	func addAiSnake(n:Int,bitnum:Int){
+	private func gameOver(didWin: Bool) {
+		print("- - - Game Ended - - -")
 		
-		//bitnum从4开始
-		var bit_num=2
-        var snakeNum:Int
-        if(n>14){
-            snakeNum = 14
-        }else{
-            snakeNum = n
-        }
+		let menuScene = MenuScene(size: self.size)
+		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
+		let transition = SKTransition.fadeWithDuration(1)
+		menuScene.scaleMode = SKSceneScaleMode.AspectFill
+		self.scene!.view?.presentScene(menuScene, transition: transition)
 		
-        for var i = 0; i <= snakeNum; i = i+1 {
-            bit_num = bit_num*4
-			// 4 is the length of the AI snake
-			//bitnum is egual and bigger than 4
-			radomAddAiSnakePot(4,bitmask: bit_num,index: i)
-		}
-	
+		
 	}
-
-	func addPlayer(n:Int){
-		
-		// Build user snake array
-		for var i = 0; i <= n; i = i+1 {
-			
-			
-			
-			let snake = SKShapeNode(circleOfRadius: CGFloat(radius))
-			snake.fillColor = color
-			snake.position = CGPoint(x:200+i*5, y:200)
-			snake.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(radius))
-			snake.physicsBody?.dynamic = true
-			//头是1，身体是2
-			if(i==0){
-                snake.name = "playerhead"
-                snake.physicsBody?.categoryBitMask = 0x00000001
-                snake.physicsBody?.collisionBitMask = 0x00000004//0xfffffffc
-                snake.physicsBody?.contactTestBitMask = 0xfffffffc
-			}else{
-                snake.name = "playerbody"
-				snake.physicsBody?.categoryBitMask = 0x00000002
-                snake.physicsBody?.collisionBitMask = 0xaaaaaaa8
-                snake.physicsBody?.contactTestBitMask = 0xaaaaaaa8
-			}
-
-			snake.physicsBody?.affectedByGravity = false
-			snake.physicsBody?.allowsRotation = false
-			addChild(snake)
-			player.playersnakes.append(snake)
-			
-		}
-
-	
-	}
-	
-	
-	
+	/*设置初始的界面*/
+/*===================================初始用户信息设置===================================================*/
 	//Set default skin
 	func setDefaultSkin(player:[SKShapeNode]){
 		let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -744,12 +704,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				print("Arrow")
 				break
 			case "Rocker_model":
-				base.position = CGPointMake(150, 200)
+				base.position.x = (camera?.position.x)! - 400
+				base.position.y = (camera?.position.y)! - 1100
+				
+				//base.position = CGPointMake(150, 200)
 				base.size=CGSize(width: 300,height: 300)
-				ball.position = CGPointMake(150,200)
+				
+				ball.position.x = (camera?.position.x)! - 400
+				ball.position.y = (camera?.position.y)! - 1100
+				
+				//ball.position = CGPointMake(150,200)
 				ball.size=CGSize(width: 100,height: 100)
-				addChild(base)
-				addChild(ball)
+				camera!.addChild(base)
+				camera!.addChild(ball)
 				
 				break
 			
@@ -764,21 +731,61 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 
 	}
-	// MARK: Helper Functions
 	
-	private func gameOver(didWin: Bool) {
-		print("- - - Game Ended - - -")
+	//setup camera
+	func setupCamera(){
 		
-		let menuScene = MenuScene(size: self.size)
-		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
-		let transition = SKTransition.fadeWithDuration(1)
-		menuScene.scaleMode = SKSceneScaleMode.AspectFill
-		self.scene!.view?.presentScene(menuScene, transition: transition)
+		if let username = userDefaults.valueForKey("username") {
+			let label = SKLabelNode(text: username as! String)
+			print(username)
+			print("gggggggg")
+			label.fontName = "AvenirNext-Bold"
+			label.fontSize = 40
+			label.fontColor = UIColor.whiteColor()
+			label.position.x = (camera?.position.x)! + 150
+			label.position.y = (camera?.position.y)! - 1200
+			//addChild(label)
+			
+			
+			speed_up = SKSpriteNode(imageNamed:"rocket-512")
+			speed_up?.position.x = (camera?.position.x)! - 620
+			speed_up?.position.y = (camera?.position.y)! - 1100
+			
+			
+			
+			speed_up?.size = CGSize(width: 100,height: 100)
+			
+			speed_up?.zPosition = 10
+			
+			
+			// Setup initial camera component
+			
+			
+			
+			if let camera_frame = camera{
+				camera_frame.addChild(label)
+				if let speed = speed_up{
+					camera_frame.addChild(speed_up!)
+				}else{
+					print("no speed up")
+				}
+			}
+			
+		}else{
+			print("f+ck")
+		}
 		
-
+		
 	}
-	
-	
+	func updateCamera() {
+		if let camera = camera {
+			camera.position = CGPoint(x: player.playersnakes[0].position.x, y: player.playersnakes[0].position.y)
+			
+			
+		}
+		
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 	func handleArrowTap(){
 		
 	
