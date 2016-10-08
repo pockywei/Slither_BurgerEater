@@ -16,7 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	var alph = 0.600
 	var beta = 1.000
 	var gama = 1.000
-	
+	var time: NSTimeInterval = 0
 	
 	var radius = 10.0
 	
@@ -105,7 +105,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	/*=============================神级update函数=====================================================*/
 	
 	override func update(currentTime: NSTimeInterval) {
-		//updatePlayerMoving()
+		if (currentTime-time > 50)
+		{
+			updatePlayer()
+			time=currentTime
+		}
 	}
 
 	
@@ -304,15 +308,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	/*=============================Player相关=======================================================*/
 	// Updates the player's position by moving towards the last touch made
 	func updatePlayer() {
+		//print("updatePlayer")
+		print(player.playersnakes[0].physicsBody!.velocity.dx)
+		player.playersnakes[0].physicsBody!.velocity.dx = player.playersnakes[0].physicsBody!.velocity.dx + 1
+		player.playersnakes[0].physicsBody!.velocity.dy = player.playersnakes[0].physicsBody!.velocity.dx + 1
+		
 		if let touch = player.lastTouch {
 			//print(touch)
 			//这里是吧第一个蛇头的点，给到当前的current
 			let currentPosition = player.playersnakes[0].position
 			//print(player.playersnakes[0])
 			checkheadposition(player.playersnakes[0])
-			if shouldMove(currentPosition: currentPosition, touchPosition: touch) {
+			
 				
-				var angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
+				var angle = atan2((currentPosition.y - touch.y), (currentPosition.x - touch.x)) + CGFloat(M_PI)
 				//let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0)
 				
 				
@@ -324,6 +333,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				var newVelocity = CGVector(dx: velocotyX, dy: velocityY)
 				
 				var i=0
+
+				
+				
 				for(i=0;i<player.playersnakes.count-1;i += 1){
 					
 					player.playersnakes[i].physicsBody!.velocity = newVelocity;
@@ -336,12 +348,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				}
 				player.playersnakes[i].physicsBody!.velocity = newVelocity;
 				
+			player.playersnakes[i].physicsBody!.velocity.dx = player.playersnakes[i].physicsBody!.velocity.dx + 1
+			player.playersnakes[i].physicsBody!.velocity.dy = player.playersnakes[i].physicsBody!.velocity.dx + 1
+				
+					
+				
+				
 				updateCamera()
-			} else {
-				for(var i=0;i<player.playersnakes.count;i++){
-					player.playersnakes[i].physicsBody!.resting = true
-				}
-			}
+			
 		}
 	}
 	func addPlayer(n:Int){
