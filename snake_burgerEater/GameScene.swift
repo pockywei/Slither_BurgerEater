@@ -215,6 +215,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	//摇杆模式的函数
 	private func handJoyStick(touches: Set<UITouch>){
 		if(stickActive==true){
+			updateCamera()
 				for touch in touches {
 					let location = touch.locationInNode(camera!)
 					
@@ -748,19 +749,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	//setup camera
 	func setupCamera(){
-		
-		if let username = userDefaults.valueForKey("username") {
-			let label = SKLabelNode(text: username as! String)
-			print(username)
-			print("gggggggg")
-			label.fontName = "AvenirNext-Bold"
-			label.fontSize = 40
-			label.fontColor = UIColor.whiteColor()
-			label.position.x = (camera?.position.x)! + 150
-			label.position.y = (camera?.position.y)! - 1200
-			//addChild(label)
-			
-			
+		if let camera_frame = camera{
 			speed_up = SKSpriteNode(imageNamed:"rocket-512")
 			speed_up?.position.x = (camera?.position.x)! - 620
 			speed_up?.position.y = (camera?.position.y)! - 1100
@@ -770,20 +759,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			speed_up?.size = CGSize(width: 100,height: 100)
 			
 			speed_up?.zPosition = 10
+
 			
+			if let speed = speed_up{
+				camera_frame.addChild(speed)
+			}else{
+				print("no speed up")
+			}
+		}
+		
+		if let username = userDefaults.valueForKey("username") {
+			let label = SKLabelNode(text: username as? String)
+			print(username)
+			print("gggggggg")
+			label.fontName = "AvenirNext-Bold"
+			label.fontSize = 40
+			label.fontColor = UIColor.whiteColor()
+			label.position.x = (camera?.position.x)! + 150
+			label.position.y = (camera?.position.y)! - 1200
+			//addChild(label)
+			if let camera_frame = camera{
+			camera_frame.addChild(label)
 			
+			}
 			// Setup initial camera component
 			
 			
 			
-			if let camera_frame = camera{
-				camera_frame.addChild(label)
-				if let speed = speed_up{
-					camera_frame.addChild(speed_up!)
-				}else{
-					print("no speed up")
-				}
-			}
+
 			
 		}else{
 			print("f+ck")
