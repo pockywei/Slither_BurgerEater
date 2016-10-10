@@ -33,6 +33,11 @@ class ChangeGameModelScene: SKScene {
 		
 		Narmal_model = self.childNodeWithName("Narmal_model") as? SKSpriteNode
 		
+		Narmal_model?.setScale(0.5)
+		Arrow_model?.setScale(0.5)
+		Rocker_model?.setScale(0.42)
+		Back_button?.setScale(0.5)
+		
 	}
 	
 	
@@ -40,6 +45,8 @@ class ChangeGameModelScene: SKScene {
 		for touch: AnyObject in touches {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
 			if CGRectContainsPoint(Back_button!.frame, position) {
+				Back_button?.setScale(0.3)
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				let mainScene = MainScene(fileNamed: "MainScene")
 				//inputText?.hidden = true
 				let transition = SKTransition.fadeWithDuration(1)
@@ -49,19 +56,30 @@ class ChangeGameModelScene: SKScene {
 					skView.presentScene(mainScene!, transition: transition)
 				})
 			}else if CGRectContainsPoint(Rocker_model!.frame, position) {
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				userDefaults.setValue("Rocker_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
-
+				Narmal_model?.setScale(0.5)
+				Arrow_model?.setScale(0.5)
+				Rocker_model?.setScale(0.3)
 				
 				
 			}else if CGRectContainsPoint(Arrow_model!.frame, position) {
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				userDefaults.setValue("Arrow_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
+				Narmal_model?.setScale(0.5)
+				Arrow_model?.setScale(0.3)
+				Rocker_model?.setScale(0.42)
 
 				
 			}else if CGRectContainsPoint(Narmal_model!.frame, position) {
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				userDefaults.setValue("Narmal_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
+				Narmal_model?.setScale(0.3)
+				Arrow_model?.setScale(0.5)
+				Rocker_model?.setScale(0.42)
 
 			
 			}

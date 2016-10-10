@@ -62,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	override func didMoveToView(view: SKView) {
 		
-		setupCamera()
+		
 		
 		leftwall = self.childNodeWithName("leftwall") as! SKSpriteNode
 		rightwall = self.childNodeWithName("rightwall") as! SKSpriteNode
@@ -97,6 +97,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		// Setup physics world's contact delegate
 		physicsWorld.contactDelegate = self
+		
+		setupCamera()
 		
 	}
 	
@@ -750,12 +752,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	//setup camera
 	func setupCamera(){
 		if let camera_frame = camera{
+			let light = SKLightNode()
+			light.falloff = 2
+			light.ambientColor = UIColor.blackColor()
+			light.shadowColor = UIColor.darkGrayColor()
+			//lightingBitMask = 1
+			
+			//.mask
+			player.playersnakes[0].addChild(light)
+			
+			
 			speed_up = SKSpriteNode(imageNamed:"rocket-512")
 			speed_up?.position.x = (camera?.position.x)! - 620
 			speed_up?.position.y = (camera?.position.y)! - 1100
-			
-			
-			
 			speed_up?.size = CGSize(width: 100,height: 100)
 			
 			speed_up?.zPosition = 10
@@ -766,6 +775,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}else{
 				print("no speed up")
 			}
+			
+			
 		}
 		
 		if let username = userDefaults.valueForKey("username") {

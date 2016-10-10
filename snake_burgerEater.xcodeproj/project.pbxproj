@@ -23,6 +23,7 @@
 		B6994E391D7FB28F00201A4E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6994E381D7FB28F00201A4E /* Info.plist */; };
 		B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3A1D7FB2B700201A4E /* MenuScene.swift */; };
 		B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */; };
+		B6A35E1C1DA90B9B007BEC2F /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = B6A35E1B1DA90B9B007BEC2F /* click.wav */; };
 		B6AD5C3A1D966E660038044F /* ChangeGameModelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */; };
 		B6F139F01D90182C00429B68 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F139EF1D90182C00429B68 /* MainScene.swift */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,7 @@
 		B6994E381D7FB28F00201A4E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6994E3A1D7FB2B700201A4E /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		B6994E3D1D8D240800201A4E /* snake_burgerEater.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = snake_burgerEater.xcdatamodel; sourceTree = "<group>"; };
+		B6A35E1B1DA90B9B007BEC2F /* click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click.wav; sourceTree = "<group>"; };
 		B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeGameModelScene.swift; sourceTree = "<group>"; };
 		B6F139EF1D90182C00429B68 /* MainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +99,7 @@
 				B6994E3A1D7FB2B700201A4E /* MenuScene.swift */,
 				B68575ED1D95438F004B81F6 /* ChangeSkinScene.swift */,
 				B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */,
+				B6A35E1B1DA90B9B007BEC2F /* click.wav */,
 			);
 			path = snake_burgerEater;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 				B6994E111D7FB19C00201A4E /* LaunchScreen.storyboard in Resources */,
 				B61B9E3E1D8FD358004DA828 /* MainScene.sks in Resources */,
 				B6994E0E1D7FB19C00201A4E /* Assets.xcassets in Resources */,
+				B6A35E1C1DA90B9B007BEC2F /* click.wav in Resources */,
 				B6994E0C1D7FB19C00201A4E /* Main.storyboard in Resources */,
 				B600CF611D955E2400AC2D3D /* ChangeGameModelScene.sks in Resources */,
 			);

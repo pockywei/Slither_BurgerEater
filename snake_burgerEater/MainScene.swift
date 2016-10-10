@@ -31,6 +31,9 @@ class MainScene:SKScene,UITextFieldDelegate {
 	override func didMoveToView(view: SKView) {
 		
 		
+		
+		
+		
 //		let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainScene.dismissKeyboard))
 //		view.addGestureRecognizer(tap)
 	
@@ -53,7 +56,7 @@ class MainScene:SKScene,UITextFieldDelegate {
 		
 		change_skin = self.childNodeWithName("change_skin") as! SKSpriteNode
 		change_mode = self.childNodeWithName("setting") as! SKSpriteNode
-		
+		var background = self.childNodeWithName("background") as! SKSpriteNode
 		
 		
 		
@@ -73,23 +76,71 @@ class MainScene:SKScene,UITextFieldDelegate {
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
 		Play_ai.text = "Play with AI"
 		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-300)
+		Play_ai.zPosition=3
 		addChild(Play_ai)
 		
 		Multi_mode = SKLabelNode(fontNamed: "Chalkduster")
 		Multi_mode.text = "Online Game"
+		Multi_mode.zPosition=3
 		
 		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-450)
 		addChild(Multi_mode)
 	
+//		let blurEffect =  UIBlurEffect(style: UIBlurEffectStyle.Light)
+//		let bluredEffectView = UIVisualEffectView(effect: blurEffect)
+//		bluredEffectView.frame = CGRectMake(-13, 0, 460, 800)
+//		self.view!.addSubview(bluredEffectView)
+//		self.view!.sendSubviewToBack(bluredEffectView)
 		
-		
-		
+
 	}
 	
 	
 	override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)  {
 		/* Called when a touch begins */
-		 view!.endEditing(true)
+		for touch: AnyObject in touches {
+			let position = touch.locationInNode(self) // Get the x,y point of the touch
+			if CGRectContainsPoint(Play_ai.frame, position) {
+				Play_ai?.setScale(0.8)
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
+				let gameScene = GameScene(fileNamed: "GameScene")
+				inputText?.hidden = true
+				let transition = SKTransition.fadeWithDuration(1)
+				let skView = self.view as SKView!
+				gameScene?.scaleMode = .AspectFill
+				dispatch_async(dispatch_get_main_queue(), {
+					skView.presentScene(gameScene!, transition: transition)
+				})
+			view!.endEditing(true)
+			}else if CGRectContainsPoint(change_skin.frame, position) {
+				change_skin.setScale(0.8)
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
+				let changeSkinScene = ChangeSkinScene(fileNamed: "ChangeSkinScene")
+				
+				inputText?.hidden = true
+				let transition = SKTransition.fadeWithDuration(1)
+				let skView = self.view as SKView!
+				changeSkinScene?.scaleMode = .AspectFill
+				dispatch_async(dispatch_get_main_queue(), {
+					skView.presentScene(changeSkinScene!, transition: transition)
+				})
+				view!.endEditing(true)
+			}else if CGRectContainsPoint(change_mode.frame, position) {
+				change_mode.setScale(0.8)
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
+				let changeGameModelScene = ChangeGameModelScene(fileNamed: "ChangeGameModelScene")
+				inputText?.hidden = true
+				let transition = SKTransition.fadeWithDuration(1)
+				let skView = self.view as SKView!
+				changeGameModelScene?.scaleMode = .AspectFill
+				dispatch_async(dispatch_get_main_queue(), {
+					skView.presentScene(changeGameModelScene!, transition: transition)
+				})
+				view!.endEditing(true)
+			}
+		}
+
+		view!.endEditing(true)
 //		for touch: AnyObject in touches {
 //			let position = touch.locationInNode(self) // Get the x,y point of the touch
 //			if CGRectContainsPoint(aButton.frame, position) { // Detect if that point is inside our button
@@ -102,39 +153,9 @@ class MainScene:SKScene,UITextFieldDelegate {
 
 
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-		for touch: AnyObject in touches {
-			let position = touch.locationInNode(self) // Get the x,y point of the touch
-			if CGRectContainsPoint(Play_ai.frame, position) {
-				let gameScene = GameScene(fileNamed: "GameScene")
-				inputText?.hidden = true
-				let transition = SKTransition.fadeWithDuration(1)
-				let skView = self.view as SKView!
-				gameScene?.scaleMode = .AspectFill
-				dispatch_async(dispatch_get_main_queue(), { 
-					skView.presentScene(gameScene!, transition: transition)
-				})
-				
-			}else if CGRectContainsPoint(change_skin.frame, position) {
-				let changeSkinScene = ChangeSkinScene(fileNamed: "ChangeSkinScene")
-				inputText?.hidden = true
-				let transition = SKTransition.fadeWithDuration(1)
-				let skView = self.view as SKView!
-				changeSkinScene?.scaleMode = .AspectFill
-				dispatch_async(dispatch_get_main_queue(), {
-					skView.presentScene(changeSkinScene!, transition: transition)
-				})
-			
-			}else if CGRectContainsPoint(change_mode.frame, position) {
-				let changeGameModelScene = ChangeGameModelScene(fileNamed: "ChangeGameModelScene")
-				inputText?.hidden = true
-				let transition = SKTransition.fadeWithDuration(1)
-				let skView = self.view as SKView!
-				changeGameModelScene?.scaleMode = .AspectFill
-				dispatch_async(dispatch_get_main_queue(), {
-					skView.presentScene(changeGameModelScene!, transition: transition)
-				})
-			}
-		}
+		
+	
+	
 	}
 	
 	func textFieldDidBeginEditing(textField: UITextField) {

@@ -71,6 +71,7 @@ class ChangeSkinScene: SKScene {
 		for touch: AnyObject in touches {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
 			if CGRectContainsPoint(Back_button!.frame, position) {
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				let mainScene = MainScene(fileNamed: "MainScene")
 				//inputText?.hidden = true
 				let transition = SKTransition.fadeWithDuration(1)
@@ -80,7 +81,7 @@ class ChangeSkinScene: SKScene {
 					skView.presentScene(mainScene!, transition: transition)
 				})
 			}else if CGRectContainsPoint(left_button!.frame, position) {
-				
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				
 				count=(count!-1)
 				
@@ -115,7 +116,7 @@ class ChangeSkinScene: SKScene {
 				
 				
 			}else if CGRectContainsPoint(right_button!.frame, position) {
-				
+				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				
 				
 				
