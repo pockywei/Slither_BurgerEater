@@ -53,7 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         self.player = Player(color: self.color,gameScence: self)
 		
 		self.player!.userDefaults = NSUserDefaults.standardUserDefaults()
-        self.player!.snake.snakeSpeed = 150.0
+        self.player!.snake.snakeSpeed = 75.0
 		
         self.AIs = AI.initialAiSnake(14,gameScence: self)
 		
@@ -62,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		self.view?.multipleTouchEnabled = true
 		
 		//add food
-		self.addFood(20)
+		self.addFood(30)
 		
 		//设置用户的皮肤和操作模式
 		setDefaultSkin(self.player!.snake.snakeBodyPoints)
@@ -84,10 +84,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		{
             self.player!.updatePlayer()
             self.updateCamera()
-			self.checkheadposition(self.player!.snake.snakeBodyPoints[0])
+			
 			time=currentTime
             
 		}
+		self.checkheadposition(self.player!.snake.snakeBodyPoints[0])
 	}
 
 	
@@ -131,7 +132,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			let touchspeed = touch.locationInNode(camera!)
 			if CGRectContainsPoint(speed_up!.frame, touchspeed) {
 				print("HI")
-                self.player!.snake.snakeSpeed = 300.0
+                self.player!.snake.snakeSpeed = 125.0
 			}
 		}
 		
@@ -188,13 +189,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			handleTouches(touches)
 		}
 		
-		self.player!.snake.snakeSpeed = 150.0
+		self.player!.snake.snakeSpeed = 75.0
 	}
 	
 	//摇杆模式的函数
 	private func handJoyStick(touches: Set<UITouch>){
+		
 		if(stickActive==true){
-			updateCamera()
+			//updateCamera()
 				for touch in touches {
 					let location = touch.locationInNode(camera!)
 					
@@ -212,7 +214,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					}else{
 						ball.position = CGPointMake(base.position.x-xDist, base.position.y+yDist)
 					}
-					//updatePlayerWithKeepMoving(v)
+					self.player?.updatePlayerByJoystick(angle)
 				}
 		}
 	}
@@ -355,7 +357,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	func addFood(n: Int){
 		
 		for _ in 1...n {
-			let food = SKShapeNode(circleOfRadius: 4)
+			let food = SKShapeNode(circleOfRadius: 1)
             food.name = "food"
 			food.fillColor = UIColor(red:0.22, green:0.41, blue:0.41, alpha:1.0)
 			
@@ -364,7 +366,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			let aiy = random(min:100, max:1920)
 			food.position = CGPoint(x:aix, y:aiy)
 			
-			food.physicsBody = SKPhysicsBody(circleOfRadius: 3)
+			food.physicsBody = SKPhysicsBody(circleOfRadius: 1)
 			food.physicsBody?.dynamic = true
 			food.physicsBody?.categoryBitMask = 4
             food.physicsBody?.collisionBitMask = 0xaaaaaaa9
@@ -410,28 +412,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				//Snake_with_Skin!.runAction(Actionred)
 				for i in player{
 				i.fillColor=UIColor.redColor()
-					color = i.fillColor
+					self.player?.snake.snakeColor = i.fillColor
 				}
 				break
 			case 1:
 				//Snake_with_Skin!.runAction(Actionblue)
 				for i in player{
 				i.fillColor=UIColor.blueColor()
-					color = i.fillColor
+					self.player?.snake.snakeColor = i.fillColor
 				}
 				break
 			case 2:
 				//Snake_with_Skin!.runAction(Actionwhite)
 				for i in player{
 				i.fillColor=UIColor.grayColor()
-					color = i.fillColor
+					self.player?.snake.snakeColor = i.fillColor
 				}
 				break
 			default:
 				//Snake_with_Skin!.runAction(Actionbrown)
 				for i in player{
 				i.fillColor=UIColor.brownColor()
-					color = i.fillColor
+					self.player?.snake.snakeColor = i.fillColor
 				}
 				break
 			}
@@ -439,7 +441,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		else {
 			for i in player{
 				i.fillColor=UIColor.grayColor()
-				color = i.fillColor
+				self.player?.snake.snakeColor = i.fillColor
 			}
 			print("No color")
 		}
@@ -495,7 +497,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			//lightingBitMask = 1
 			
 			//.mask
-			player.playersnakes[0].addChild(light)
+			player?.snake.snakeBodyPoints[0].addChild(light)
 			
 			
 			speed_up = SKSpriteNode(imageNamed:"rocket-512")

@@ -47,4 +47,17 @@ class Player{
         }
         self.snake.gameScence.updateCamera()
     }
+	
+	func updatePlayerByJoystick(v:CGFloat){
+		
+		self.snake.angle = v
+		let velocotyX = self.snake.snakeSpeed * cos(self.snake.angle)
+		let velocityY = self.snake.snakeSpeed * sin(self.snake.angle)
+		let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+		self.snake.snakeBodyPoints[0].physicsBody!.velocity = newVelocity;
+		self.snake.BodyMoveTwardHead()
+		self.snake.gameScence.updateCamera()
+		
+	
+	}
 }

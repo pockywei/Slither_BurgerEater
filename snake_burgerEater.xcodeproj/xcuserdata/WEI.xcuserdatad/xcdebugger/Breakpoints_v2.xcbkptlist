@@ -14,7 +14,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "23"
-            endingLineNumber = "23">
+            endingLineNumber = "23"
+            landmarkName = "GameScene"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,12 +26,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/MainScene.swift"
-            timestampString = "497623407.581372"
+            timestampString = "496490271.821509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "didMoveToView(view:)"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "MainScene"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "snake_burgerEater/GameScene.swift"
+            timestampString = "497767058.601505"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
+            landmarkName = "didBeginContact(contact:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -40,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "497610449.672502"
+            timestampString = "497767058.601505"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "463"
-            endingLineNumber = "463"
-            landmarkName = "updateAI_snakes()"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "handleTouches(touches:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -56,13 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "497610449.672502"
+            timestampString = "497767058.601505"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "294"
-            endingLineNumber = "294"
-            landmarkName = "addSnakeLength(snake:length:)"
-            landmarkType = "7">
+            startingLineNumber = "770"
+            endingLineNumber = "770">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -72,29 +88,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "497615123.283524"
+            timestampString = "497767058.601505"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "768"
-            endingLineNumber = "768"
-            landmarkName = "setupCamera()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "497615123.283524"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "754"
-            endingLineNumber = "754"
-            landmarkName = "setupCamera()"
-            landmarkType = "7">
+            startingLineNumber = "756"
+            endingLineNumber = "756">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

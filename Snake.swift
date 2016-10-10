@@ -41,7 +41,7 @@ class Snake{
         
         self.snakeBodyPoints = []
         self.length = 4
-        self.radius = 10.0
+        self.radius = 4.0
         self.snakeColor = color
         self.snakeSpeed = 75.0
         self.angle = atan2(-1, -1) + CGFloat(M_PI)
@@ -54,7 +54,7 @@ class Snake{
         
         self.snakeBodyPoints = []
         self.length = 4
-        self.radius = 10.0
+        self.radius = 4.0
         self.snakeColor = color
         self.snakeSpeed = 20000.0
         self.angle = atan2(-1, -1) + CGFloat(M_PI)
@@ -111,7 +111,7 @@ class Snake{
             
             point.position = CGPoint(x:Int(aix) + i*5, y:Int(aiy) + i*5)
             
-            point.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+            point.physicsBody = SKPhysicsBody(circleOfRadius: 4)
             point.physicsBody?.dynamic = true
             
             if(i == 1){
@@ -144,7 +144,7 @@ class Snake{
             let point = SKShapeNode(circleOfRadius: CGFloat(self.radius))
             
             point.fillColor = self.snakeColor
-            point.position =  CGPoint(x:self.snakeBodyPoints[self.length-1].position.x+5, y:self.snakeBodyPoints[self.length-1].position.y+5)
+            point.position =  CGPoint(x:self.snakeBodyPoints[self.length-1].position.x+1, y:self.snakeBodyPoints[self.length-1].position.y+1)
             
             point.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(self.radius))
             point.physicsBody?.dynamic = true
@@ -156,6 +156,7 @@ class Snake{
             
             point.physicsBody?.affectedByGravity = false
             point.physicsBody?.allowsRotation = false
+			
             
             self.snakeBodyPoints.append(point)
             self.gameScence.addChild(point)
