@@ -21,7 +21,7 @@ class Snake{
     var gameScence:GameScene
     var scale:CGFloat
     
-    static var alph:CGFloat = 0.2
+    static var alph:CGFloat = 0.4
     static var playerPositionX = 200
     static var playerPositionY = 200
     
@@ -73,9 +73,10 @@ class Snake{
         for i in 0...length-1{
             let point = SKShapeNode(circleOfRadius: CGFloat(radius))
             point.fillColor = color
-            point.position = CGPoint(x:Snake.playerPositionX+i*5, y:Snake.playerPositionY)
+            point.position = CGPoint(x:Snake.playerPositionX+i, y:Snake.playerPositionY)
             point.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(radius))
             point.physicsBody?.dynamic = true
+			point.lineWidth=0
             
             if(i==0){
                 point.name = headName
@@ -113,7 +114,7 @@ class Snake{
             
             point.physicsBody = SKPhysicsBody(circleOfRadius: 4)
             point.physicsBody?.dynamic = true
-            
+            point.lineWidth=0
             if(i == 1){
                 point.name = "aihead"+(index as NSNumber).stringValue
                 point.physicsBody?.categoryBitMask = aiHeadBitMask
@@ -149,6 +150,7 @@ class Snake{
             point.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(self.radius))
             point.physicsBody?.dynamic = true
             point.setScale(self.scale)
+			point.lineWidth=0
             point.name = "playerbody"
             point.physicsBody?.categoryBitMask = categoryBM
             point.physicsBody?.collisionBitMask = collisionBM
@@ -203,4 +205,14 @@ class Snake{
     func random(min min: CGFloat, max: CGFloat) -> CGFloat {
         return random() * (max - min) + min
     }
+	
+	func reduceSnakeLength(){
+		
+		if(self.length > 3)
+		{
+			self.snakeBodyPoints[length-1].removeFromParent()
+			self.snakeBodyPoints.removeAtIndex(length-1)
+			self.length = self.length - 1
+		}
+	}
 }

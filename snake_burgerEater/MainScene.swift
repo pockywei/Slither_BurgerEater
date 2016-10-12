@@ -60,7 +60,12 @@ class MainScene:SKScene,UITextFieldDelegate {
 		
 		
 		
-		inputText = UITextField(frame: CGRect(x:85,y:320,width:200,height:40))//如何居中
+		inputText = UITextField(frame: CGRect(x:80,y:320,width:200,height:40))//如何居中
+		
+//		let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+//		dispatch_after(delayTime, dispatch_get_main_queue()) {
+//		self.inputText!.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+//		}
 		
 		inputText!.delegate = self
 		
@@ -75,14 +80,15 @@ class MainScene:SKScene,UITextFieldDelegate {
 		
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
 		Play_ai.text = "Play with AI"
-		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-300)
+		//Play_ai.zRotation = CGFloat(-M_PI_2)
+		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-250)
 		Play_ai.zPosition=3
 		addChild(Play_ai)
 		
 		Multi_mode = SKLabelNode(fontNamed: "Chalkduster")
 		Multi_mode.text = "Online Game"
 		Multi_mode.zPosition=3
-		
+		//Multi_mode.zRotation = CGFloat(-M_PI_2)
 		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-450)
 		addChild(Multi_mode)
 	

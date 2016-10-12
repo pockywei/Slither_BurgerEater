@@ -17,6 +17,8 @@ class Player{
 	var lastTouch: CGPoint?
 	var userDefaults : NSUserDefaults?
     var touchedScreen = false
+	var speedupTapCount = 0
+	
     
 // Insert code here to add functionality to your managed object subclass
     init(color:UIColor,gameScence: GameScene) {
@@ -48,9 +50,8 @@ class Player{
         self.snake.gameScence.updateCamera()
     }
 	
-	func updatePlayerByJoystick(v:CGFloat){
+	func updatePlayerByJoystick(){
 		
-		self.snake.angle = v
 		let velocotyX = self.snake.snakeSpeed * cos(self.snake.angle)
 		let velocityY = self.snake.snakeSpeed * sin(self.snake.angle)
 		let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
@@ -60,4 +61,6 @@ class Player{
 		
 	
 	}
+	
+
 }

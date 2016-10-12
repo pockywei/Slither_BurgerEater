@@ -14,7 +14,6 @@ import CoreData
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
 	
     var color = UIColor.grayColor()
-    
     //Game Class
 	var time: NSTimeInterval = 0
 	
@@ -62,7 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		self.view?.multipleTouchEnabled = true
 		
 		//add food
-		self.addFood(30)
+		self.addFood(80)
 		
 		//设置用户的皮肤和操作模式
 		setDefaultSkin(self.player!.snake.snakeBodyPoints)
@@ -80,14 +79,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	/*=============================神级update函数=====================================================*/
 	
 	override func update(currentTime: NSTimeInterval) {
-		if (currentTime-time > 60)
-		{
-            self.player!.updatePlayer()
-            self.updateCamera()
+		
+			if let count_modelAnyobj = self.player!.userDefaults!.valueForKey("model")
+			{
+				if (count_modelAnyobj as! String) == "Rocker_model"
+				{
+					print("hello Rocker update")
+					self.player!.updatePlayerByJoystick()
+					self.updateCamera()
+				}
+				else if (count_modelAnyobj as! String) == "Arrow_model"
+				{
+					
+				}
+				else
+				{
+					self.player!.updatePlayer()
+					self.updateCamera()
+				}
+
+				
+			}
+			
+			
 			
 			time=currentTime
             
-		}
+		
 		self.checkheadposition(self.player!.snake.snakeBodyPoints[0])
 	}
 
@@ -143,6 +161,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		{
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
+				stickActive = true
 				handJoyStick(touches)
 			}
 			else if (count_modelAnyobj as! String) == "Arrow_model"
@@ -172,6 +191,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					let move:SKAction = SKAction.moveTo(base.position, duration: 0.2)
 					move.timingMode = .EaseOut
 					ball.runAction(move)
+					
+					
 					handJoyStick(touches)
 				}
 			}
@@ -197,9 +218,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		if(stickActive==true){
 			//updateCamera()
+			//print("I am been handled")
 				for touch in touches {
 					let location = touch.locationInNode(camera!)
-					
+					let touchspeed = touch.locationInNode(camera!)
 					let v = CGVector(dx:location.x - base.position.x, dy:location.y-base.position.y)
 					
 					let angle = atan2(v.dy,v.dx)
@@ -214,7 +236,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					}else{
 						ball.position = CGPointMake(base.position.x-xDist, base.position.y+yDist)
 					}
-					self.player?.updatePlayerByJoystick(angle)
+					
+					if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false)
+					{
+					self.player?.snake.angle = angle
+					}
+					else{
+						leaveFood()
+					}
 				}
 		}
 	}
@@ -222,6 +251,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
 	//主要是更新最后的tap 点坐标，lastTouch是个全局变量
 	private func handleTouches(touches: Set<UITouch>) {
+		
 			for touch in touches {
 				
 				let touchLocation = touch.locationInNode(self)
@@ -231,6 +261,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				{
 					player!.lastTouch = touchLocation
                     player!.touchedScreen = true
+				}
+				else{
+					leaveFood()
 				}
 			}
 	}
@@ -377,6 +410,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		}
 	}
 	
+	func leaveFood(){
+		player?.speedupTapCount++
+		print(player?.speedupTapCount)
+
+//		player?.leavedisk()
+		if player?.speedupTapCount > 20{
+			player?.snake.reduceSnakeLength()
+			addFoodwithPostion((player?.snake.snakeBodyPoints[(player?.snake.length)!-1].position)!)
+			
+			player?.speedupTapCount = 0
+		}
+		
+		
+
+	}
+	
+	func addFoodwithPostion(positon:CGPoint){
+		let food = SKShapeNode(circleOfRadius: 1)
+		food.name = "food"
+		food.fillColor = UIColor(red:0.22, green:0.41, blue:0.41, alpha:1.0)
+		food.position = positon
+		
+		food.physicsBody = SKPhysicsBody(circleOfRadius: 1)
+		food.physicsBody?.dynamic = true
+		food.physicsBody?.categoryBitMask = 4
+		food.physicsBody?.collisionBitMask = 0xaaaaaaa9
+		food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
+		food.physicsBody?.affectedByGravity = false
+		food.physicsBody?.allowsRotation = false
+		addChild(food)
+
+	
+	}
 	/*===================================功能函数======================================================*/
 	// Helper functions, to generate random CGPoints
 	func random() -> CGFloat {
@@ -459,15 +525,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				print("Arrow")
 				break
 			case "Rocker_model":
-				base.position.x = (camera?.position.x)! - 400
-				base.position.y = (camera?.position.y)! - 1100
-				
+				base.position.x = (camera?.position.x)! - 500
+				base.position.y = (camera?.position.y)! + 500
+				base.zPosition=6
 				//base.position = CGPointMake(150, 200)
 				base.size=CGSize(width: 300,height: 300)
 				
-				ball.position.x = (camera?.position.x)! - 400
-				ball.position.y = (camera?.position.y)! - 1100
-				
+				ball.position.x = (camera?.position.x)! - 500
+				ball.position.y = (camera?.position.y)! + 500
+				ball.zPosition=6
 				//ball.position = CGPointMake(150,200)
 				ball.size=CGSize(width: 100,height: 100)
 				camera!.addChild(base)
@@ -543,6 +609,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		if let camera = camera {
 			camera.position = CGPoint(x: self.player!.snake.snakeBodyPoints[0].position.x, y: self.player!.snake.snakeBodyPoints[0].position.y)
 		}
+		
+//		if let length = self.player?.snake.length{
+//			var increment = length%7
+//			if(increment == 6){
+//				
+//			}
+//		}
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	func handleArrowTap(){
