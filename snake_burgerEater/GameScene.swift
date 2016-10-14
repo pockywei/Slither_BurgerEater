@@ -21,6 +21,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	var stickActive : Bool = false
 	let base = SKSpriteNode(imageNamed:"circle")
 	let ball = SKSpriteNode(imageNamed:"ball")
+	let controller = SKSpriteNode(imageNamed:"changeControl")
+	var controllerFlag = 0
 	
 	let userDefaults = NSUserDefaults.standardUserDefaults()
 
@@ -182,10 +184,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
 	//这个是你放手的时候，才会执行的
 	override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+		
 		if let count_modelAnyobj = player!.userDefaults!.valueForKey("model")
 		{
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
+				changeControlPlaceJoystick(touches)
 				if(stickActive==true)
 				{
 					let move:SKAction = SKAction.moveTo(base.position, duration: 0.2)
@@ -202,11 +206,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 			else
 			{
+				changeControlPlaceNormal(touches)
 				handleTouches(touches)
 			}
 			
 		}
 		else{
+			changeControlPlaceNormal(touches)
 			handleTouches(touches)
 		}
 		
@@ -237,7 +243,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 						ball.position = CGPointMake(base.position.x-xDist, base.position.y+yDist)
 					}
 					
-					if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false)
+					if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false && CGRectContainsPoint(controller.frame, touchspeed) == false)
 					{
 					self.player?.snake.angle = angle
 					}
@@ -257,7 +263,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				let touchLocation = touch.locationInNode(self)
 				let touchspeed = touch.locationInNode(camera!)
 				
-				if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false)
+				if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false && CGRectContainsPoint(controller.frame, touchspeed) == false)
 				{
 					player!.lastTouch = touchLocation
                     player!.touchedScreen = true
@@ -270,6 +276,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
 	func checkheadposition(head:SKShapeNode){
 		if (head.position.x >= 1024 || head.position.x <= leftwall.frame.width || head.position.y >= (leftwall.frame.height - downwall.frame.height) || head.position.y <= downwall.frame.height){
+			inToDicks()
 			gameOver(false)
 		}
 	}
@@ -359,6 +366,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }
         else if(contact.bodyA.node?.name == "playerhead"){
             if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
+				
+				inToDicks()
                 gameOver(false)
             }
         }
@@ -373,6 +382,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 //A snake die
             }
             else if(contact.bodyB.node?.name == "playerhead"){
+				inToDicks()
                 gameOver(false)
             }
         }
@@ -442,6 +452,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		addChild(food)
 
 	
+	}
+	
+	func inToDicks(){
+	
+		for i in (player?.snake.snakeBodyPoints)!{
+			addFoodwithPostion(i.position)
+		}
+		player?.snake.turnIntoDisks()
+		
 	}
 	/*===================================功能函数======================================================*/
 	// Helper functions, to generate random CGPoints
@@ -565,6 +584,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			//.mask
 			player?.snake.snakeBodyPoints[0].addChild(light)
 			
+			controller.position.x = (camera?.position.x)! - 420
+			controller.position.y =  (camera?.position.y)! - 1100
+			controller.setScale(0.3)
+			controller.zPosition = 10
 			
 			speed_up = SKSpriteNode(imageNamed:"rocket-512")
 			speed_up?.position.x = (camera?.position.x)! - 620
@@ -572,13 +595,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			speed_up?.size = CGSize(width: 100,height: 100)
 			
 			speed_up?.zPosition = 10
-
+			
 			
 			if let speed = speed_up{
 				camera_frame.addChild(speed)
 			}else{
 				print("no speed up")
 			}
+			
+				camera_frame.addChild(controller)
 			
 			
 		}
@@ -610,12 +635,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			camera.position = CGPoint(x: self.player!.snake.snakeBodyPoints[0].position.x, y: self.player!.snake.snakeBodyPoints[0].position.y)
 		}
 		
-//		if let length = self.player?.snake.length{
-//			var increment = length%7
-//			if(increment == 6){
-//				
-//			}
-//		}
+		if let length = self.player?.snake.length{
+			print(length)
+			var increment = length%9
+			if(increment == 8 && length < 25){
+				print(camera?.frame.size)
+				var s = 0.1 + CGFloat(Float(length)/200.0)
+				print(s)
+				let zoomInAction = SKAction.scaleTo(s, duration: 1)
+				camera!.runAction(zoomInAction)
+
+			}
+		}
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	func handleArrowTap(){
@@ -623,6 +654,82 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	}
 	
+	func changeControlPlaceNormal(touches: Set<UITouch>){
+		for touch in touches{
+			let touched = touch.locationInNode(camera!)
+			if(CGRectContainsPoint(controller.frame, touched) == true){
+				
+				controllerFlag += 1
+				controllerFlag = controllerFlag%2
+				if(controllerFlag==1){
+					
+					let pos = CGPoint(x: -200,y: 673)
+					
+					
+					let move_speed = SKAction.moveTo(pos, duration: 1)
+					
+					
+					speed_up?.runAction(move_speed)
+					
+					
+				}else{
+					
+					let pos = CGPoint(x:-367,y:-626)
+					
+					let move_speed = SKAction.moveTo(pos, duration: 1)
+					speed_up?.runAction(move_speed)
+					
+					
+					
+				}
+			}
+			
+		}
+	
+	}
+	
+	func changeControlPlaceJoystick(touches: Set<UITouch>){
+	
+		for touch in touches{
+			let touched = touch.locationInNode(camera!)
+			if(CGRectContainsPoint(controller.frame, touched) == true){
+			
+				controllerFlag += 1
+				controllerFlag = controllerFlag%2
+				if(controllerFlag==1){
+					print((camera?.position.x)! - 500)
+					print((camera?.position.y)! + 500)
+					print((camera?.position.x)! - 720)
+					print((camera?.position.y)! - 1100)
+					let pos = CGPoint(x: -200,y: 673)
+					let pos2 = CGPoint(x:-367,y:-626)
+					
+					let move_speed = SKAction.moveTo(pos, duration: 1)
+					let move_joystick = SKAction.moveTo(pos2, duration: 1)
+					
+					speed_up?.runAction(move_speed)
+					ball.runAction(move_joystick)
+					base.runAction(move_joystick)
+					
+				}else{
+					
+					let pos = CGPoint(x:-367,y:-626)
+					let pos2 = CGPoint(x: -200,y: 673)
+					let move_speed = SKAction.moveTo(pos, duration: 1)
+					speed_up?.runAction(move_speed)
+					let move_joystick = SKAction.moveTo(pos2, duration: 1)
+					
+					ball.runAction(move_joystick)
+					base.runAction(move_joystick)
+					
+				
+				}
+			}
+		
+		}
+		
+
+	}
 	
 	
 }

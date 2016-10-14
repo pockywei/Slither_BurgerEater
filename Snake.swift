@@ -215,4 +215,15 @@ class Snake{
 			self.length = self.length - 1
 		}
 	}
+	
+	func turnIntoDisks(){
+		for i in self.snakeBodyPoints{
+			i.removeFromParent()
+		}
+		print("turnIntoDisks")
+		//self.snakeBodyPoints.removeAll()
+		
+	}
+	
+
 }
