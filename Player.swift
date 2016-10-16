@@ -18,6 +18,8 @@ class Player{
 	var userDefaults : NSUserDefaults?
     var touchedScreen = false
 	var speedupTapCount = 0
+	var score = 0
+	var rewards = 0
 	
     
 // Insert code here to add functionality to your managed object subclass

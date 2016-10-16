@@ -170,6 +170,7 @@ class MainScene:SKScene,UITextFieldDelegate {
  func textFieldDidEndEditing(textField: UITextField) {
 	print(textField.text)
 	userDefaults.setValue(textField.text, forKey: "username")
+	self.userDefaults.synchronize() // don't forget this!!!!
  print("TextField did end editing method called")
  }
  func textFieldShouldBeginEditing(textField: UITextField) -> Bool {

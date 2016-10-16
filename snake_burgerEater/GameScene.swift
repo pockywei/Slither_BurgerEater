@@ -63,7 +63,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		self.view?.multipleTouchEnabled = true
 		
 		//add food
-		self.addFood(80)
+		self.addFood(180)
+		self.addsuperfood(35)
 		
 		//设置用户的皮肤和操作模式
 		setDefaultSkin(self.player!.snake.snakeBodyPoints)
@@ -237,9 +238,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 					let xDist:CGFloat = sin(angle-1.57079633) * length
 					let yDist:CGFloat = cos(angle-1.57079633) * length
 					
-					if(CGRectContainsPoint(base.frame, location)){
+					if(CGRectContainsPoint(base.frame, location) && CGRectContainsPoint(speed_up!.frame, touchspeed) == false){
 						ball.position = location
-					}else{
+					}else if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false){
 						ball.position = CGPointMake(base.position.x-xDist, base.position.y+yDist)
 					}
 					
@@ -356,13 +357,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             //addSnakeLength(player_snake, length: 1)
             if(contact.bodyA.node?.name == "food")
             {
+				self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
                 contact.bodyA.node?.removeFromParent()
             }
             else
             {
+				self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
                 contact.bodyB.node?.removeFromParent()
             }
             addFood(1)
+			if((player?.snake.length)!%8 == 4){
+				addsuperfood(4)
+			}
         }
         else if(contact.bodyA.node?.name == "playerhead"){
             if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
@@ -396,19 +402,63 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	/*===============================食物相关========================================================*/
 	
+	
+	//Add super food
+	func addsuperfood(n: Int){
+	
+		for _ in 1...n {
+			let food = SKShapeNode(circleOfRadius: 2)
+			food.name = "food"
+			food.fillColor = UIColor(red:0.22, green:0.81, blue:0.41, alpha:1.0)
+			food.lineWidth=0
+
+			let aix = random(min:100, max:1000)
+			
+			let aiy = random(min:100, max:1920)
+			food.position = CGPoint(x:aix, y:aiy)
+			
+			food.physicsBody = SKPhysicsBody(circleOfRadius: 2)
+			food.physicsBody?.dynamic = true
+			food.physicsBody?.categoryBitMask = 4
+			food.physicsBody?.collisionBitMask = 0xaaaaaaa9
+			food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
+			food.physicsBody?.affectedByGravity = false
+			food.physicsBody?.allowsRotation = false
+			
+			
+			let wait = SKAction.waitForDuration(0.7)
+			let block = SKAction.runBlock({food.fillColor=SKColor.whiteColor()})
+			let wait1 = SKAction.waitForDuration(0.7)
+			let block1 = SKAction.runBlock({food.fillColor=UIColor(red:0.22, green:0.81, blue:0.41, alpha:1.0)})
+			let block2 = SKAction.runBlock({food.fillColor=UIColor(red:0.97, green:0.68, blue:0.68, alpha:1.0)})
+			
+			let scale = SKAction.scaleTo(0.4, duration: 0.5)
+			let fade = SKAction.fadeOutWithDuration(0.5)
+			let scale2 = SKAction.scaleTo(1.3, duration: 0.5)
+			//let sequence = SKAction.sequence([scale, fade])
+			
+			
+			let forever = SKAction.repeatActionForever(SKAction.sequence([wait,scale,block,wait1,block1,scale2,wait,scale,block,wait1,block2,scale2]))
+			
+			food.runAction(forever)
+			
+			addChild(food)
+		}
+	
+	}
 	// Add food when food is eaten by user
 	func addFood(n: Int){
 		
 		for _ in 1...n {
 			let food = SKShapeNode(circleOfRadius: 1)
             food.name = "food"
-			food.fillColor = UIColor(red:0.22, green:0.41, blue:0.41, alpha:1.0)
+			food.fillColor = UIColor(red:0.99, green:1.00, blue:0.17, alpha:1.0)
 			
 			let aix = random(min:100, max:1000)
 			
 			let aiy = random(min:100, max:1920)
 			food.position = CGPoint(x:aix, y:aiy)
-			
+			food.lineWidth=0
 			food.physicsBody = SKPhysicsBody(circleOfRadius: 1)
 			food.physicsBody?.dynamic = true
 			food.physicsBody?.categoryBitMask = 4
@@ -416,6 +466,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
 			food.physicsBody?.affectedByGravity = false
 			food.physicsBody?.allowsRotation = false
+			
+			let scale = SKAction.scaleTo(0.4, duration: 0.5)
+			//let fade = SKAction.fadeOutWithDuration(0.5)
+			let scale2 = SKAction.scaleTo(0.8, duration: 0.5)
+			let sequence = SKAction.sequence([scale2,scale])
+			
+			let forever = SKAction.repeatActionForever(sequence)
+			food.runAction(forever)
 			addChild(food)
 		}
 	}
@@ -449,6 +507,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
 		food.physicsBody?.affectedByGravity = false
 		food.physicsBody?.allowsRotation = false
+		food.lineWidth=0
+		let scale = SKAction.scaleTo(0.4, duration: 0.5)
+		//let fade = SKAction.fadeOutWithDuration(0.5)
+		let scale2 = SKAction.scaleTo(0.8, duration: 0.5)
+		let sequence = SKAction.sequence([scale2,scale])
+		
+		let forever = SKAction.repeatActionForever(sequence)
+		food.runAction(forever)
+		
 		addChild(food)
 
 	
@@ -474,13 +541,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	private func gameOver(didWin: Bool) {
 		print("- - - Game Ended - - -")
-		
+		var g = GameViewController()
+		g.gameOver1()
 		let menuScene = MenuScene(size: self.size)
 		//menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
+		self.runAction(SKAction.playSoundFileNamed("GameOver.mp3", waitForCompletion: false))
 		let transition = SKTransition.fadeWithDuration(1)
 		menuScene.scaleMode = SKSceneScaleMode.AspectFill
 		self.scene!.view?.presentScene(menuScene, transition: transition)
-		
 		
 	}
 	/*设置初始的界面*/
@@ -615,8 +683,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			label.fontName = "AvenirNext-Bold"
 			label.fontSize = 40
 			label.fontColor = UIColor.whiteColor()
-			label.position.x = (camera?.position.x)! + 150
+			label.position.x = (camera?.position.x)! + 250
 			label.position.y = (camera?.position.y)! - 1200
+			label.zRotation = CGFloat(-M_PI_2)
 			//addChild(label)
 			if let camera_frame = camera{
 			camera_frame.addChild(label)

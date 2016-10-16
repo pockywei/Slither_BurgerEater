@@ -29,6 +29,9 @@ class ChangeSkinScene: SKScene {
 	let Actionblue = SKAction.colorizeWithColor(SKColor.blueColor(), colorBlendFactor: 1.0, duration: 0.5)
 	let Actionred = SKAction.colorizeWithColor(SKColor.redColor(), colorBlendFactor: 1.0, duration: 0.5)
 	
+	let ActionPink = SKAction.colorizeWithColor(UIColor(red:0.97, green:0.68, blue:0.68, alpha:1.0), colorBlendFactor: 1.0, duration: 0.5)
+	
+	
 	override func didMoveToView(view: SKView) {
 		
 		Snake_with_Skin = self.childNodeWithName("Snake_with_Skin") as? SKSpriteNode
@@ -53,10 +56,14 @@ class ChangeSkinScene: SKScene {
 				Snake_with_Skin!.runAction(Actionwhite)
 				count=count_skin
 				break
-			default:
+			case 3:
 				Snake_with_Skin!.runAction(Actionbrown)
 				count=count_skin
 				break
+			default:
+				Snake_with_Skin!.runAction(ActionPink)
+				count=count_skin
+				
 			}
 		}
 		else {
@@ -87,7 +94,21 @@ class ChangeSkinScene: SKScene {
 				
 				if(count<0)
 				{
-				count=3
+						print(Player_unlock_skin)
+						print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+						if Player_unlock_skin == 1
+						{
+							print("****************************")
+							count = 4
+						}
+						else
+						{
+							print("))))))))))))))))))))))))")
+							count=3
+						}
+					
+				
+					
 				}
 				
 				print(count)
@@ -107,8 +128,13 @@ class ChangeSkinScene: SKScene {
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 					break
-				default:
+				case 3:
 					Snake_with_Skin!.runAction(Actionbrown)
+					userDefaults.setValue(count, forKey: "skin")
+					userDefaults.synchronize() // don't forget this!!!!
+					break
+				default:
+					Snake_with_Skin!.runAction(ActionPink)
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 					break
@@ -119,8 +145,19 @@ class ChangeSkinScene: SKScene {
 				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				
 				
+				if Player_unlock_skin == 1
+				{
+					print("****************************")
+					count=(count!+1)%5
+				}
+				else
+				{
+					print("))))))))))))))))))))))))")
+					count=(count!+1)%4
+				}
+
 				
-				count=(count!+1)%4
+				
 				
 				print(count)
 				switch count! {
@@ -137,10 +174,16 @@ class ChangeSkinScene: SKScene {
 					Snake_with_Skin!.runAction(Actionwhite)
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
-				default:
+				case 3:
 					Snake_with_Skin!.runAction(Actionbrown)
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
+					break
+				default:
+					Snake_with_Skin!.runAction(ActionPink)
+					userDefaults.setValue(count, forKey: "skin")
+					userDefaults.synchronize() // don't forget this!!!!
+					break
 				}
 				
 			

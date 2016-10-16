@@ -8,6 +8,13 @@
 
 import UIKit
 import SpriteKit
+import GoogleMobileAds
+import Social
+
+
+
+	var Player_unlock_skin = 0
+
 
 extension SKNode {
 	
@@ -26,18 +33,23 @@ extension SKNode {
 	}
 	
 }
+var interstitialAd:GADInterstitial!
 
-class GameViewController: UIViewController {
-	
+class GameViewController: UIViewController ,GADInterstitialDelegate{
+	//let userDefaults = NSUserDefaults.standardUserDefaults()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.showTweetSheet), name: "WhateverYouCalledTheAlertInTheOtherLineOfCode", object: nil)
+		
+		interstitialAd = createAndLoadInterstitial()
 		if let scene = MainScene.unarchiveFromFile("MainScene") as? MainScene {
 			// Configure the view.
 			let skView = self.view as! SKView
-			skView.showsFPS = true
-			skView.showsNodeCount = true
+			skView.showsFPS = false
+			skView.showsNodeCount = false
 			
 			/* Sprite Kit applies additional optimizations to improve rendering performance */
 			skView.ignoresSiblingOrder = true
@@ -68,6 +80,59 @@ class GameViewController: UIViewController {
 	
 	override func prefersStatusBarHidden() -> Bool {
 		return true
+	}
+	
+	func createAndLoadInterstitial() -> GADInterstitial {
+		let interstitial = GADInterstitial (adUnitID:"ca-app-pub-3940256099942544/4411468910")
+		interstitial.delegate = self
+		let request : GADRequest = GADRequest()
+		interstitial.loadRequest(request)
+		
+		return interstitial
+	}
+	
+	func interstitialDidDismissScreen(ad: GADInterstitial!) {
+		interstitialAd = createAndLoadInterstitial()
+	}
+	
+	
+	
+	func gameOver1() {
+		guard interstitialAd != nil else { return }
+		if interstitialAd.isReady {
+			let currentViewController: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController!
+			interstitialAd.presentFromRootViewController(currentViewController!)
+		}
+		
+	}
+	
+	func showTweetSheet() {
+		print("showTweetSheet")
+		let tweetSheet = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+		tweetSheet.completionHandler = {
+			result in
+			switch result {
+			case SLComposeViewControllerResult.Cancelled:
+				//Add code to deal with it being cancelled
+				break
+				
+			case SLComposeViewControllerResult.Done:
+				print("showTweetSheet======================================================")
+				Player_unlock_skin=1
+				print(Player_unlock_skin)
+				//Add code here to deal with it being completed
+				//Remember that dimissing the view is done for you, and sending the tweet to social media is automatic too. You could use this to give in game rewards?
+				break
+			}
+		}
+		
+		tweetSheet.setInitialText("I am playing Slither.BurgerEater, join us please! Share to get more skin!!") //The default text in the tweet
+		tweetSheet.addImage(UIImage(named: "share.png")) //Add an image if you like?
+		tweetSheet.addURL(NSURL(string: "http://twitter.com")) //A url which takes you into safari if tapped on
+		
+		self.presentViewController(tweetSheet, animated: false, completion: {
+			//Optional completion statement
+		})
 	}
 	
 }

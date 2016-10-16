@@ -23,6 +23,10 @@
 		B6994E3B1D7FB2B700201A4E /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3A1D7FB2B700201A4E /* MenuScene.swift */; };
 		B6994E3E1D8D240800201A4E /* snake_burgerEater.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6994E3C1D8D240800201A4E /* snake_burgerEater.xcdatamodeld */; };
 		B6A35E1C1DA90B9B007BEC2F /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = B6A35E1B1DA90B9B007BEC2F /* click.wav */; };
+		B6AA53221DB10FE700FC0E79 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AA53211DB10FE700FC0E79 /* GoogleMobileAds.framework */; };
+		B6AA53241DB110BF00FC0E79 /* GoogleMobileAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AA53231DB110BF00FC0E79 /* GoogleMobileAds.framework */; };
+		B6AA53261DB1F32300FC0E79 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = B6AA53251DB1F32300FC0E79 /* hit.wav */; };
+		B6AA53281DB1F4B200FC0E79 /* GameOver.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B6AA53271DB1F4B200FC0E79 /* GameOver.mp3 */; };
 		B6AD5C3A1D966E660038044F /* ChangeGameModelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */; };
 		B6F139F01D90182C00429B68 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F139EF1D90182C00429B68 /* MainScene.swift */; };
 		CADC74A71DA8F7BF0022C7D4 /* Snake.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADC74A61DA8F7BF0022C7D4 /* Snake.swift */; };
@@ -48,6 +52,10 @@
 		B6994E3A1D7FB2B700201A4E /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		B6994E3D1D8D240800201A4E /* snake_burgerEater.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = snake_burgerEater.xcdatamodel; sourceTree = "<group>"; };
 		B6A35E1B1DA90B9B007BEC2F /* click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click.wav; sourceTree = "<group>"; };
+		B6AA53211DB10FE700FC0E79 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleMobileAds.framework; path = ../../../../../GoogleMobileAds.framework; sourceTree = "<group>"; };
+		B6AA53231DB110BF00FC0E79 /* GoogleMobileAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMobileAds.framework; sourceTree = "<group>"; };
+		B6AA53251DB1F32300FC0E79 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
+		B6AA53271DB1F4B200FC0E79 /* GameOver.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = GameOver.mp3; sourceTree = "<group>"; };
 		B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeGameModelScene.swift; sourceTree = "<group>"; };
 		B6F139EF1D90182C00429B68 /* MainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
 		CADC74A61DA8F7BF0022C7D4 /* Snake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snake.swift; sourceTree = "<group>"; };
@@ -59,6 +67,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6AA53241DB110BF00FC0E79 /* GoogleMobileAds.framework in Frameworks */,
+				B6AA53221DB10FE700FC0E79 /* GoogleMobileAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +83,7 @@
 				B61B9DFD1D8FBFC9004DA828 /* Player.swift */,
 				B6994E011D7FB19C00201A4E /* snake_burgerEater */,
 				B6994E001D7FB19C00201A4E /* Products */,
+				B6AA53201DB10FE700FC0E79 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,6 +98,7 @@
 		B6994E011D7FB19C00201A4E /* snake_burgerEater */ = {
 			isa = PBXGroup;
 			children = (
+				B6AA53231DB110BF00FC0E79 /* GoogleMobileAds.framework */,
 				B6994E381D7FB28F00201A4E /* Info.plist */,
 				B6994E361D7FB23500201A4E /* Images.xcassets */,
 				B6994E021D7FB19C00201A4E /* AppDelegate.swift */,
@@ -104,9 +116,19 @@
 				B6994E3A1D7FB2B700201A4E /* MenuScene.swift */,
 				B68575ED1D95438F004B81F6 /* ChangeSkinScene.swift */,
 				B6AD5C391D966E660038044F /* ChangeGameModelScene.swift */,
+				B6AA53251DB1F32300FC0E79 /* hit.wav */,
+				B6AA53271DB1F4B200FC0E79 /* GameOver.mp3 */,
 				B6A35E1B1DA90B9B007BEC2F /* click.wav */,
 			);
 			path = snake_burgerEater;
+			sourceTree = "<group>";
+		};
+		B6AA53201DB10FE700FC0E79 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B6AA53211DB10FE700FC0E79 /* GoogleMobileAds.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,8 +191,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6AA53281DB1F4B200FC0E79 /* GameOver.mp3 in Resources */,
 				B6994E351D7FB22400201A4E /* GameScene.sks in Resources */,
 				B6994E371D7FB23500201A4E /* Images.xcassets in Resources */,
+				B6AA53261DB1F32300FC0E79 /* hit.wav in Resources */,
 				B68575EC1D9540C7004B81F6 /* ChangeSkinScene.sks in Resources */,
 				B6994E111D7FB19C00201A4E /* LaunchScreen.storyboard in Resources */,
 				B61B9E3E1D8FD358004DA828 /* MainScene.sks in Resources */,
@@ -247,6 +271,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -294,6 +319,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -316,6 +342,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/snake_burgerEater",
+				);
 				INFOPLIST_FILE = snake_burgerEater/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
@@ -328,6 +358,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/snake_burgerEater",
+				);
 				INFOPLIST_FILE = snake_burgerEater/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "unimelb.snake-burgerEater";
