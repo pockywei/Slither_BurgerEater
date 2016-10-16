@@ -58,11 +58,5 @@ class Player{
 		self.snake.snakeBodyPoints[0].physicsBody!.velocity = newVelocity;
 		self.snake.BodyMoveTwardHead()
 		self.snake.gameScence.updateCamera()
-		
-	
 	}
-	
-
-	
-
 }

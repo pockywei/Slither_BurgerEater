@@ -81,7 +81,7 @@ class MainScene:SKScene,UITextFieldDelegate {
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
 		Play_ai.text = "Play with AI"
 		//Play_ai.zRotation = CGFloat(-M_PI_2)
-		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-250)
+		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-500)
 		Play_ai.zPosition=3
 		addChild(Play_ai)
 		

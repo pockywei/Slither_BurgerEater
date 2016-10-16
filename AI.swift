@@ -12,16 +12,39 @@ class AI{
     
     var snake: Snake
     
-    init(color:UIColor, bitmask:Int, index:Int, gameScence:GameScene) {
-        snake = Snake.createAI(color, bitmask: bitmask, index: index, gameScence: gameScence)
+    init(color:UIColor, bitmask:Int, index:Int, gameScence:GameScene, xMin:CGFloat, xMax:CGFloat, yMin:CGFloat, yMax:CGFloat) {
+        snake = Snake.createAI(color, bitmask: bitmask, index: index, gameScence: gameScence,xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax)
     }
 
-    func updatePlayer() {
-       
+    func updateAISnake(player: Player){
+
+        
+        let x = self.snake.snakeBodyPoints[0].position.x
+        let y = self.snake.snakeBodyPoints[0].position.y
+        
+        let x1 = player.snake.snakeBodyPoints[0].position.x
+        let y1 = player.snake.snakeBodyPoints[0].position.y
+        
+        self.snake.angle = atan2(y - y1, x - x1) + CGFloat(M_PI)
+        let velocotyX = self.snake.snakeSpeed * cos(self.snake.angle)
+        let velocityY = self.snake.snakeSpeed * sin(self.snake.angle)
+        let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+        self.snake.snakeBodyPoints[0].physicsBody!.velocity = newVelocity
+        self.snake.BodyMoveTwardHead()
+        
+    }
+    
+    
+    
+    class func updateAllAISnakes(snakes:[AI], player: Player){
+        for snake in snakes{
+            snake.updateAISnake(player)
+            
+        }
     }
     
     //加入AI snake, n 是数量
-    class func initialAiSnake(aiNum:Int, gameScence:GameScene)->[AI]{
+    class func initialAiSnake(aiNum:Int, gameScence:GameScene, xMin:CGFloat, xMax:CGFloat, yMin:CGFloat, yMax:CGFloat)->[AI]{
         var AIs:[AI] = []
         //bitnum从4开始
         var bit_num=2
@@ -34,7 +57,7 @@ class AI{
         
         for i in 0...snakeNum-1 {
             bit_num = bit_num*4
-            let ai = AI(color: UIColor.greenColor(), bitmask:bit_num, index: i,gameScence: gameScence)
+            let ai = AI(color: UIColor.greenColor(), bitmask:bit_num, index: i,gameScence: gameScence,xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax)
             AIs.append(ai)
         }
         return AIs

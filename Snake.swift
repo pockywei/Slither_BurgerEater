@@ -31,9 +31,9 @@ class Snake{
         return playerSnake
     }
     
-    class func createAI(color:UIColor, bitmask:Int, index:Int, gameScence:GameScene)->Snake{
+    class func createAI(color:UIColor, bitmask:Int, index:Int, gameScence:GameScene, xMin:CGFloat, xMax:CGFloat, yMin:CGFloat, yMax:CGFloat)->Snake{
         let AISnake =  Snake(color: color, bitmask: bitmask, index: index, gameScence: gameScence)
-        AISnake.createAiSnake(AISnake.length, bitmask: bitmask, index: index, color: AISnake.snakeColor, radius: AISnake.radius)
+        AISnake.createAiSnake(AISnake.length, bitmask: bitmask, index: index, color: AISnake.snakeColor, radius: AISnake.radius, xmin: xMin, xMax: xMax, yMin: yMin, yMax: yMax)
         return AISnake
     }
     
@@ -56,7 +56,7 @@ class Snake{
         self.length = 4
         self.radius = 4.0
         self.snakeColor = color
-        self.snakeSpeed = 20000.0
+        self.snakeSpeed = 75.0
         self.angle = atan2(-1, -1) + CGFloat(M_PI)
         self.eatFoodNum = 0
         self.gameScence = gameScence
@@ -81,28 +81,37 @@ class Snake{
             if(i==0){
                 point.name = headName
                 point.physicsBody?.categoryBitMask = 0x00000001
+                //point.physicsBody?.collisionBitMask = 0
+
                 point.physicsBody?.collisionBitMask = 0x00000004//0xfffffffc
                 point.physicsBody?.contactTestBitMask = 0xfffffffc
+
             }else{
                 point.name = bodyName
                 point.physicsBody?.categoryBitMask = 0x00000002
-                point.physicsBody?.collisionBitMask = 0xaaaaaaa8
+                point.physicsBody?.collisionBitMask = 0
+
+                //point.physicsBody?.collisionBitMask = 0xaaaaaaa8
                 point.physicsBody?.contactTestBitMask = 0xaaaaaaa8
+                
             }
             
             point.physicsBody?.affectedByGravity = false
             point.physicsBody?.allowsRotation = true
-            self.gameScence.addChild(point)
             self.snakeBodyPoints.append(point)
+            self.gameScence.addChild(point)
+           
         }
     }
     
     
     // Add one AI snake with length n
-    func createAiSnake(length: Int,bitmask:Int, index:Int, color:UIColor, radius:CGFloat){
+    func createAiSnake(length: Int,bitmask:Int, index:Int, color:UIColor, radius:CGFloat, xmin: CGFloat, xMax:CGFloat, yMin:CGFloat, yMax:CGFloat ){
         
-        let aix = random(min:100, max:1000)
-        let aiy = random(min:100, max:1920)
+        
+        let aix = random(min:xmin, max:xMax)
+        
+        let aiy = random(min:yMin, max:yMax)
         
         let aiHeadBitMask = UInt32(bitmask)
         let aiBodyBitMask = aiHeadBitMask << 2
@@ -110,20 +119,23 @@ class Snake{
             let point = SKShapeNode(circleOfRadius: radius)
             point.fillColor = color
             
-            point.position = CGPoint(x:Int(aix) + i*5, y:Int(aiy) + i*5)
+            point.position = CGPoint(x:Int(aix) + i, y:Int(aiy))
             
             point.physicsBody = SKPhysicsBody(circleOfRadius: 4)
             point.physicsBody?.dynamic = true
             point.lineWidth=0
             if(i == 1){
-                point.name = "aihead"+(index as NSNumber).stringValue
+                point.name = "aihead"+String(index)
                 point.physicsBody?.categoryBitMask = aiHeadBitMask
+                //point.physicsBody?.collisionBitMask = 0
                 point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask)
                 point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask)
             }else{
                 point.name = "aibody"
                 point.physicsBody?.categoryBitMask = aiBodyBitMask
-                point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
+                point.physicsBody?.collisionBitMask = 0
+
+                //point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
                 point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
             }
             
