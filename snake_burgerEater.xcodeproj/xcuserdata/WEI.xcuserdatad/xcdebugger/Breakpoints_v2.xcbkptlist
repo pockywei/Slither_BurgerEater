@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "498202223.843748"
+            timestampString = "498283497.480752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "377"
-            endingLineNumber = "377"
-            landmarkName = "didBeginContact(contact:)"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
+            landmarkName = "handleTouches(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,13 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "498197815.878176"
+            timestampString = "498283497.480752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
-            landmarkName = "handleTouches(touches:)"
-            landmarkType = "7">
+            startingLineNumber = "1124"
+            endingLineNumber = "1124">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,11 +72,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "498217237.151917"
+            timestampString = "498283497.480752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1019"
-            endingLineNumber = "1019">
+            startingLineNumber = "1110"
+            endingLineNumber = "1110">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -88,25 +86,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "498217237.151917"
+            timestampString = "498283497.480752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1005"
-            endingLineNumber = "1005">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "498202921.766729"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "488"
-            endingLineNumber = "488"
+            startingLineNumber = "585"
+            endingLineNumber = "585"
             landmarkName = "leaveFood()"
             landmarkType = "7">
          </BreakpointContent>
@@ -118,12 +102,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snake_burgerEater/GameScene.swift"
-            timestampString = "498197815.878176"
+            timestampString = "498283497.480752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "273"
-            endingLineNumber = "273"
-            landmarkName = "handleTouches(touches:)"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "handleTouches(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -25,18 +25,18 @@ class Snake{
     static var playerPositionX = 200
     static var playerPositionY = 200
     
-    class func createPlayerSnake(color:UIColor, gameScence:GameScene)->Snake{
-        let playerSnake =  Snake(color: color, gameScence: gameScence)
-        playerSnake.createPlayerInstance(playerSnake.length, color: playerSnake.snakeColor, headName:"playerhead", bodyName:"playerbody", radius: playerSnake.radius)
-        return playerSnake
-    }
-    
-    class func createAI(color:UIColor, bitmask:Int, index:Int, gameScence:GameScene)->Snake{
-        let AISnake =  Snake(color: color, bitmask: bitmask, index: index, gameScence: gameScence)
-        AISnake.createAiSnake(AISnake.length, bitmask: bitmask, index: index, color: AISnake.snakeColor, radius: AISnake.radius)
-        return AISnake
-    }
-    
+	class func createPlayerSnake(color:UIColor, gameScence:GameScene)->Snake{
+		let playerSnake =  Snake(color: color, gameScence: gameScence)
+		playerSnake.createPlayerInstance(playerSnake.length, color: playerSnake.snakeColor, headName:"playerhead", bodyName:"playerbody", radius: playerSnake.radius)
+		return playerSnake
+	}
+	
+	class func createAI(color:UIColor, bitmask:Int, index:Int, gameScence:GameScene, xMin:CGFloat, xMax:CGFloat, yMin:CGFloat, yMax:CGFloat)->Snake{
+		let AISnake =  Snake(color: color, bitmask: bitmask, index: index, gameScence: gameScence)
+		AISnake.createAiSnake(AISnake.length, bitmask: bitmask, index: index, color: AISnake.snakeColor, radius: AISnake.radius, xmin: xMin, xMax: xMax, yMin: yMin, yMax: yMax)
+		return AISnake
+	}
+	
     init(color:UIColor, gameScence:GameScene) {
         
         self.snakeBodyPoints = []
@@ -56,7 +56,7 @@ class Snake{
         self.length = 4
         self.radius = 4.0
         self.snakeColor = color
-        self.snakeSpeed = 20000.0
+        self.snakeSpeed = 65.0
         self.angle = atan2(-1, -1) + CGFloat(M_PI)
         self.eatFoodNum = 0
         self.gameScence = gameScence
@@ -98,49 +98,54 @@ class Snake{
     }
     
     
-    // Add one AI snake with length n
-    func createAiSnake(length: Int,bitmask:Int, index:Int, color:UIColor, radius:CGFloat){
-        
-        let aix = random(min:100, max:1000)
-        let aiy = random(min:100, max:1920)
-        
-        let aiHeadBitMask = UInt32(bitmask)
-        let aiBodyBitMask = aiHeadBitMask << 2
-        for i in 0...length-1{
-            let point = SKShapeNode(circleOfRadius: radius)
-            point.fillColor = color
-            
-            point.position = CGPoint(x:Int(aix) + i*5, y:Int(aiy) + i*5)
-            
-            point.physicsBody = SKPhysicsBody(circleOfRadius: 4)
-            point.physicsBody?.dynamic = true
-            point.lineWidth=0
-            if(i == 1){
-                point.name = "aihead"+(index as NSNumber).stringValue
-                point.physicsBody?.categoryBitMask = aiHeadBitMask
-                point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask)
-                point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask)
-            }else{
-                point.name = "aibody"
-                point.physicsBody?.categoryBitMask = aiBodyBitMask
-                point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
-                point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
-            }
-            
-            point.physicsBody?.affectedByGravity = false
-            point.physicsBody?.allowsRotation = false
-            
-            self.gameScence.addChild(point)
-            self.snakeBodyPoints.append(point)
-        }
-    }
-    
+	// Add one AI snake with length n
+	func createAiSnake(length: Int,bitmask:Int, index:Int, color:UIColor, radius:CGFloat, xmin: CGFloat, xMax:CGFloat, yMin:CGFloat, yMax:CGFloat ){
+		
+		
+		let aix = random(min:xmin, max:xMax)
+		
+		let aiy = random(min:yMin, max:yMax)
+		
+		let aiHeadBitMask = UInt32(bitmask)
+		let aiBodyBitMask = aiHeadBitMask << 2
+		for i in 0...length-1{
+			let point = SKShapeNode(circleOfRadius: radius)
+			point.fillColor = color
+			
+			point.position = CGPoint(x:Int(aix) + i, y:Int(aiy))
+			
+			point.physicsBody = SKPhysicsBody(circleOfRadius: 4)
+			point.physicsBody?.dynamic = true
+			point.lineWidth=0
+			if(i == 1){
+				point.name = "aihead"+String(index)
+				point.physicsBody?.categoryBitMask = aiHeadBitMask
+				//point.physicsBody?.collisionBitMask = 0
+				point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask)
+				point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask)
+			}else{
+				point.name = "aibody"
+				point.physicsBody?.categoryBitMask = aiBodyBitMask
+				point.physicsBody?.collisionBitMask = 0
+				
+				//point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
+				point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
+			}
+			
+			point.physicsBody?.affectedByGravity = false
+			point.physicsBody?.allowsRotation = false
+			
+			self.gameScence.addChild(point)
+			self.snakeBodyPoints.append(point)
+		}
+	}
+	
     func addSnakeLength(length:Int){
-    
+		
         let categoryBM = self.snakeBodyPoints[self.length-1].physicsBody!.categoryBitMask
         let collisionBM = self.snakeBodyPoints[self.length-1].physicsBody!.collisionBitMask
         let contactBM = self.snakeBodyPoints[self.length-1].physicsBody!.contactTestBitMask
-        
+		
         for _ in 0...length-1 {
             let point = SKShapeNode(circleOfRadius: CGFloat(self.radius))
             
