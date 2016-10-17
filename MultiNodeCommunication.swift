@@ -69,6 +69,9 @@ class MultiNodeCommunication : NSObject {
     
     func sendData(dataContent : String) {
         //NSLog("%@", "sendColor: \(dataContent)")
+        let lockQueue = dispatch_queue_create("com.test.LockQueue", nil)
+        dispatch_sync(lockQueue) {
+            // code
         
         if session.connectedPeers.count > 0 {
             
@@ -87,6 +90,7 @@ class MultiNodeCommunication : NSObject {
             }
                         //NSLog("%@", "sendColor done!!!!!!!!")
         }
+            }
         
     }
     func getName()->String{
