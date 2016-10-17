@@ -83,6 +83,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
         if mode == 1{
             communicator!.delegate = self
+            communicator?.serviceAdvertiser.startAdvertisingPeer()
+            communicator?.serviceBrowser.startBrowsingForPeers()
         }
         
         
@@ -447,6 +449,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         if (head.position.x >= 1024 || head.position.x <= leftwall.frame.width || head.position.y >= (leftwall.frame.height - downwall.frame.height) || head.position.y <= downwall.frame.height){
             playerInToDicks()
             gameOver(false)
+        }
+    }
+    
+    func checkHeadPositionAI(head:SKShapeNode, ai:AI){
+        if (head.position.x >= 1024 || head.position.x <= leftwall.frame.width || head.position.y >= (leftwall.frame.height - downwall.frame.height) || head.position.y <= downwall.frame.height){
+            aiIntoDicks(ai)
+        }
+    }
+        
+    func checkHeadPositionOtherPlayer(head:SKShapeNode, player:Player){
+        if (head.position.x >= 1024 || head.position.x <= leftwall.frame.width || head.position.y >= (leftwall.frame.height - downwall.frame.height) || head.position.y <= downwall.frame.height){
+            playerInToDicks(player)
         }
     }
     
@@ -913,6 +927,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             addFoodwithPostion(i.position)
         }
         player?.snake.turnIntoDisks()
+        communicator?.serviceAdvertiser.stopAdvertisingPeer()
+        communicator?.serviceBrowser.stopBrowsingForPeers()
+        findGameRoomTag = false
         
     }
     /*===================================功能函数======================================================*/
