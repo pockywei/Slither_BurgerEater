@@ -23,7 +23,7 @@ class AI{
 		let y = self.snake.snakeBodyPoints[0].position.y
 		
 		let x1 = player.snake.snakeBodyPoints[0].position.x
-		let y1 = player.snake.snakeBodyPoints[0].position.y
+		let y1 = player.snake.snakeBodyPoints[0].position.x
 		
 		self.snake.angle = atan2(y - y1, x - x1) + CGFloat(M_PI)
 		let velocotyX = self.snake.snakeSpeed * cos(self.snake.angle)
@@ -31,22 +31,19 @@ class AI{
 		let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
 		self.snake.snakeBodyPoints[0].physicsBody!.velocity = newVelocity
 		self.snake.BodyMoveTwardHead()
+        self.snake.gameScence.checkheadposition(self.snake.snakeBodyPoints[0])
 		
 	}
-	
-	
 	
 	class func updateAllAISnakes(snakes:[AI], player: Player){
 		for snake in snakes{
 			snake.updateAISnake(player)
-			
 		}
 	}
-	
-	//加入AI snake, n 是数量
+
 	class func initialAiSnake(aiNum:Int, gameScence:GameScene, xMin:CGFloat, xMax:CGFloat, yMin:CGFloat, yMax:CGFloat)->[AI]{
 		var AIs:[AI] = []
-		//bitnum从4开始
+
 		var bit_num=2
 		var snakeNum:Int
 		if(aiNum>14){

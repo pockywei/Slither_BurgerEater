@@ -31,7 +31,7 @@ class MenuScene: SKScene {
 		
 		share = SKLabelNode(text: "Share to Twitter")
 		share.fontName = "AvenirNext-Bold"
-		share.fontSize = 55
+		share.fontSize = 75
 		share.fontColor = UIColor.whiteColor()
 		share.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)+200)
 		

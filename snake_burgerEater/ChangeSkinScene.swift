@@ -9,6 +9,9 @@
 import UIKit
 import SpriteKit
 
+
+
+
 class ChangeSkinScene: SKScene {
 	
 	
@@ -162,24 +165,32 @@ class ChangeSkinScene: SKScene {
 				print(count)
 				switch count! {
 				case 0:
+                    colorCode = 0
 					Snake_with_Skin!.runAction(Actionred)
 					
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
+                    break
 				case 1:
+                    colorCode = 1
 					Snake_with_Skin!.runAction(Actionblue)
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
-				case 2:
+                    break
+                case 2:
+                    colorCode = 2
 					Snake_with_Skin!.runAction(Actionwhite)
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
-				case 3:
+                    break
+                case 3:
+                    colorCode = 3
 					Snake_with_Skin!.runAction(Actionbrown)
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!
 					break
 				default:
+                    colorCode = 4
 					Snake_with_Skin!.runAction(ActionPink)
 					userDefaults.setValue(count, forKey: "skin")
 					userDefaults.synchronize() // don't forget this!!!!

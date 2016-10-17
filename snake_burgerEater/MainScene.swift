@@ -14,9 +14,14 @@ class MainScene:SKScene,UITextFieldDelegate {
 	
 	let userDefaults = NSUserDefaults.standardUserDefaults()
 	
+    
+    
 	var inputText:UITextField?
+    
+    var MultiModeAlert: SKSpriteNode?
 	
-	
+    var alert: UIAlertController?
+    
 	var Play_ai: SKLabelNode!
 	
 	var Multi_mode: SKLabelNode!
@@ -33,6 +38,9 @@ class MainScene:SKScene,UITextFieldDelegate {
 		
 		
 		
+        
+        
+        
 		
 //		let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainScene.dismissKeyboard))
 //		view.addGestureRecognizer(tap)
@@ -107,6 +115,7 @@ class MainScene:SKScene,UITextFieldDelegate {
 		for touch: AnyObject in touches {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
 			if CGRectContainsPoint(Play_ai.frame, position) {
+                mode = 0
 				Play_ai?.setScale(0.8)
 				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				let gameScene = GameScene(fileNamed: "GameScene")
@@ -143,7 +152,26 @@ class MainScene:SKScene,UITextFieldDelegate {
 					skView.presentScene(changeGameModelScene!, transition: transition)
 				})
 				view!.endEditing(true)
-			}
+            }else if CGRectContainsPoint(Multi_mode.frame, position) {
+                mode = 1
+                communicator = MultiNodeCommunication()
+                Play_ai?.setScale(0.8)
+                self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
+                
+                let multi = MultiScene(size: self.size)
+                                inputText?.hidden = true
+                                let transition = SKTransition.fadeWithDuration(1)
+                                let skView = self.view as SKView!
+                                multi.scaleMode = .AspectFill
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    skView.presentScene(multi, transition: transition)
+                                })
+                
+                
+                view!.endEditing(true)
+                
+                
+            }
 		}
 
 		view!.endEditing(true)
@@ -166,42 +194,37 @@ class MainScene:SKScene,UITextFieldDelegate {
 	
 	func textFieldDidBeginEditing(textField: UITextField) {
 		print("TextField did begin editing method called")
- }
- func textFieldDidEndEditing(textField: UITextField) {
-	print(textField.text)
-	userDefaults.setValue(textField.text, forKey: "username")
-	self.userDefaults.synchronize() // don't forget this!!!!
- print("TextField did end editing method called")
- }
- func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
- print("TextField should begin editing method called")
- return true;
- }
- func textFieldShouldClear(textField: UITextField) -> Bool {
- print("TextField should clear method called")
- return true;
- }
- func textFieldShouldEndEditing(textField: UITextField) -> Bool {
- print("TextField should snd editing method called")
- return true;
- }
- func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
- print("While entering the characters this method gets called")
- return true;
- }
- func textFieldShouldReturn(textField: UITextField) -> Bool {
- print("TextField should return method called")
- textField.resignFirstResponder();
- return true;
- }
-	
-	
-	
-	func dismissKeyboard() {
-		//Causes the view (or one of its embedded text fields) to resign the first responder status.
-		view!.endEditing(true)
-	}
-	
-	
-	
+    }
+    func textFieldDidEndEditing(textField: UITextField) {
+        print(textField.text)
+        userDefaults.setValue(textField.text, forKey: "username")
+        self.userDefaults.synchronize() // don't forget this!!!!
+        print("TextField did end editing method called")
+    }
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        print("TextField should begin editing method called")
+        return true;
+    }
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        print("TextField should clear method called")
+        return true;
+    }
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+        print("TextField should snd editing method called")
+        return true;
+    }
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        print("While entering the characters this method gets called")
+        return true;
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        print("TextField should return method called")
+        textField.resignFirstResponder();
+        return true;
+    }
+
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view!.endEditing(true)
+    }
 }

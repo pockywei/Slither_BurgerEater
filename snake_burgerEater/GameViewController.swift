@@ -13,8 +13,15 @@ import Social
 
 
 
-	var Player_unlock_skin = 0
-
+var Player_unlock_skin = 0
+var mode = 0
+var colorCode = 0
+var joinedGame:Bool = false
+var findGameRoomTag:Bool = false
+var getFoodInfo = false
+var countEatFood = 0
+var updateFoodDone = false
+var communicator:MultiNodeCommunication?
 
 extension SKNode {
 	
