@@ -2,6 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "changeControl-1.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
       "filename" : "changeControl.png",
       "scale" : "1x"
     },

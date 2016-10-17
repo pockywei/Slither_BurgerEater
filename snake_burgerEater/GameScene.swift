@@ -10,12 +10,18 @@ import SpriteKit
 import UIKit
 import CoreData
 
-
+var timecount = 1000
+var countfood = 0
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
+	
+	let lblScore = SKLabelNode()
+	var cameraSnake: SKCameraNode?
+	
+	
 	
     var color = UIColor.grayColor()
     //Game Class
-	var time: NSTimeInterval = 0
+	var countOfupdate = 1000
 	
     /*摇杆的代码*/
 	var stickActive : Bool = false
@@ -23,6 +29,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	let ball = SKSpriteNode(imageNamed:"ball")
 	let controller = SKSpriteNode(imageNamed:"changeControl")
 	var controllerFlag = 0
+	
+	/*Arrow model code*/
+	var ArrowActive : Bool = false
+	let pointArrow = SKSpriteNode(imageNamed:"ball")
 	
 	let userDefaults = NSUserDefaults.standardUserDefaults()
 
@@ -34,6 +44,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	//这是AI snake 的数组
     var AIs:[AI] = []
 	
+	var foods: [SKShapeNode] = []
 	//init the wall
 	var leftwall = SKSpriteNode()
 	var rightwall = SKSpriteNode()
@@ -44,6 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	override func didMoveToView(view: SKView) {
 		
 		
+		cameraSnake = self.childNodeWithName("camera") as! SKCameraNode
 		
 		leftwall = self.childNodeWithName("leftwall") as! SKSpriteNode
 		rightwall = self.childNodeWithName("rightwall") as! SKSpriteNode
@@ -73,7 +85,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		// Setup physics world's contact delegate
 		physicsWorld.contactDelegate = self
 		
-		setupCamera()
+		setupcameraSnake()
 		
 	}
 	
@@ -83,34 +95,44 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	
 	override func update(currentTime: NSTimeInterval) {
 		
+				//print(last_update_time)
 			if let count_modelAnyobj = self.player!.userDefaults!.valueForKey("model")
 			{
 				if (count_modelAnyobj as! String) == "Rocker_model"
 				{
 					print("hello Rocker update")
+					AI.updateAllAISnakes(AIs, player: player!)
 					self.player!.updatePlayerByJoystick()
-					self.updateCamera()
+					updateScore()
+					self.updatecamera()
 				}
 				else if (count_modelAnyobj as! String) == "Arrow_model"
 				{
-					
-				}
-				else
-				{
 					AI.updateAllAISnakes(AIs, player: player!)
 					self.player!.updatePlayer()
-					self.updateCamera()
+					updateScore()
+					self.updatecamera()
+				}
+				else if (count_modelAnyobj as! String) == "Narmal_model"
+				{
+
+					AI.updateAllAISnakes(AIs, player: player!)
+					self.player!.updatePlayer()
+					updateScore()
+					self.updatecamera()
 				}
 
 				
 			}
 			
+		
 			
-			
-			time=currentTime
+		
             
 		
 		self.checkheadposition(self.player!.snake.snakeBodyPoints[0])
+		
+		
 	}
 
 	
@@ -120,10 +142,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		if let count_modelAnyobj = self.player!.userDefaults!.valueForKey("model")
 		{
+			
+			
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
-				for touch in (touches ){
-					let location = touch.locationInNode(camera!)
+				for touch in (touches){
+					let location = touch.locationInNode(cameraSnake!)
 					if(CGRectContainsPoint(ball.frame, location)){
 						stickActive = true
 						handJoyStick(touches)
@@ -136,8 +160,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			else if (count_modelAnyobj as! String) == "Arrow_model"
 			{
 				
+					
+						pointArrow.hidden = false
+						ArrowActive = true
+						handleArrow(touches)
+
+				
 			}
-			else
+			else if (count_modelAnyobj as! String) == "Narmal_model"
 			{
 				handleTouches(touches)
 			}
@@ -151,9 +181,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		for touch: AnyObject in touches {
 			//let position = touch.locationInNode(self) // Get the x,y point of the touch
 			
-			let touchspeed = touch.locationInNode(camera!)
+			let touchspeed = touch.locationInNode(cameraSnake!)
 			if CGRectContainsPoint(speed_up!.frame, touchspeed) {
-				print("HI")
+				//print("HI")
                 self.player!.snake.snakeSpeed = 125.0
 			}
 		}
@@ -161,8 +191,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	}
     
 	override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+		
 		if let count_modelAnyobj = player!.userDefaults!.valueForKey("model")
 		{
+			
+			
 			if (count_modelAnyobj as! String) == "Rocker_model"
 			{
 				stickActive = true
@@ -170,9 +203,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			}
 			else if (count_modelAnyobj as! String) == "Arrow_model"
 			{
-				
+				handleArrow(touches)
+
 			}
-			else
+			else if (count_modelAnyobj as! String) == "Narmal_model"
 			{
 				handleTouches(touches)
 			}
@@ -205,8 +239,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			else if (count_modelAnyobj as! String) == "Arrow_model"
 			{
 				
+				
+						handleArrow(touches)
+			
+				pointArrow.hidden = true
 			}
-			else
+			else if (count_modelAnyobj as! String) == "Narmal_model"
 			{
 				changeControlPlaceNormal(touches)
 				handleTouches(touches)
@@ -221,15 +259,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		self.player!.snake.snakeSpeed = 75.0
 	}
 	
+	//箭头模式
+	private func handleArrow(touches: Set<UITouch>){
+		print("handleArrow")
+		if(ArrowActive==true){
+			for touch in touches {
+				let location = touch.locationInNode(cameraSnake!)
+				
+				let finger = touch.locationInNode(self)
+				print(location)
+				pointArrow.position.x = location.x
+				pointArrow.position.y = location.y + 200
+				pointArrow.hidden = false
+				
+				
+//				let v = CGVector(dx:pointArrow.position.x - player!.snake.snakeBodyPoints[0].position.x, dy:pointArrow.position.y - player!.snake.snakeBodyPoints[0].position.y)
+//				
+//				let angle = atan2(v.dy,v.dx)
+//				
+//				self.player?.snake.angle = angle
+				
+				if(CGRectContainsPoint(speed_up!.frame, location) == false && CGRectContainsPoint(controller.frame, location) == false)
+				{
+					player!.lastTouch = finger
+					player!.touchedScreen = true
+				}
+				else{
+					leaveFood()
+				}
+
+				
+				
+			}
+		}
+		
+	
+	}
+	
+	
 	//摇杆模式的函数
 	private func handJoyStick(touches: Set<UITouch>){
 		
 		if(stickActive==true){
-			//updateCamera()
+			//updatecameraSnake()
 			//print("I am been handled")
 				for touch in touches {
-					let location = touch.locationInNode(camera!)
-					let touchspeed = touch.locationInNode(camera!)
+					let location = touch.locationInNode(cameraSnake!)
+					let touchspeed = touch.locationInNode(cameraSnake!)
 					let v = CGVector(dx:location.x - base.position.x, dy:location.y-base.position.y)
 					
 					let angle = atan2(v.dy,v.dx)
@@ -263,7 +339,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			for touch in touches {
 				
 				let touchLocation = touch.locationInNode(self)
-				let touchspeed = touch.locationInNode(camera!)
+				let touchspeed = touch.locationInNode(cameraSnake!)
+				
 				
 				if(CGRectContainsPoint(speed_up!.frame, touchspeed) == false && CGRectContainsPoint(controller.frame, touchspeed) == false)
 				{
@@ -290,209 +367,154 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			abs(currentPosition.y - touchPosition.y) > self.player!.snake.snakeBodyPoints[0].frame.height/2
 	}
     
-    
-	/*=============================AI相关=======================================================*/
-	// Updates the position of all AI_snakes by moving towards the player
-	/*func updateAI_snakes() {
-		let targetPosition = self.player.snake.snakeBodyPoints[0].position
-		
-		for AI_snake in AIs {
-			let currentPosition = AI_snake.snake.position
-			
-			let angle = atan2(currentPosition.y - targetPosition.y, currentPosition.x - targetPosition.x) + CGFloat(M_PI)
-			let rotateAction = SKAction.rotateToAngle(angle + CGFloat(M_PI*0.5), duration: 0.0)
-			AI_snake.runAction(rotateAction)
-			
-			let velocotyX = AI_snakeSpeed * cos(angle)
-			let velocityY = AI_snakeSpeed * sin(angle)
-			
-			let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
-			AI_snake.physicsBody!.velocity = newVelocity;
-		}
-	}*/
-    
-	
-	
-	
-	/*===============================物理碰撞相关=================================================*/
-	// MARK: - SKPhysicsContactDelegate
-	//搞懂这个函数。
-	override func didSimulatePhysics() {
-		
-		if let count_modelAnyobj = player!.userDefaults!.valueForKey("model")
-		{
-			if (count_modelAnyobj as! String) == "Rocker_model"
-			{
-				
-			}
-			else if (count_modelAnyobj as! String) == "Arrow_model"
-			{
-				
-			}
-			else
-			{
-				self.player!.updatePlayer()
-			}
-			
-		}
-		else{
-			self.player!.updatePlayer()
-		}
-		
-		
-		//updateAI_snakes()
-		
-	}
+
 
 	func didBeginContact(contact: SKPhysicsContact) {
 		// 1. Create local variables for two physics bodies
 		
-		print("hello~~")
+		//print("hello~~")
 		
-		
-		if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask == 5){
+		if let _ = contact.bodyA.node,_ = contact.bodyB.node{
 			
-			self.player!.snake.eatFoodNum+=1
-			//player grow
-			self.player!.snake.addSnakeLength(1)
-			//addSnakeLength(player_snake, length: 1)
-			if(contact.bodyA.node?.name == "food")
-			{
-				contact.bodyA.node?.removeFromParent()
-			}
-			else
-			{
-				contact.bodyB.node?.removeFromParent()
-			}
-			addFood(1)
-		}
-		else if(contact.bodyA.node?.name == "playerhead"){
-			if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
+			if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask == 5){
 				
-				playerInToDicks()
-				gameOver(false)
-			}
-		}
-		else if((contact.bodyA.node?.name?.containsString("aihead")) != false && contact.bodyA.node?.name?.containsString("aihead") != nil){
-			print("`````````````test ai head``````````````````")
-			print(contact.bodyA.node?.name?.containsString("aihead"))
-			print(contact.bodyA.node?.name)
-			print(contact.bodyB.node?.name)
-			if(contact.bodyB.node?.name == "food"){
-				//ai grow
-				let aiName = contact.bodyA.node?.name
-				
-				let length = (aiName?.characters.count)! - 6
-				let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-				
-				let indexInt = Int(indexs)
-				AIs[indexInt!].snake.addSnakeLength(1)
+				self.player!.snake.eatFoodNum+=1
+				//player grow
+				self.player!.snake.addSnakeLength(1)
+				//addSnakeLength(player_snake, length: 1)
+				if(contact.bodyA.node?.name == "food")
+				{
+					contact.bodyA.node?.removeFromParent()
+					self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
+					
+				}
+				else
+				{
+					contact.bodyB.node?.removeFromParent()
+					self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
+				}
 				addFood(1)
-				
-				print("~~~~~~~~~~~~~~~Snake ID1~~~~~~~~~~~~~~~~")
-				
-				print(aiName)
-				print(indexs)
-				print(indexInt)
-				print("============Snake id1==========")
-				
 			}
-			else if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
-				//ai die both
+			else if(contact.bodyA.node?.name == "playerhead"){
 				
-				let aiName = contact.bodyB.node?.name
-				
-				let length = (aiName?.characters.count)! - 6
-				let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-				
-				let indexInt = Int(indexs)
-				let delete = AIs[indexInt!]
-				
-				/*1024
-				leftwall.frame.width
-				(leftwall.frame.height - downwall.frame.height)
-				downwall.frame.height*/
-				aiIntoDicks(delete)
-				
-				AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
-				
-				
-				let aiNameA = contact.bodyA.node?.name
-				
-				let lengthA = (aiNameA?.characters.count)! - 6
-				let indexsA = (aiNameA! as NSString).substringWithRange(NSRange(location:6, length:lengthA))
-				
-				let indexIntA = Int(indexsA)
-				let deleteA = AIs[indexInt!]
-				aiIntoDicks(deleteA)
-				/*1024
-				leftwall.frame.width
-				(leftwall.frame.height - downwall.frame.height)
-				downwall.frame.height*/
-				
-				AIs[indexIntA!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexIntA!+1))), index: indexIntA!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
-				
-				
-				print("~~~~~~~~~~~~~~~Snake ID2~~~~~~~~~~~~~~~~")
-				print(contact.bodyB.node?.name)
-				print(aiName)
-				print(indexs)
-				print(indexInt)
-				print("============Snake id2==========")
-				
-				
+				if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
+					
+					playerInToDicks()
+					gameOver(false)
+				}
 			}
-			else if(((contact.bodyB.node?.name!.containsString("aibody")) != false && (contact.bodyB.node?.name!.containsString("aibody")) != nil)||contact.bodyB.node!.name! == "playerbody"){
-				//A snake die
+			else if((contact.bodyA.node?.name?.containsString("aihead")) != false && contact.bodyA.node?.name?.containsString("aihead") != nil){
+				print("`````````````test ai head``````````````````")
+				//print(contact.bodyA.node?.name?.containsString("aihead"))
+				//print(contact.bodyA.node?.name)
 				
-				let aiName = contact.bodyA.node?.name
-				
-				print("test!!!!!!!!!!")
-				print(contact.bodyB.node?.name)
-				print(contact.bodyA.node?.name)
-				print(aiName?.characters.count)
-				let length = (aiName?.characters.count)! - 6
-				let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-				
-				let indexInt = Int(indexs)
-				let delete = AIs[indexInt!]
-				
-				/*1024
-				leftwall.frame.width
-				(leftwall.frame.height - downwall.frame.height)
-				downwall.frame.height*/
-				
-				
-				AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
-				aiIntoDicks(delete)
-				
-				
+				if(contact.bodyB.node?.name == "food"){
+					//ai grow
+					let aiName = contact.bodyA.node?.name
+					
+					let length = (aiName?.characters.count)! - 6
+					let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+					
+					let indexInt = Int(indexs)
+					AIs[indexInt!].snake.addSnakeLength(1)
+					
+					//addFood(1)
+					
+					//print("~~~~~~~~~~~~~~~Snake ID1~~~~~~~~~~~~~~~~")
+					
+//					print(aiName)
+//					print(indexs)
+//					print(indexInt)
+//					print("============Snake id1==========")
+					
+				}
+				else if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
+					//ai die both
+					
+					let aiName = contact.bodyB.node?.name
+					
+					let length = (aiName?.characters.count)! - 6
+					let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+					
+					let indexInt = Int(indexs)
+					let delete = AIs[indexInt!]
+					
+					aiIntoDicks(delete)
+					
+					
+					AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
+					
+					
+					let aiNameA = contact.bodyA.node?.name
+					let lengthA = (aiNameA?.characters.count)! - 6
+					let indexsA = (aiNameA! as NSString).substringWithRange(NSRange(location:6, length:lengthA))
+					
+					let indexIntA = Int(indexsA)
+					let deleteA = AIs[indexIntA!]
+					
+					aiIntoDicks(deleteA)
+					
+					
+					AIs[indexIntA!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexIntA!+1))), index: indexIntA!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
+					
+					
+//					print("~~~~~~~~~~~~~~~Snake ID2~~~~~~~~~~~~~~~~")
+//					print(contact.bodyB.node?.name)
+//					print(aiName)
+//					print(indexs)
+//					print(indexInt)
+//					print("============Snake id2==========")
+					
+					
+				}
+				else if(
+					((contact.bodyB.node?.name!.containsString("aibody")) != false && (contact.bodyB.node?.name!.containsString("aibody")) != nil)||contact.bodyB.node!.name! == "playerbody"){
+					//A snake die
+					
+					let aiName = contact.bodyA.node?.name
+					
+
+					let length = (aiName?.characters.count)! - 6
+					let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+					
+					let indexInt = Int(indexs)
+					let delete = AIs[indexInt!]
+					
+					
+					aiIntoDicks(delete)
+					
+					
+					AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
+					
+					
+					
+					
+				}
+				else if(contact.bodyB.node?.name == "playerhead"){
+					playerInToDicks()
+					gameOver(false)
+				}
 			}
-			else if(contact.bodyB.node?.name == "playerhead"){
-				playerInToDicks()
-				gameOver(false)
+			else if(contact.bodyA.node?.name == "food"){
+				if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
+					//ai grow
+					
+					contact.bodyA.node?.removeFromParent()
+					let aiName = contact.bodyB.node?.name
+					let length = (aiName?.characters.count)! - 6
+					let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+					
+					let indexInt = Int(indexs)
+					AIs[indexInt!].snake.addSnakeLength(1)
+					
+
+					
+				}
 			}
+
 		}
-		else if(contact.bodyA.node?.name == "food"){
-			if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
-				//ai grow
-				
-				contact.bodyA.node?.removeFromParent()
-				let aiName = contact.bodyB.node?.name
-				let length = (aiName?.characters.count)! - 6
-				let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-				
-				let indexInt = Int(indexs)
-				AIs[indexInt!].snake.addSnakeLength(1)
-				
-				print("~~~~~~~~~~~~~~~Snake ID3~~~~~~~~~~~~~~~~")
-				print(contact.bodyB.node?.name)
-				print(aiName)
-				print(indexs)
-				print(indexInt)
-				print("============Snake id3==========")
-				
-			}
+		else{
+			//print("Body has no node")
 		}
 	}
 	
@@ -511,13 +533,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 
 			let aix = random(min:100, max:1000)
 			
-			let aiy = random(min:100, max:1920)
+			let aiy = random(min:100, max:1820)
 			food.position = CGPoint(x:aix, y:aiy)
 			
 			food.physicsBody = SKPhysicsBody(circleOfRadius: 2)
-			food.physicsBody?.dynamic = true
+			food.physicsBody?.dynamic = false
 			food.physicsBody?.categoryBitMask = 4
-			food.physicsBody?.collisionBitMask = 0xaaaaaaa9
+			food.physicsBody?.collisionBitMask = 0
 			food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
 			food.physicsBody?.affectedByGravity = false
 			food.physicsBody?.allowsRotation = false
@@ -557,9 +579,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			food.position = CGPoint(x:aix, y:aiy)
 			food.lineWidth=0
 			food.physicsBody = SKPhysicsBody(circleOfRadius: 1)
-			food.physicsBody?.dynamic = true
+			food.physicsBody?.dynamic = false
 			food.physicsBody?.categoryBitMask = 4
-            food.physicsBody?.collisionBitMask = 0xaaaaaaa9
+            food.physicsBody?.collisionBitMask = 0
 			food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
 			food.physicsBody?.affectedByGravity = false
 			food.physicsBody?.allowsRotation = false
@@ -572,12 +594,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			let forever = SKAction.repeatActionForever(sequence)
 			food.runAction(forever)
 			addChild(food)
+			foods.append(food)
 		}
 	}
 	
 	func leaveFood(){
 		player?.speedupTapCount++
-		print(player?.speedupTapCount)
+		//print(player?.speedupTapCount)
 
 //		player?.leavedisk()
 		if player?.speedupTapCount > 20{
@@ -594,13 +617,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	func addFoodwithPostion(positon:CGPoint){
 		let food = SKShapeNode(circleOfRadius: 1)
 		food.name = "food"
-		food.fillColor = UIColor(red:0.22, green:0.41, blue:0.41, alpha:1.0)
+		food.fillColor = UIColor(red:0.99, green:1.00, blue:0.17, alpha:1.0)
 		food.position = positon
 		
-		food.physicsBody = SKPhysicsBody(circleOfRadius: 1)
-		food.physicsBody?.dynamic = true
+		food.physicsBody = SKPhysicsBody(circleOfRadius: 3)
+		food.physicsBody?.dynamic = false
 		food.physicsBody?.categoryBitMask = 4
-		food.physicsBody?.collisionBitMask = 0xaaaaaaa9
+		food.physicsBody?.collisionBitMask = 0
 		food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
 		food.physicsBody?.affectedByGravity = false
 		food.physicsBody?.allowsRotation = false
@@ -614,16 +637,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		food.runAction(forever)
 		
 		addChild(food)
+		foods.append(food)
 
 	
 	}
 	
+	func aiBigDisks(positon:CGPoint){
+		let food = SKShapeNode(circleOfRadius: 4)
+		food.name = "food"
+		food.fillColor = UIColor(red:0.99, green:1.00, blue:0.17, alpha:1.0)
+		food.position = positon
+		
+		food.physicsBody = SKPhysicsBody(circleOfRadius: 3)
+		food.physicsBody?.dynamic = false
+		food.physicsBody?.categoryBitMask = 4
+		food.physicsBody?.collisionBitMask = 0
+		food.physicsBody?.contactTestBitMask = 0xaaaaaaa9
+		food.physicsBody?.affectedByGravity = false
+		food.physicsBody?.allowsRotation = false
+		food.lineWidth=0
+		let scale = SKAction.scaleTo(0.4, duration: 0.5)
+		//let fade = SKAction.fadeOutWithDuration(0.5)
+		let scale2 = SKAction.scaleTo(0.8, duration: 0.5)
+		let sequence = SKAction.sequence([scale2,scale])
+		
+		let forever = SKAction.repeatActionForever(sequence)
+		food.runAction(forever)
+		
+		addChild(food)
+		foods.append(food)
+		
+		
+	}
+	
 	func aiIntoDicks(ai:AI){
-		for i in (ai.snake.snakeBodyPoints){
-			addFoodwithPostion(i.position)
-		}
+		
+			aiBigDisks(ai.snake.snakeBodyPoints[0].position)
+			
+		
 		ai.snake.turnIntoDisks()
-		print("ai die!!!")
+		//print("ai die!!!")
 	}
 	
 	func playerInToDicks(){
@@ -655,6 +708,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		menuScene.scaleMode = SKSceneScaleMode.AspectFill
 		self.scene!.view?.presentScene(menuScene, transition: transition)
 		
+	}
+	
+	func updateScore () {
+		player?.score = (player?.snake.length)! * 100
+		lblScore.text = (String(player!.score))
 	}
 	/*设置初始的界面*/
 /*===================================初始用户信息设置===================================================*/
@@ -701,7 +759,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 				i.fillColor=UIColor.grayColor()
 				self.player?.snake.snakeColor = i.fillColor
 			}
-			print("No color")
+			//print("No color")
 		}
 
 	}
@@ -715,21 +773,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			switch count_model {
 			case "Arrow_model":
 				print("Arrow")
+				pointArrow.position.x = (cameraSnake?.position.x)!
+				pointArrow.position.y = (cameraSnake?.position.y)!
+				pointArrow.zPosition = 6
+				pointArrow.size = CGSize(width: 100,height: 100)
+				pointArrow.hidden = true
+				cameraSnake!.addChild(pointArrow)
+
 				break
 			case "Rocker_model":
-				base.position.x = (camera?.position.x)! - 500
-				base.position.y = (camera?.position.y)! + 500
+				base.position.x = (cameraSnake?.position.x)! - 500
+				base.position.y = (cameraSnake?.position.y)! + 500
 				base.zPosition=6
 				//base.position = CGPointMake(150, 200)
 				base.size=CGSize(width: 300,height: 300)
 				
-				ball.position.x = (camera?.position.x)! - 500
-				ball.position.y = (camera?.position.y)! + 500
+				ball.position.x = (cameraSnake?.position.x)! - 500
+				ball.position.y = (cameraSnake?.position.y)! + 500
 				ball.zPosition=6
 				//ball.position = CGPointMake(150,200)
 				ball.size=CGSize(width: 100,height: 100)
-				camera!.addChild(base)
-				camera!.addChild(ball)
+				cameraSnake!.addChild(base)
+				cameraSnake!.addChild(ball)
 				
 				break
 			
@@ -745,38 +810,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 
 	}
 	
-	//setup camera
-	func setupCamera(){
-		if let camera_frame = camera{
+	//setup cameraSnake
+	func setupcameraSnake(){
+		if let cameraSnake_frame = cameraSnake{
+			
+			//player?.let lblScore = SKLabelNode()
+			lblScore.text = String(player!.score)
+			//print(username)
+			//print("gggggggg")
+			lblScore.fontName = "AvenirNext-Bold"
+			lblScore.fontSize = 40
+			lblScore.fontColor = UIColor.whiteColor()
+			lblScore.position.x = (cameraSnake?.position.x)! + 250
+			lblScore.position.y = (cameraSnake?.position.y)! - 1200
+			lblScore.zRotation = CGFloat(-M_PI_2)
+			
+			cameraSnake?.addChild(lblScore)
+			
 			let light = SKLightNode()
 			light.falloff = 2
 			light.ambientColor = UIColor.blackColor()
 			light.shadowColor = UIColor.darkGrayColor()
 			//lightingBitMask = 1
 			
+			
 			//.mask
 			player?.snake.snakeBodyPoints[0].addChild(light)
 			
-			controller.position.x = (camera?.position.x)! - 420
-			controller.position.y =  (camera?.position.y)! - 1100
-			controller.setScale(0.3)
+			controller.position.x = (cameraSnake?.position.x)! - 420
+			controller.position.y =  (cameraSnake?.position.y)! - 1100
+			controller.setScale(0.4)
 			controller.zPosition = 10
 			
 			speed_up = SKSpriteNode(imageNamed:"rocket-512")
-			speed_up?.position.x = (camera?.position.x)! - 620
-			speed_up?.position.y = (camera?.position.y)! - 1100
+			speed_up?.position.x = (cameraSnake?.position.x)! - 620
+			speed_up?.position.y = (cameraSnake?.position.y)! - 1100
 			speed_up?.size = CGSize(width: 100,height: 100)
 			
 			speed_up?.zPosition = 10
 			
 			
 			if let speed = speed_up{
-				camera_frame.addChild(speed)
+				cameraSnake_frame.addChild(speed)
 			}else{
 				print("no speed up")
 			}
 			
-				camera_frame.addChild(controller)
+				cameraSnake_frame.addChild(controller)
 			
 			
 		}
@@ -788,15 +868,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 			label.fontName = "AvenirNext-Bold"
 			label.fontSize = 40
 			label.fontColor = UIColor.whiteColor()
-			label.position.x = (camera?.position.x)! + 250
-			label.position.y = (camera?.position.y)! - 1200
+			label.position.x = (cameraSnake?.position.x)! + 250
+			label.position.y = (cameraSnake?.position.y)! - 1000
 			label.zRotation = CGFloat(-M_PI_2)
 			//addChild(label)
-			if let camera_frame = camera{
-			camera_frame.addChild(label)
+			if let cameraSnake_frame = cameraSnake{
+			cameraSnake_frame.addChild(label)
 			
 			}
-			// Setup initial camera component
+			// Setup initial cameraSnake component
 			
 		}else{
 			print("f+ck")
@@ -804,33 +884,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 		
 		
 	}
-	func updateCamera() {
-		if let camera = camera {
-			camera.position = CGPoint(x: self.player!.snake.snakeBodyPoints[0].position.x, y: self.player!.snake.snakeBodyPoints[0].position.y)
+	func updatecamera() {
+		if let cameraSnake = cameraSnake {
+			cameraSnake.position = CGPoint(x: self.player!.snake.snakeBodyPoints[0].position.x, y: self.player!.snake.snakeBodyPoints[0].position.y)
 		}
 		
 		if let length = self.player?.snake.length{
-			print(length)
+			//print(length)
 			var increment = length%9
 			if(increment == 8 && length < 25){
-				print(camera?.frame.size)
-				var s = 0.1 + CGFloat(Float(length)/200.0)
+				print(cameraSnake?.frame.size)
+				var s = 0.3 + CGFloat(Float(length)/200.0)
 				print(s)
 				let zoomInAction = SKAction.scaleTo(s, duration: 1)
-				camera!.runAction(zoomInAction)
+				cameraSnake!.runAction(zoomInAction)
 
 			}
 		}
 	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	func handleArrowTap(){
-		
-	
-	}
+
 	
 	func changeControlPlaceNormal(touches: Set<UITouch>){
 		for touch in touches{
-			let touched = touch.locationInNode(camera!)
+			let touched = touch.locationInNode(cameraSnake!)
 			if(CGRectContainsPoint(controller.frame, touched) == true){
 				
 				controllerFlag += 1
@@ -865,16 +941,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
 	func changeControlPlaceJoystick(touches: Set<UITouch>){
 	
 		for touch in touches{
-			let touched = touch.locationInNode(camera!)
+			let touched = touch.locationInNode(cameraSnake!)
 			if(CGRectContainsPoint(controller.frame, touched) == true){
 			
 				controllerFlag += 1
 				controllerFlag = controllerFlag%2
 				if(controllerFlag==1){
-					print((camera?.position.x)! - 500)
-					print((camera?.position.y)! + 500)
-					print((camera?.position.x)! - 720)
-					print((camera?.position.y)! - 1100)
+					print((cameraSnake?.position.x)! - 500)
+					print((cameraSnake?.position.y)! + 500)
+					print((cameraSnake?.position.x)! - 720)
+					print((cameraSnake?.position.y)! - 1100)
 					let pos = CGPoint(x: -200,y: 673)
 					let pos2 = CGPoint(x:-367,y:-626)
 					

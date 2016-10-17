@@ -20,7 +20,8 @@ class Snake{
     var eatFoodNum:Int
     var gameScence:GameScene
     var scale:CGFloat
-    
+
+	
     static var alph:CGFloat = 0.4
     static var playerPositionX = 200
     static var playerPositionY = 200
@@ -40,7 +41,7 @@ class Snake{
     init(color:UIColor, gameScence:GameScene) {
         
         self.snakeBodyPoints = []
-        self.length = 4
+        self.length = 7
         self.radius = 4.0
         self.snakeColor = color
         self.snakeSpeed = 75.0
@@ -48,6 +49,7 @@ class Snake{
         self.eatFoodNum = 0;
         self.gameScence = gameScence
         self.scale = 1.0
+		
     }
     
     init(color:UIColor, bitmask:Int, index:Int, gameScence:GameScene) {
@@ -61,6 +63,7 @@ class Snake{
         self.eatFoodNum = 0
         self.gameScence = gameScence
         self.scale = 1.0
+		
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -86,7 +89,7 @@ class Snake{
             }else{
                 point.name = bodyName
                 point.physicsBody?.categoryBitMask = 0x00000002
-                point.physicsBody?.collisionBitMask = 0xaaaaaaa8
+                point.physicsBody?.collisionBitMask = 0
                 point.physicsBody?.contactTestBitMask = 0xaaaaaaa8
             }
             
@@ -117,23 +120,24 @@ class Snake{
 			point.physicsBody = SKPhysicsBody(circleOfRadius: 4)
 			point.physicsBody?.dynamic = true
 			point.lineWidth=0
-			if(i == 1){
+			if(i == 0){
 				point.name = "aihead"+String(index)
 				point.physicsBody?.categoryBitMask = aiHeadBitMask
-				//point.physicsBody?.collisionBitMask = 0
-				point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask)
+				point.physicsBody?.collisionBitMask = 0
+				//point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask)
 				point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask)
+				point.fillColor = SKColor.whiteColor()
 			}else{
 				point.name = "aibody"
 				point.physicsBody?.categoryBitMask = aiBodyBitMask
 				point.physicsBody?.collisionBitMask = 0
 				
 				//point.physicsBody?.collisionBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
-				point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4)
+				point.physicsBody?.contactTestBitMask = ~(aiHeadBitMask | aiBodyBitMask | 4 | 0x55555550)
 			}
 			
 			point.physicsBody?.affectedByGravity = false
-			point.physicsBody?.allowsRotation = false
+			point.physicsBody?.allowsRotation = true
 			
 			self.gameScence.addChild(point)
 			self.snakeBodyPoints.append(point)
@@ -142,9 +146,9 @@ class Snake{
 	
     func addSnakeLength(length:Int){
 		
-        let categoryBM = self.snakeBodyPoints[self.length-1].physicsBody!.categoryBitMask
-        let collisionBM = self.snakeBodyPoints[self.length-1].physicsBody!.collisionBitMask
-        let contactBM = self.snakeBodyPoints[self.length-1].physicsBody!.contactTestBitMask
+        let categoryBM = self.snakeBodyPoints[2].physicsBody!.categoryBitMask
+        let collisionBM = self.snakeBodyPoints[2].physicsBody!.collisionBitMask
+        let contactBM = self.snakeBodyPoints[2].physicsBody!.contactTestBitMask
 		
         for _ in 0...length-1 {
             let point = SKShapeNode(circleOfRadius: CGFloat(self.radius))
@@ -162,7 +166,7 @@ class Snake{
             point.physicsBody?.contactTestBitMask = contactBM
             
             point.physicsBody?.affectedByGravity = false
-            point.physicsBody?.allowsRotation = false
+            point.physicsBody?.allowsRotation = true
 			
             
             self.snakeBodyPoints.append(point)
@@ -184,7 +188,8 @@ class Snake{
         self.scale += CGFloat(Snake.alph)
         for i in 0...self.length-1{
             print("kjkjkj")
-            self.snakeBodyPoints[i].setScale(self.scale)
+			let Act = SKAction.scaleTo(self.scale, duration: 1)
+            self.snakeBodyPoints[i].runAction(Act)
         }
         Snake.alph *= Snake.alph
         

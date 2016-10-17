@@ -29,9 +29,11 @@ class Player{
         self.snake.createPlayerInstance(self.snake.length, color: self.snake.snakeColor, headName:"playerhead", bodyName:"playerbody", radius: self.snake.radius)
         self.lastTouch = nil
         self.touchedScreen = false
+		self.score = self.snake.length * 100
     }
     
     func updatePlayer() {
+		self.score = self.snake.length*100
         if self.touchedScreen == false{
             let velocotyX = self.snake.snakeSpeed * cos(self.snake.angle)
             let velocityY = self.snake.snakeSpeed * sin(self.snake.angle)
@@ -49,7 +51,7 @@ class Player{
             self.snake.BodyMoveTwardHead()
             self.touchedScreen = false
         }
-        self.snake.gameScence.updateCamera()
+        self.snake.gameScence.updatecamera()
     }
 	
 	func updatePlayerByJoystick(){
@@ -59,8 +61,19 @@ class Player{
 		let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
 		self.snake.snakeBodyPoints[0].physicsBody!.velocity = newVelocity;
 		self.snake.BodyMoveTwardHead()
-		self.snake.gameScence.updateCamera()
+		self.snake.gameScence.updatecamera()
 		
+	
+	}
+	
+	
+	func updatePlayerByArrow(){
+		let velocotyX = self.snake.snakeSpeed * cos(self.snake.angle)
+		let velocityY = self.snake.snakeSpeed * sin(self.snake.angle)
+		let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
+		self.snake.snakeBodyPoints[0].physicsBody!.velocity = newVelocity;
+		self.snake.BodyMoveTwardHead()
+		self.snake.gameScence.updatecamera()
 	
 	}
 	
