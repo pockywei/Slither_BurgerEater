@@ -504,7 +504,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                         
                         let length = (aiName?.characters.count)! - 6
                         let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                        
+                        contact.bodyB.node?.removeFromParent()
                         let indexInt = Int(indexs)
                         AIs[indexInt!].snake.addSnakeLength(1)
                         //addFood(1)
@@ -583,12 +583,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                     if(contact.bodyA.node?.name == "food")
                     {
                         contact.bodyA.node?.removeFromParent()
-                        sendRemoveFoodPosition((contact.bodyA.node?.position)!)
+                        //sendRemoveFoodPosition((contact.bodyA.node?.position)!)
                     }
                     else
                     {
                         contact.bodyB.node?.removeFromParent()
-                        sendRemoveFoodPosition((contact.bodyB.node?.position)!)
+                        //sendRemoveFoodPosition((contact.bodyB.node?.position)!)
                     }
                     var position:CGPoint
                     if countEatFood < 2{
@@ -620,6 +620,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                         let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
                         
                         let indexInt = Int(indexs)
+                        contact.bodyB.node?.removeFromParent()
                         self.otherPlayersList[indexInt!].snake.addSnakeLength(1)
                     }
                     else if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
