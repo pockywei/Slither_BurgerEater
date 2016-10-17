@@ -1190,6 +1190,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     func sendFoodInfo(){
+        print("send food")
         var foodsInfo:String = ""
         var userDataInfo:[String:AnyObject] = [:]
         for i in foods {
@@ -1219,10 +1220,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
         //print("begin send data")
         communicator!.sendData(string_data)
+        print("send food done")
         
     }
     
     func sendInitialPlayerInfo(){
+        print("send initial info")
         var userDataInfo:[String:AnyObject] = [:]
         userDataInfo.removeAll()
         
@@ -1257,6 +1260,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
         //print("begin send data")
         communicator!.sendData(string_data)
+        print("send initial info done")
     }
     
     func createFood(dict:Dictionary<String, AnyObject>){
@@ -1319,6 +1323,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     func sendRemoveFoodPosition(position: CGPoint){
+        print("send remove food")
         var userDataInfo:[String:AnyObject] = [:]
 
         userDataInfo["tag"] = 4
@@ -1338,11 +1343,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
         //print("begin send data")
         communicator!.sendData(string_data)
+        print("send remove food done")
         
     }
     
     func sendUpdateFoodPosition(position: CGPoint){
         
+        print("send update food")
         var userDataInfo:[String:AnyObject] = [:]
         
         
@@ -1371,6 +1378,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
         //print("begin send data")
         communicator!.sendData(string_data)
+        print("send update food done")
         
     }
     
