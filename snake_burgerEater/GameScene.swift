@@ -1539,27 +1539,30 @@ extension GameScene :MultiNodeCommunicationManagerDelegate{
             }
         }
         if dict != nil{
-            let tag = dict!["tag"]! as! Int
+            
+            let dict_copy = dict
+            
+            let tag = dict_copy!["tag"]! as! Int
             
             if(tag == 1){
                 print("tag _1")
-                self.createOnlinePlayer(dict!)
+                self.createOnlinePlayer(dict_copy!)
                 print("tag 1")
             }else if(tag == 2){
                 print("tag _2")
-                self.onlinePlayerTouchedUpdate(dict!)
+                self.onlinePlayerTouchedUpdate(dict_copy!)
                 print("tag 2")
             }else if(tag == 0){
                 print("tag _0")
-                self.createFood(dict!)
+                self.createFood(dict_copy!)
                 print("tag 0")
             }else if(tag == 3){
                 print("tag _3")
-                self.addUpdateFood(dict!)
+                self.addUpdateFood(dict_copy!)
                 print("tag 3")
             }else if(tag == 4){
                 print("tag _4")
-                self.removeFood(dict!)
+                self.removeFood(dict_copy!)
                 print("tag 4")
             }
         }
