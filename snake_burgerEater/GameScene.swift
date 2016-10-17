@@ -58,15 +58,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     var downwall = SKSpriteNode()
     
     func convertStringToDictionary(text: String) -> [String:AnyObject]? {
-        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
-            do {
-                return try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
-            } catch let error as NSError {
-                print(error)
+        
+        var result:Dictionary<String, AnyObject>?
+        
+        let lockQueue = dispatch_queue_create("com.test.LockQueue", nil)
+        dispatch_sync(lockQueue) {
+            if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
+                do {
+                    result =  try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+                } catch let error as NSError {
+                    print(error)
+                    result = nil
+                }
             }
         }
-        return nil
+        
+        return result
     }
+    
     
     // MARK: - SKScene
     override func didMoveToView(view: SKView) {
@@ -397,25 +406,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 player!.touchedScreen = true
                 
                 if mode == 1 && player != nil{
-                    print("send touch info")
                     
-                    userDataInfo["tag"] = 2
-                    userDataInfo["userName"] = communicator?.getName()
-                    userDataInfo["lastTouchX"] = player!.lastTouch?.x
-                    userDataInfo["lastTouchY"] = player!.lastTouch?.y
                     
-                    let dict = userDataInfo as NSDictionary
-                    var data:NSData?
-                    do{
-                        data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
-                    }catch{
-                        print("Send error")
+                    let lockQueue = dispatch_queue_create("com.test.LockQueue.touch", nil)
+                    dispatch_sync(lockQueue) {
+                        // code
+                        
+                        
+                        print("send touch info")
+                        
+                        userDataInfo["tag"] = 2
+                        userDataInfo["userName"] = communicator?.getName()
+                        userDataInfo["lastTouchX"] = player!.lastTouch?.x
+                        userDataInfo["lastTouchY"] = player!.lastTouch?.y
+                        
+                        let dict = userDataInfo as NSDictionary
+                        var data:NSData?
+                        do{
+                            data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
+                        }catch{
+                            print("Send error")
+                        }
+                        
+                        let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
+                        
+                        communicator!.sendData(string_data)
+                        print("send touch info done")
                     }
-                    
-                    let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-                    
-                    communicator!.sendData(string_data)
-                    print("send touch info done")
                 }
             }
             else{
@@ -1194,37 +1211,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     func sendFoodInfo(){
-        print("send food")
-        var foodsInfo:String = ""
-        var userDataInfo:[String:AnyObject] = [:]
-        for i in foods {
-            foodsInfo = foodsInfo + i.position.x.description+","+i.position.y.description+","
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.sendFood", nil)
+        dispatch_sync(lockQueue) {
+            // code
+            
+            
+            print("send food")
+            var foodsInfo:String = ""
+            var userDataInfo:[String:AnyObject] = [:]
+            for i in foods {
+                foodsInfo = foodsInfo + i.position.x.description+","+i.position.y.description+","
+            }
+            
+            var superFoodInfo:String = ""
+            for i in superFoods {
+                superFoodInfo = superFoodInfo + i.position.x.description+","+i.position.y.description+","
+            }
+            
+            
+            userDataInfo["tag"] = 0
+            userDataInfo["foods"] = foodsInfo
+            userDataInfo["superFoods"] = superFoodInfo
+            
+            let dict = userDataInfo as NSDictionary
+            
+            var data:NSData?
+            do{
+                data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
+            }catch{
+                print("Send error")
+            }
+            //print(data?.description)
+            let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
+            
+            //print("begin send data")
+            communicator!.sendData(string_data)
+            print("send food done")
         }
-        
-        var superFoodInfo:String = ""
-        for i in superFoods {
-            superFoodInfo = superFoodInfo + i.position.x.description+","+i.position.y.description+","
-        }
-        
-        
-        userDataInfo["tag"] = 0
-        userDataInfo["foods"] = foodsInfo
-        userDataInfo["superFoods"] = superFoodInfo
-        
-        let dict = userDataInfo as NSDictionary
-        
-        var data:NSData?
-        do{
-            data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
-        }catch{
-            print("Send error")
-        }
-        //print(data?.description)
-        let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-        
-        //print("begin send data")
-        communicator!.sendData(string_data)
-        print("send food done")
         
     }
     
@@ -1307,122 +1330,149 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
     
     func createOnlinePlayer(dict:Dictionary<String, AnyObject>){
-        
-        let userName = dict["userName"] as! String
-        print("create onlinePlayer! name")
-        print(userName)
-        
-        if self.otherPlayers[userName] == nil{
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.createOnlinePlayer", nil)
+        dispatch_sync(lockQueue) {
+            // code
             
-            print("userName is nor nil")
-            let player = Player(dict: dict,gameScence: self)
-            self.otherPlayers[userName] = player
-            self.otherPlayersList.append(player)
+            let userName = dict["userName"] as! String
+            print("create onlinePlayer! name")
+            print(userName)
             
-            self.sendInitialPlayerInfo()
-            
-            self.sendFoodInfo()
-            
+            if self.otherPlayers[userName] == nil{
+                
+                print("userName is nor nil")
+                let player = Player(dict: dict,gameScence: self)
+                self.otherPlayers[userName] = player
+                self.otherPlayersList.append(player)
+                
+                self.sendInitialPlayerInfo()
+                
+                self.sendFoodInfo()
+                
+            }
         }
     }
     
     func sendRemoveFoodPosition(position: CGPoint){
-        print("send remove food")
-        var userDataInfo:[String:AnyObject] = [:]
         
-        userDataInfo["tag"] = 4
-        userDataInfo["food_X"] = position.x
-        userDataInfo["food_Y"] = position.y
-        
-        let dict = userDataInfo as NSDictionary
-        
-        var data:NSData?
-        do{
-            data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
-        }catch{
-            print("Send error")
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.sendRemoveFood", nil)
+        dispatch_sync(lockQueue) {
+            // code
+            
+            print("send remove food")
+            var userDataInfo:[String:AnyObject] = [:]
+            
+            userDataInfo["tag"] = 4
+            userDataInfo["food_X"] = position.x
+            userDataInfo["food_Y"] = position.y
+            
+            let dict = userDataInfo as NSDictionary
+            
+            var data:NSData?
+            do{
+                data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
+            }catch{
+                print("Send error")
+            }
+            //print(data?.description)
+            let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
+            
+            //print("begin send data")
+            communicator!.sendData(string_data)
+            print("send remove food done")
         }
-        //print(data?.description)
-        let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-        
-        //print("begin send data")
-        communicator!.sendData(string_data)
-        print("send remove food done")
         
     }
     
     func sendUpdateFoodPosition(position: CGPoint){
         
-        print("send update food")
-        var userDataInfo:[String:AnyObject] = [:]
-        
-        
-        userDataInfo["tag"] = 3
-        userDataInfo["food_X"] = position.x
-        userDataInfo["food_Y"] = position.y
-        if(countEatFood >= 2){
-            userDataInfo["kind"] = 1
-            countEatFood = 0
-        }else{
-            userDataInfo["kind"] = 0
-            countEatFood = countEatFood+1
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.sendUpdateFood", nil)
+        dispatch_sync(lockQueue) {
+            // code
+            
+            
+            print("send update food")
+            var userDataInfo:[String:AnyObject] = [:]
+            
+            
+            userDataInfo["tag"] = 3
+            userDataInfo["food_X"] = position.x
+            userDataInfo["food_Y"] = position.y
+            if(countEatFood >= 2){
+                userDataInfo["kind"] = 1
+                countEatFood = 0
+            }else{
+                userDataInfo["kind"] = 0
+                countEatFood = countEatFood+1
+            }
+            
+            
+            let dict = userDataInfo as NSDictionary
+            
+            var data:NSData?
+            do{
+                data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
+            }catch{
+                print("Send error")
+            }
+            //print(data?.description)
+            let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
+            
+            //print("begin send data")
+            communicator!.sendData(string_data)
+            print("send update food done")
         }
-        
-        
-        let dict = userDataInfo as NSDictionary
-        
-        var data:NSData?
-        do{
-            data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
-        }catch{
-            print("Send error")
-        }
-        //print(data?.description)
-        let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-        
-        //print("begin send data")
-        communicator!.sendData(string_data)
-        print("send update food done")
         
     }
     
     
     func onlinePlayerTouchedUpdate(dict:Dictionary<String, AnyObject>){
-        
-        let userName = dict["userName"] as! String
-        
-        print("get user touched uPDATE")
-        print("user name")
-        print(userName)
-        print("my name")
-        print(communicator?.displayName)
-        let updatePlayer = otherPlayers[userName]
-        if updatePlayer != nil{
-            let x = dict["lastTouchX"] as! CGFloat
-            let y = dict["lastTouchY"] as! CGFloat
-            let touch = CGPoint(x: x, y: y)
-            updatePlayer?.lastTouch = touch
-            updatePlayer?.touchedScreen = true
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.onlinePlayerTouchUpdate", nil)
+        dispatch_sync(lockQueue) {
+            // code
+            
+            
+            let userName = dict["userName"] as! String
+            
+            print("get user touched uPDATE")
+            print("user name")
+            print(userName)
+            print("my name")
+            print(communicator?.displayName)
+            let updatePlayer = otherPlayers[userName]
+            if updatePlayer != nil{
+                let x = dict["lastTouchX"] as! CGFloat
+                let y = dict["lastTouchY"] as! CGFloat
+                let touch = CGPoint(x: x, y: y)
+                updatePlayer?.lastTouch = touch
+                updatePlayer?.touchedScreen = true
+            }
         }
     }
     
     func removeFood(dict:Dictionary<String, AnyObject>){
-        let x = dict["food_X"] as! CGFloat
-        let y = dict["food_Y"] as! CGFloat
         
-        if updateFoodDone == true{
-            for i in 0...foods.count-1{
-                if foods[i].position.x == x && foods[i].position.y == y{
-                    foods[i].removeFromParent()
-                    foods.removeAtIndex(i)
-                    break
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.removeFood", nil)
+        dispatch_sync(lockQueue) {
+            // code
+            
+            let x = dict["food_X"] as! CGFloat
+            let y = dict["food_Y"] as! CGFloat
+            
+            if updateFoodDone == true{
+                for i in 0...foods.count-1{
+                    if foods[i].position.x == x && foods[i].position.y == y{
+                        foods[i].removeFromParent()
+                        foods.removeAtIndex(i)
+                        break
+                    }
                 }
-            }
-            for i in 0...superFoods.count-1{
-                if superFoods[i].position.x == x && superFoods[i].position.y == y{
-                    superFoods[i].removeFromParent()
-                    superFoods.removeAtIndex(i)
-                    break
+                for i in 0...superFoods.count-1{
+                    if superFoods[i].position.x == x && superFoods[i].position.y == y{
+                        superFoods[i].removeFromParent()
+                        superFoods.removeAtIndex(i)
+                        break
+                    }
                 }
             }
         }
@@ -1431,16 +1481,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
     func addUpdateFood(dict:Dictionary<String, AnyObject>){
         
-        let x = dict["food_X"] as! CGFloat
-        let y = dict["food_Y"] as! CGFloat
-        let position = CGPoint(x: x, y: y)
-        let kind = dict["kind"] as! Int
-        if(kind == 0){
-            self.addFoodwithPostion(position)
-        }else{
-            self.addSuperFoodWithPosition(position)
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.addUpdateFood", nil)
+        dispatch_sync(lockQueue) {
+            // code
+            
+            let x = dict["food_X"] as! CGFloat
+            let y = dict["food_Y"] as! CGFloat
+            let position = CGPoint(x: x, y: y)
+            let kind = dict["kind"] as! Int
+            if(kind == 0){
+                self.addFoodwithPostion(position)
+            }else{
+                self.addSuperFoodWithPosition(position)
+            }
         }
-        
     }
     
 }
