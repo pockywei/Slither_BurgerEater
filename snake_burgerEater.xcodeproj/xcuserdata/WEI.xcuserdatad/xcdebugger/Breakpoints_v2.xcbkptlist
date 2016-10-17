@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "265"
             endingLineNumber = "265"
-            landmarkName = "handleTouches(_:)"
+            landmarkName = "touchesMoved(touches:withEvent:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -62,7 +62,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1124"
-            endingLineNumber = "1124">
+            endingLineNumber = "1124"
+            landmarkName = "changeControlPlaceNormal(touches:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -76,7 +78,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1110"
-            endingLineNumber = "1110">
+            endingLineNumber = "1110"
+            landmarkName = "updateCamera()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -91,7 +95,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "585"
             endingLineNumber = "585"
-            landmarkName = "leaveFood()"
+            landmarkName = "didBeginContact(contact:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -107,7 +111,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "274"
             endingLineNumber = "274"
-            landmarkName = "handleTouches(_:)"
+            landmarkName = "touchesEnded(touches:withEvent:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
