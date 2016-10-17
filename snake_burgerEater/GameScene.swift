@@ -1456,6 +1456,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         dispatch_sync(lockQueue) {
             // code
             
+            if dict["food_X"] != nil && dict["food_Y"] != nil{
+            
             let x = dict["food_X"] as! CGFloat
             let y = dict["food_Y"] as! CGFloat
             
@@ -1475,6 +1477,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                     }
                 }
             }
+            }
         }
     }
     
@@ -1484,15 +1487,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         let lockQueue = dispatch_queue_create("com.test.LockQueue.addUpdateFood", nil)
         dispatch_sync(lockQueue) {
             // code
-            
-            let x = dict["food_X"] as! CGFloat
-            let y = dict["food_Y"] as! CGFloat
-            let position = CGPoint(x: x, y: y)
-            let kind = dict["kind"] as! Int
-            if(kind == 0){
-                self.addFoodwithPostion(position)
-            }else{
-                self.addSuperFoodWithPosition(position)
+            if dict["food_X"] != nil && dict["food_Y"] != nil{
+                let x = dict["food_X"] as! CGFloat
+                let y = dict["food_Y"] as! CGFloat
+                let position = CGPoint(x: x, y: y)
+                let kind = dict["kind"] as! Int
+                if(kind == 0){
+                    self.addFoodwithPostion(position)
+                }else{
+                    self.addSuperFoodWithPosition(position)
+                }
             }
         }
     }
