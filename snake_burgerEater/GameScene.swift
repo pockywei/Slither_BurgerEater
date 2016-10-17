@@ -15,7 +15,8 @@ var countfood = 0
 
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
     
-    
+    let label = SKLabelNode()
+	
     
     
     let lblScore = SKLabelNode()
@@ -123,7 +124,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     
-    
+	
+	
     /*=============================神级update函数=====================================================*/
     
     override func update(currentTime: NSTimeInterval) {
@@ -138,13 +140,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 if mode == 1 && player != nil{
                     Player.updateOnlinePlayer(otherPlayersList)
                     self.player!.updatePlayerByJoystick()
-                    updateScore()
+                    displayMuliScore()
                     self.updateCamera()
                 }
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
                     self.player!.updatePlayerByJoystick()
-                    updateScore()
+                    displayScore()
                     self.updateCamera()
                 }
                 
@@ -155,13 +157,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 if mode == 1 && player != nil{
                     Player.updateOnlinePlayer(otherPlayersList)
                     self.player!.updatePlayer()
-                    updateScore()
+                    displayMuliScore()
                     self.updateCamera()
                 }
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
                     self.player!.updatePlayer()
-                    updateScore()
+                    displayScore()
                     self.updateCamera()
                 }
                 
@@ -172,13 +174,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 if mode == 1 && player != nil{
                     Player.updateOnlinePlayer(otherPlayersList)
                     self.player!.updatePlayer()
-                    updateScore()
+                    displayMuliScore()
                     self.updateCamera()
                 }
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
                     self.player!.updatePlayer()
-                    updateScore()
+                    displayScore()
                     self.updateCamera()
                 }
                 
@@ -188,13 +190,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             if mode == 1 && player != nil{
                 Player.updateOnlinePlayer(otherPlayersList)
                 self.player!.updatePlayer()
-                updateScore()
+                displayMuliScore()
                 self.updateCamera()
             }
             else{
                 AI.updateAllAISnakes(AIs, player: player!)
                 self.player!.updatePlayer()
-                updateScore()
+                displayScore()
                 self.updateCamera()
             }
             
@@ -316,7 +318,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
         self.player!.snake.snakeSpeed = 75.0
     }
-    
+	
     //箭头模式
     private func handleArrow(touches: Set<UITouch>){
         print("handleArrow")
@@ -924,10 +926,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     
-    func updateScore () {
-        player?.score = (player?.snake.length)! * 100
-        lblScore.text = (String(player!.score))
-    }
+
     
     
     private func gameOver(didWin: Bool) {
@@ -944,7 +943,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     /*设置初始的界面*/
     /*===================================初始用户信息设置===================================================*/
-    //Set default skin
+	func displayScore(){
+		//print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+		var TEMPsAI = AIs
+		var str = "[" + label.text!
+		str = str + String((player?.snake.length)!*100) + "]"
+		
+		TEMPsAI = TEMPsAI.sort({$0.0.snake.length>$0.1.snake.length})
+		
+		for(var i=0;i<10;i++){
+			str = str + " [" + TEMPsAI[i].snake.snakeBodyPoints[0].name!
+			str = str + ":" + String(TEMPsAI[i].snake.length*100) + "] "
+		
+		}
+		
+		lblScore.text = (str)
+	
+	}
+	
+	func displayMuliScore(){
+		//print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+//		var TEMP = otherPlayersList
+//		var str = "[" + label.text!
+//		str = str + String((player?.snake.length)!*100) + "]"
+//		
+//		TEMPsAI = TEMPsAI.sort({$0.0.snake.length>$0.1.snake.length})
+//		
+//		for(var i=0;i<otherPlayers.count;i++){
+//			str = str + " [" +
+//			str = str + ":" + String(TEMPsAI[i].snake.length*100) + "] "
+//			
+//		}
+//		
+//		lblScore.text = (str)
+		
+	}
+	
+	
+	
+	//Set default skin
     func setDefaultSkin(player:[SKShapeNode]){
         let userDefaults = NSUserDefaults.standardUserDefaults()
         
@@ -1052,12 +1089,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             //print(username)
             //print("gggggggg")
             lblScore.fontName = "AvenirNext-Bold"
-            lblScore.fontSize = 40
+            lblScore.fontSize = 20
             lblScore.fontColor = UIColor.whiteColor()
             lblScore.position.x = (camera_frame.position.x) + 250
-            lblScore.position.y = (camera_frame.position.y) - 1200
+            lblScore.position.y = (camera_frame.position.y) - 100
             lblScore.zRotation = CGFloat(-M_PI_2)
-            
+            lblScore.zPosition = 6
             camera_frame.addChild(lblScore)
             
             
@@ -1095,22 +1132,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }
         
         if let username = userDefaults.valueForKey("username") {
-            let label = SKLabelNode(text: username as? String)
+			
+			
+            label.text = username as? String
             //print(username)
             //print("gggggggg")
             label.fontName = "AvenirNext-Bold"
-            label.fontSize = 40
+            label.fontSize = 20
             label.fontColor = UIColor.whiteColor()
             label.position.x = (camera?.position.x)! + 250
-            label.position.y = (camera?.position.y)! - 1000
+            label.position.y = (camera?.position.y)! - 400
             label.zRotation = CGFloat(-M_PI_2)
+			label.zPosition = 6
             //addChild(label)
             if let camera_frame = camera{
                 camera_frame.addChild(label)
                 
             }
         }else{
-            
+            label.text="me"
         }
         
         
@@ -1134,10 +1174,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    func handleArrowTap(){
-        
-        
-    }
+
     
     func changeControlPlaceNormal(touches: Set<UITouch>){
         for touch in touches{
@@ -1210,7 +1247,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             }
         }
     }
-    
+    /*===================================多人模式===================================================*/
     func sendFoodInfo(){
         let lockQueue = dispatch_queue_create("com.test.LockQueue.sendFood", nil)
         dispatch_sync(lockQueue) {
