@@ -72,25 +72,24 @@ class MultiNodeCommunication : NSObject {
         let lockQueue = dispatch_queue_create("com.test.LockQueue", nil)
         dispatch_sync(lockQueue) {
             // code
-        
-        if session.connectedPeers.count > 0 {
             
-            
-            if let data = dataContent.dataUsingEncoding(NSUTF8StringEncoding){
+            if session.connectedPeers.count > 0 {
                 
-                do {
-                    try self.session.sendData(data, toPeers: session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
+                if let data = dataContent.dataUsingEncoding(NSUTF8StringEncoding){
                     
-                } catch _ {
-                    NSLog("%@", "error")
+                    do {
+                        try self.session.sendData(data, toPeers: session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
+                        
+                    } catch _ {
+                        NSLog("%@", "error")
+                    }
+                    
+                }else{
+                    print("error connectedPeers send")
                 }
-
-            }else{
-                print("error connectedPeers send")
+                //NSLog("%@", "sendColor done!!!!!!!!")
             }
-                        //NSLog("%@", "sendColor done!!!!!!!!")
         }
-            }
         
     }
     func getName()->String{
@@ -108,7 +107,7 @@ extension MultiNodeCommunication : MCNearbyServiceAdvertiserDelegate {
     func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: ((Bool, MCSession?) -> Void)) {
         //let accept = mcSession.myPeerID.hashValue > peerID.hashValue
         //self.OnlineModeSearchDelegate!.findGameRoom(findGameRoom:true)
-
+        
         findGameRoomTag = true
         invitationHandler(true, self.session)
         
