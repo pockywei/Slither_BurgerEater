@@ -72,14 +72,20 @@ class MultiNodeCommunication : NSObject {
         
         if session.connectedPeers.count > 0 {
             
-            let data = dataContent.dataUsingEncoding(NSUTF8StringEncoding)!
-            do {
-                try self.session.sendData(data, toPeers: session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
+            
+            if let data = dataContent.dataUsingEncoding(NSUTF8StringEncoding){
                 
-            } catch _ {
-                NSLog("%@", "error")
+                do {
+                    try self.session.sendData(data, toPeers: session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
+                    
+                } catch _ {
+                    NSLog("%@", "error")
+                }
+
+            }else{
+                print("error connectedPeers send")
             }
-            //NSLog("%@", "sendColor done!!!!!!!!")
+                        //NSLog("%@", "sendColor done!!!!!!!!")
         }
         
     }

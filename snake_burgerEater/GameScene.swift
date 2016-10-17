@@ -1482,7 +1482,6 @@ extension GameScene :MultiNodeCommunicationManagerDelegate{
         if dict != nil{
             let tag = dict!["tag"]! as! Int
             
-            
             if(tag == 1){
                 print("tag _1")
                 self.createOnlinePlayer(dict!)
