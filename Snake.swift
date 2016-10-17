@@ -180,6 +180,7 @@ class Snake{
 			
 			point.physicsBody = SKPhysicsBody(circleOfRadius: self.radius)
 			point.physicsBody?.dynamic = true
+            point.setScale(self.scale)
 			point.lineWidth=0
 			if(i == 0){
 				point.name = "aihead"+String(index)
@@ -205,7 +206,7 @@ class Snake{
 	}
 	
     func addSnakeLength(length:Int){
-		
+        self.eatFoodNum+=1
         let categoryBM = self.snakeBodyPoints[2].physicsBody!.categoryBitMask
         let collisionBM = self.snakeBodyPoints[2].physicsBody!.collisionBitMask
         let contactBM = self.snakeBodyPoints[2].physicsBody!.contactTestBitMask

@@ -68,7 +68,7 @@ class MultiNodeCommunication : NSObject {
     }()
     
     func sendData(dataContent : String) {
-        NSLog("%@", "sendColor: \(dataContent)")
+        //NSLog("%@", "sendColor: \(dataContent)")
         
         if session.connectedPeers.count > 0 {
             
@@ -79,7 +79,7 @@ class MultiNodeCommunication : NSObject {
             } catch _ {
                 NSLog("%@", "error")
             }
-            NSLog("%@", "sendColor done!!!!!!!!")
+            //NSLog("%@", "sendColor done!!!!!!!!")
         }
         
     }

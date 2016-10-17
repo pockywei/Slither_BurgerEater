@@ -49,7 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     var foods:[SKShapeNode] = []
     var superFoods:[SKShapeNode] = []
 
-    var userDataInfo:[String:AnyObject] = [:]
+    //var userDataInfo:[String:AnyObject] = [:]
     var mappingUserIndex:[String: Int] = [:]
     //init the wall
     var leftwall = SKSpriteNode()
@@ -128,51 +128,72 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 
                 if mode == 1 && player != nil{
                     Player.updateOnlinePlayer(otherPlayersList)
+                    self.player!.updatePlayerByJoystick()
+                    updateScore()
+                    self.updateCamera()
                 }
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
+                    self.player!.updatePlayerByJoystick()
+                    updateScore()
+                    self.updateCamera()
                 }
-                self.player!.updatePlayerByJoystick()
-                updateScore()
-                self.updateCamera()
+                
+                
             }
             else if (count_modelAnyobj as! String) == "Arrow_model"
             {
                 if mode == 1 && player != nil{
                     Player.updateOnlinePlayer(otherPlayersList)
+                    self.player!.updatePlayer()
+                    updateScore()
+                    self.updateCamera()
                 }
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
+                    self.player!.updatePlayer()
+                    updateScore()
+                    self.updateCamera()
                 }
-                self.player!.updatePlayer()
-                updateScore()
-                self.updateCamera()
+                
+                
             }else if (count_modelAnyobj as! String) == "Narmal_model"
             
             {
                 if mode == 1 && player != nil{
                     Player.updateOnlinePlayer(otherPlayersList)
+                    self.player!.updatePlayer()
+                    updateScore()
+                    self.updateCamera()
                 }
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
+                    self.player!.updatePlayer()
+                    updateScore()
+                    self.updateCamera()
                 }
-                self.player!.updatePlayer()
-                updateScore()
-                self.updateCamera()
+                
+                
             }
         }else{
             if mode == 1 && player != nil{
                 Player.updateOnlinePlayer(otherPlayersList)
+                self.player!.updatePlayer()
+                updateScore()
+                self.updateCamera()
             }
             else{
                 AI.updateAllAISnakes(AIs, player: player!)
+                self.player!.updatePlayer()
+                updateScore()
+                self.updateCamera()
             }
-            self.player!.updatePlayer()
-            updateScore()
-            self.updateCamera()
+            
+            
         }
-    
-        self.checkheadposition(self.player!.snake.snakeBodyPoints[0])
+        if(self.player != nil){
+            self.checkheadposition(self.player!.snake.snakeBodyPoints[0])
+        }
     }
     
     
@@ -364,7 +385,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     private func handleTouches(touches: Set<UITouch>) {
         
         for touch in touches {
-            
+            var userDataInfo:[String:AnyObject] = [:]
             let touchLocation = touch.locationInNode(self)
             let touchspeed = touch.locationInNode(camera!)
             
@@ -374,7 +395,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 player!.touchedScreen = true
                 
                 if mode == 1{
-                    userDataInfo.removeAll()
+                    
                     userDataInfo["tag"] = 2
                     userDataInfo["userName"] = communicator?.getName()
                     userDataInfo["lastTouchX"] = player!.lastTouch?.x
@@ -387,9 +408,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                     }catch{
                         print("Send error")
                     }
-                    print(data?.description)
+
                     let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-                    print("begin send data")
+
                     communicator!.sendData(string_data)
                 }
             }
@@ -534,8 +555,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             
             
             if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask == 5){
-                
-                self.player!.snake.eatFoodNum+=1
+
                 //player grow
                 self.player!.snake.addSnakeLength(1)
                 //addSnakeLength(player_snake, length: 1)
@@ -1171,7 +1191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
     func sendFoodInfo(){
         var foodsInfo:String = ""
-        
+        var userDataInfo:[String:AnyObject] = [:]
         for i in foods {
             foodsInfo = foodsInfo + i.position.x.description+","+i.position.y.description+","
         }
@@ -1181,10 +1201,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             superFoodInfo = superFoodInfo + i.position.x.description+","+i.position.y.description+","
         }
         
-        userDataInfo.removeAll()
-        self.userDataInfo["tag"] = 0
-        self.userDataInfo["foods"] = foodsInfo
-        self.userDataInfo["superFoods"] = superFoodInfo
+
+        userDataInfo["tag"] = 0
+        userDataInfo["foods"] = foodsInfo
+        userDataInfo["superFoods"] = superFoodInfo
         
         let dict = userDataInfo as NSDictionary
         
@@ -1194,35 +1214,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }catch{
             print("Send error")
         }
-        print(data?.description)
+        //print(data?.description)
         let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
         
-        print("begin send data")
+        //print("begin send data")
         communicator!.sendData(string_data)
         
     }
     
     func sendInitialPlayerInfo(){
-        
+        var userDataInfo:[String:AnyObject] = [:]
         userDataInfo.removeAll()
         
-        self.userDataInfo["tag"] = 1
-        self.userDataInfo["color"] = colorCode
-        self.userDataInfo["userName"] = communicator!.getName()
-        self.userDataInfo["X_position"] = player?.snake.snakeBodyPoints[0].position.x
-        self.userDataInfo["Y_position"] = player?.snake.snakeBodyPoints[0].position.y
-        self.userDataInfo["lastTouch_X"] = player?.lastTouch?.x
-        self.userDataInfo["lastTouch_Y"] = player?.lastTouch?.y
-        self.userDataInfo["touchedScreen"] = player?.touchedScreen
-        self.userDataInfo["speedupTapCount"] = player?.speedupTapCount
-        self.userDataInfo["score"] = player?.score
-        self.userDataInfo["rewards"] = player?.rewards
-        self.userDataInfo["length"] = player?.snake.length
-        self.userDataInfo["radius"] = player?.snake.radius
-        self.userDataInfo["snakeSpeed"] = player?.snake.snakeSpeed
-        self.userDataInfo["angle"] = player?.snake.angle
-        self.userDataInfo["eatFoodNum"] = player?.snake.eatFoodNum
-        self.userDataInfo["scale"] = player?.snake.scale
+        userDataInfo["tag"] = 1
+        userDataInfo["color"] = colorCode
+        userDataInfo["userName"] = communicator!.getName()
+        userDataInfo["X_position"] = player?.snake.snakeBodyPoints[0].position.x
+        userDataInfo["Y_position"] = player?.snake.snakeBodyPoints[0].position.y
+        userDataInfo["lastTouch_X"] = player?.lastTouch?.x
+        userDataInfo["lastTouch_Y"] = player?.lastTouch?.y
+        userDataInfo["touchedScreen"] = player?.touchedScreen
+        userDataInfo["speedupTapCount"] = player?.speedupTapCount
+        userDataInfo["score"] = player?.score
+        userDataInfo["rewards"] = player?.rewards
+        userDataInfo["length"] = player?.snake.length
+        userDataInfo["radius"] = player?.snake.radius
+        userDataInfo["snakeSpeed"] = player?.snake.snakeSpeed
+        userDataInfo["angle"] = player?.snake.angle
+        userDataInfo["eatFoodNum"] = player?.snake.eatFoodNum
+        userDataInfo["scale"] = player?.snake.scale
         
         let dict = userDataInfo as NSDictionary
         
@@ -1232,10 +1252,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }catch{
             print("Send error")
         }
-        print(data?.description)
+        //print(data?.description)
         let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
         
-        print("begin send data")
+        //print("begin send data")
         communicator!.sendData(string_data)
     }
     
@@ -1299,11 +1319,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     func sendRemoveFoodPosition(position: CGPoint){
-        
-        userDataInfo.removeAll()
-        self.userDataInfo["tag"] = 4
-        self.userDataInfo["food_X"] = position.x
-        self.userDataInfo["food_Y"] = position.y
+        var userDataInfo:[String:AnyObject] = [:]
+
+        userDataInfo["tag"] = 4
+        userDataInfo["food_X"] = position.x
+        userDataInfo["food_Y"] = position.y
         
         let dict = userDataInfo as NSDictionary
         
@@ -1313,26 +1333,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }catch{
             print("Send error")
         }
-        print(data?.description)
+        //print(data?.description)
         let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
         
-        print("begin send data")
+        //print("begin send data")
         communicator!.sendData(string_data)
         
     }
     
     func sendUpdateFoodPosition(position: CGPoint){
         
-        userDataInfo.removeAll()
+        var userDataInfo:[String:AnyObject] = [:]
         
-        self.userDataInfo["tag"] = 3
-        self.userDataInfo["food_X"] = position.x
-        self.userDataInfo["food_Y"] = position.y
+        
+        userDataInfo["tag"] = 3
+        userDataInfo["food_X"] = position.x
+        userDataInfo["food_Y"] = position.y
         if(countEatFood >= 2){
-            self.userDataInfo["kind"] = 1
+            userDataInfo["kind"] = 1
             countEatFood = 0
         }else{
-            self.userDataInfo["kind"] = 0
+            userDataInfo["kind"] = 0
             countEatFood = countEatFood+1
         }
         
@@ -1345,10 +1366,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }catch{
             print("Send error")
         }
-        print(data?.description)
+        //print(data?.description)
         let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
         
-        print("begin send data")
+        //print("begin send data")
         communicator!.sendData(string_data)
         
     }
@@ -1364,24 +1385,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         print("my name")
         print(communicator?.displayName)
         let updatePlayer = otherPlayers[userName]
-        
-        let x = dict["lastTouchX"] as! CGFloat
-        let y = dict["lastTouchY"] as! CGFloat
-        let touch = CGPoint(x: x, y: y)
-        updatePlayer?.lastTouch = touch
-        updatePlayer?.touchedScreen = true
+        if updatePlayer != nil{
+            let x = dict["lastTouchX"] as! CGFloat
+            let y = dict["lastTouchY"] as! CGFloat
+            let touch = CGPoint(x: x, y: y)
+            updatePlayer?.lastTouch = touch
+            updatePlayer?.touchedScreen = true
+        }
     }
     
     func removeFood(dict:Dictionary<String, AnyObject>){
         let x = dict["food_X"] as! CGFloat
         let y = dict["food_Y"] as! CGFloat
-        var find:Bool = false
+
         if updateFoodDone == true{
             for i in 0...foods.count-1{
                 if foods[i].position.x == x && foods[i].position.y == y{
                     foods[i].removeFromParent()
                     foods.removeAtIndex(i)
-                    find = true
                     break
                 }
             }
@@ -1446,24 +1467,30 @@ extension GameScene :MultiNodeCommunicationManagerDelegate{
                 print(error)
             }
         }
-        
-        print(dict!.description)
-        
-        print("tag")
-        print(dict!["tag"]!)
+
         let tag = dict!["tag"]! as! Int
         
         
         if(tag == 1){
+            print("tag _1")
             self.createOnlinePlayer(dict!)
+            print("tag 1")
         }else if(tag == 2){
+            print("tag _2")
             self.onlinePlayerTouchedUpdate(dict!)
+            print("tag 2")
         }else if(tag == 0){
+            print("tag _0")
             self.createFood(dict!)
+            print("tag 0")
         }else if(tag == 3){
+            print("tag _3")
             self.addUpdateFood(dict!)
+            print("tag 3")
         }else if(tag == 4){
+            print("tag _4")
             self.removeFood(dict!)
+            print("tag 4")
         }
         
     }
