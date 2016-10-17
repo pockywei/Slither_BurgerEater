@@ -48,7 +48,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
     var foods:[SKShapeNode] = []
     var superFoods:[SKShapeNode] = []
-
+    
     //var userDataInfo:[String:AnyObject] = [:]
     var mappingUserIndex:[String: Int] = [:]
     //init the wall
@@ -158,7 +158,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 
                 
             }else if (count_modelAnyobj as! String) == "Narmal_model"
-            
+                
             {
                 if mode == 1 && player != nil{
                     Player.updateOnlinePlayer(otherPlayersList)
@@ -411,9 +411,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                     }catch{
                         print("Send error")
                     }
-
+                    
                     let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
-
+                    
                     communicator!.sendData(string_data)
                     print("send touch info done")
                 }
@@ -438,241 +438,241 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             abs(currentPosition.y - touchPosition.y) > self.player!.snake.snakeBodyPoints[0].frame.height/2
     }
     
-
+    
     
     
     
     /*===============================物理碰撞相关=================================================*/
     // MARK: - SKPhysicsContactDelegate
     //搞懂这个函数。
-
+    
     
     func didBeginContact(contact: SKPhysicsContact) {
         if let _ = contact.bodyA.node,_ = contact.bodyB.node{
             if(mode == 0){
-            
-            if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask == 5){
                 
-                self.player!.snake.eatFoodNum+=1
-                //player grow
-                self.player!.snake.addSnakeLength(1)
-                //addSnakeLength(player_snake, length: 1)
-                if(contact.bodyA.node?.name == "food")
-                {
-                    contact.bodyA.node?.removeFromParent()
-                    self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
+                if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask == 5){
+                    
+                    self.player!.snake.eatFoodNum+=1
+                    //player grow
+                    self.player!.snake.addSnakeLength(1)
+                    //addSnakeLength(player_snake, length: 1)
+                    if(contact.bodyA.node?.name == "food")
+                    {
+                        contact.bodyA.node?.removeFromParent()
+                        self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
+                    }
+                    else
+                    {
+                        contact.bodyB.node?.removeFromParent()
+                        self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
+                    }
+                    addFood(1)
                 }
-                else
-                {
-                    contact.bodyB.node?.removeFromParent()
-                    self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
+                else if(contact.bodyA.node?.name == "playerhead"){
+                    if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
+                        
+                        playerInToDicks()
+                        gameOver(false)
+                    }
                 }
-                addFood(1)
-            }
-            else if(contact.bodyA.node?.name == "playerhead"){
-                if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
-                    
-                    playerInToDicks()
-                    gameOver(false)
+                else if((contact.bodyA.node?.name?.containsString("aihead")) != false && contact.bodyA.node?.name?.containsString("aihead") != nil){
+                    print("`````````````test ai head``````````````````")
+                    print(contact.bodyA.node?.name?.containsString("aihead"))
+                    print(contact.bodyA.node?.name)
+                    print(contact.bodyB.node?.name)
+                    if(contact.bodyB.node?.name == "food"){
+                        //ai grow
+                        let aiName = contact.bodyA.node?.name
+                        
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        AIs[indexInt!].snake.addSnakeLength(1)
+                        //addFood(1)
+                        
+                    }
+                    else if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
+                        //ai die both
+                        
+                        let aiName = contact.bodyB.node?.name
+                        
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        
+                        let delete = AIs[indexInt!]
+                        
+                        aiIntoDicks(delete)
+                        
+                        AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
+                        
+                        
+                        let aiNameA = contact.bodyA.node?.name
+                        
+                        let lengthA = (aiNameA?.characters.count)! - 6
+                        let indexsA = (aiNameA! as NSString).substringWithRange(NSRange(location:6, length:lengthA))
+                        
+                        let indexIntA = Int(indexsA)
+                        let deleteA = AIs[indexIntA!]
+                        aiIntoDicks(deleteA)
+                        
+                        AIs[indexIntA!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexIntA!+1))), index: indexIntA!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
+                        
+                    }
+                    else if(((contact.bodyB.node?.name!.containsString("aibody")) != false && (contact.bodyB.node?.name!.containsString("aibody")) != nil)||contact.bodyB.node!.name! == "playerbody"){
+                        //A snake die
+                        
+                        let aiName = contact.bodyA.node?.name
+                        
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        
+                        let delete = AIs[indexInt!]
+                        aiIntoDicks(delete)
+                        
+                        AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
+                    }
+                    else if(contact.bodyB.node?.name == "playerhead"){
+                        playerInToDicks()
+                        gameOver(false)
+                    }
                 }
-            }
-            else if((contact.bodyA.node?.name?.containsString("aihead")) != false && contact.bodyA.node?.name?.containsString("aihead") != nil){
-                print("`````````````test ai head``````````````````")
-                print(contact.bodyA.node?.name?.containsString("aihead"))
-                print(contact.bodyA.node?.name)
-                print(contact.bodyB.node?.name)
-                if(contact.bodyB.node?.name == "food"){
-                    //ai grow
-                    let aiName = contact.bodyA.node?.name
-                    
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-                    AIs[indexInt!].snake.addSnakeLength(1)
-                    //addFood(1)
-
-                }
-                else if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
-                    //ai die both
-                    
-                    let aiName = contact.bodyB.node?.name
-                    
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-
-                    let delete = AIs[indexInt!]
-
-                    aiIntoDicks(delete)
-                    
-                    AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
-                    
-                    
-                    let aiNameA = contact.bodyA.node?.name
-                    
-                    let lengthA = (aiNameA?.characters.count)! - 6
-                    let indexsA = (aiNameA! as NSString).substringWithRange(NSRange(location:6, length:lengthA))
-                    
-                    let indexIntA = Int(indexsA)
-                    let deleteA = AIs[indexIntA!]
-                    aiIntoDicks(deleteA)
-    
-                    AIs[indexIntA!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexIntA!+1))), index: indexIntA!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
-  
-                }
-                else if(((contact.bodyB.node?.name!.containsString("aibody")) != false && (contact.bodyB.node?.name!.containsString("aibody")) != nil)||contact.bodyB.node!.name! == "playerbody"){
-                    //A snake die
-                    
-                    let aiName = contact.bodyA.node?.name
-                    
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-                    
-                    let delete = AIs[indexInt!]
-                    aiIntoDicks(delete)
-                    
-                    AIs[indexInt!] = AI(color: UIColor.greenColor(), bitmask: 2*Int(pow(Double(4),Double(indexInt!+1))), index: indexInt!,gameScence: self,xMin:1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
-                }
-                else if(contact.bodyB.node?.name == "playerhead"){
-                    playerInToDicks()
-                    gameOver(false)
-                }
-            }
-            else if(contact.bodyA.node?.name == "food"){
-                if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
-                    //ai grow
-                    contact.bodyA.node?.removeFromParent()
-                    let aiName = contact.bodyB.node?.name
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-                    AIs[indexInt!].snake.addSnakeLength(1)
-                }
-            }
-            
-        }else if(mode == 1){
-            
-            
-            if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask == 5){
-
-                //player grow
-                self.player!.snake.addSnakeLength(1)
-                //addSnakeLength(player_snake, length: 1)
-                if(contact.bodyA.node?.name == "food")
-                {
-                    contact.bodyA.node?.removeFromParent()
-                    sendRemoveFoodPosition((contact.bodyA.node?.position)!)
-                }
-                else
-                {
-                    contact.bodyB.node?.removeFromParent()
-                    sendRemoveFoodPosition((contact.bodyB.node?.position)!)
-                }
-                var position:CGPoint
-                if countEatFood < 2{
-                    position = addFood(1)
-                }else{
-                    position = addsuperfood(1)
+                else if(contact.bodyA.node?.name == "food"){
+                    if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
+                        //ai grow
+                        contact.bodyA.node?.removeFromParent()
+                        let aiName = contact.bodyB.node?.name
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        AIs[indexInt!].snake.addSnakeLength(1)
+                    }
                 }
                 
-                self.sendUpdateFoodPosition(position)
+            }else if(mode == 1){
+                
+                
+                if (contact.bodyA.categoryBitMask + contact.bodyB.categoryBitMask == 5){
+                    
+                    //player grow
+                    self.player!.snake.addSnakeLength(1)
+                    //addSnakeLength(player_snake, length: 1)
+                    if(contact.bodyA.node?.name == "food")
+                    {
+                        contact.bodyA.node?.removeFromParent()
+                        sendRemoveFoodPosition((contact.bodyA.node?.position)!)
+                    }
+                    else
+                    {
+                        contact.bodyB.node?.removeFromParent()
+                        sendRemoveFoodPosition((contact.bodyB.node?.position)!)
+                    }
+                    var position:CGPoint
+                    if countEatFood < 2{
+                        position = addFood(1)
+                    }else{
+                        position = addsuperfood(1)
+                    }
+                    
+                    self.sendUpdateFoodPosition(position)
+                    
+                }
+                else if(contact.bodyA.node?.name == "playerhead"){
+                    if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
+                        
+                        playerInToDicks()
+                        gameOver(false)
+                    }
+                }
+                else if((contact.bodyA.node?.name?.containsString("aihead")) != false && contact.bodyA.node?.name?.containsString("aihead") != nil){
+                    print("`````````````test ai head``````````````````")
+                    print(contact.bodyA.node?.name?.containsString("aihead"))
+                    print(contact.bodyA.node?.name)
+                    print(contact.bodyB.node?.name)
+                    if(contact.bodyB.node?.name == "food"){
+                        //ai grow
+                        let aiName = contact.bodyA.node?.name
+                        
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        self.otherPlayersList[indexInt!].snake.addSnakeLength(1)
+                    }
+                    else if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
+                        //ai die both
+                        
+                        let aiName = contact.bodyB.node?.name
+                        
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        print("index is")
+                        print(indexInt)
+                        let delete = self.otherPlayersList[indexInt!]
+                        
+                        playerInToDicks(delete)
+                        
+                        
+                        let aiNameA = contact.bodyA.node?.name
+                        
+                        let lengthA = (aiNameA?.characters.count)! - 6
+                        let indexsA = (aiNameA! as NSString).substringWithRange(NSRange(location:6, length:lengthA))
+                        
+                        let indexIntA = Int(indexsA)
+                        let deleteA = self.otherPlayersList[indexIntA!]
+                        playerInToDicks(deleteA)
+                        
+                    }
+                    else if(((contact.bodyB.node?.name!.containsString("aibody")) != false && (contact.bodyB.node?.name!.containsString("aibody")) != nil)||contact.bodyB.node!.name! == "playerbody"){
+                        //A snake die
+                        
+                        let aiName = contact.bodyA.node?.name
+                        
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        
+                        print("index is")
+                        print(indexInt)
+                        
+                        
+                        let delete = self.otherPlayersList[indexInt!]
+                        
+                        
+                        playerInToDicks(delete)
+                        
+                        
+                    }
+                    else if(contact.bodyB.node?.name == "playerhead"){
+                        playerInToDicks()
+                        gameOver(false)
+                    }
+                }
+                else if(contact.bodyA.node?.name == "food"){
+                    if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
+                        //ai grow
+                        
+                        contact.bodyA.node?.removeFromParent()
+                        let aiName = contact.bodyB.node?.name
+                        let length = (aiName?.characters.count)! - 6
+                        let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
+                        
+                        let indexInt = Int(indexs)
+                        self.otherPlayersList[indexInt!].snake.addSnakeLength(1)
+                    }
+                }
+                
                 
             }
-            else if(contact.bodyA.node?.name == "playerhead"){
-                if(contact.bodyB.node!.name!.containsString("aihead") || (contact.bodyB.node!.name! == "aibody") ){
-                    
-                    playerInToDicks()
-                    gameOver(false)
-                }
-            }
-            else if((contact.bodyA.node?.name?.containsString("aihead")) != false && contact.bodyA.node?.name?.containsString("aihead") != nil){
-                print("`````````````test ai head``````````````````")
-                print(contact.bodyA.node?.name?.containsString("aihead"))
-                print(contact.bodyA.node?.name)
-                print(contact.bodyB.node?.name)
-                if(contact.bodyB.node?.name == "food"){
-                    //ai grow
-                    let aiName = contact.bodyA.node?.name
-                    
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-                    self.otherPlayersList[indexInt!].snake.addSnakeLength(1)
-                }
-                else if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
-                    //ai die both
-                    
-                    let aiName = contact.bodyB.node?.name
-                    
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-                    print("index is")
-                    print(indexInt)
-                    let delete = self.otherPlayersList[indexInt!]
-                    
-                    playerInToDicks(delete)
-                    
-                    
-                    let aiNameA = contact.bodyA.node?.name
-                    
-                    let lengthA = (aiNameA?.characters.count)! - 6
-                    let indexsA = (aiNameA! as NSString).substringWithRange(NSRange(location:6, length:lengthA))
-                    
-                    let indexIntA = Int(indexsA)
-                    let deleteA = self.otherPlayersList[indexIntA!]
-                    playerInToDicks(deleteA)
-                    
-                }
-                else if(((contact.bodyB.node?.name!.containsString("aibody")) != false && (contact.bodyB.node?.name!.containsString("aibody")) != nil)||contact.bodyB.node!.name! == "playerbody"){
-                    //A snake die
-                    
-                    let aiName = contact.bodyA.node?.name
-                    
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-                    
-                    print("index is")
-                    print(indexInt)
-                    
-                    
-                    let delete = self.otherPlayersList[indexInt!]
-                    
-                    
-                    playerInToDicks(delete)
-                    
-                    
-                }
-                else if(contact.bodyB.node?.name == "playerhead"){
-                    playerInToDicks()
-                    gameOver(false)
-                }
-            }
-            else if(contact.bodyA.node?.name == "food"){
-                if((contact.bodyB.node?.name?.containsString("aihead")) != false && (contact.bodyB.node?.name?.containsString("aihead")) != nil){
-                    //ai grow
-                    
-                    contact.bodyA.node?.removeFromParent()
-                    let aiName = contact.bodyB.node?.name
-                    let length = (aiName?.characters.count)! - 6
-                    let indexs = (aiName! as NSString).substringWithRange(NSRange(location:6, length:length))
-                    
-                    let indexInt = Int(indexs)
-                    self.otherPlayersList[indexInt!].snake.addSnakeLength(1)
-                }
-            }
-
-            
-        }
         }
     }
     
@@ -812,7 +812,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             
             player?.speedupTapCount = 0
         }
-
+        
     }
     
     func addFoodwithPostion(positon:CGPoint){
@@ -1092,7 +1092,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 
             }
         }else{
-    
+            
         }
         
         
@@ -1206,7 +1206,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             superFoodInfo = superFoodInfo + i.position.x.description+","+i.position.y.description+","
         }
         
-
+        
         userDataInfo["tag"] = 0
         userDataInfo["foods"] = foodsInfo
         userDataInfo["superFoods"] = superFoodInfo
@@ -1329,7 +1329,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     func sendRemoveFoodPosition(position: CGPoint){
         print("send remove food")
         var userDataInfo:[String:AnyObject] = [:]
-
+        
         userDataInfo["tag"] = 4
         userDataInfo["food_X"] = position.x
         userDataInfo["food_Y"] = position.y
@@ -1409,7 +1409,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     func removeFood(dict:Dictionary<String, AnyObject>){
         let x = dict["food_X"] as! CGFloat
         let y = dict["food_Y"] as! CGFloat
-
+        
         if updateFoodDone == true{
             for i in 0...foods.count-1{
                 if foods[i].position.x == x && foods[i].position.y == y{
@@ -1479,32 +1479,32 @@ extension GameScene :MultiNodeCommunicationManagerDelegate{
                 print(error)
             }
         }
-
-        let tag = dict!["tag"]! as! Int
-        
-        
-        if(tag == 1){
-            print("tag _1")
-            self.createOnlinePlayer(dict!)
-            print("tag 1")
-        }else if(tag == 2){
-            print("tag _2")
-            self.onlinePlayerTouchedUpdate(dict!)
-            print("tag 2")
-        }else if(tag == 0){
-            print("tag _0")
-            self.createFood(dict!)
-            print("tag 0")
-        }else if(tag == 3){
-            print("tag _3")
-            self.addUpdateFood(dict!)
-            print("tag 3")
-        }else if(tag == 4){
-            print("tag _4")
-            self.removeFood(dict!)
-            print("tag 4")
+        if dict != nil{
+            let tag = dict!["tag"]! as! Int
+            
+            
+            if(tag == 1){
+                print("tag _1")
+                self.createOnlinePlayer(dict!)
+                print("tag 1")
+            }else if(tag == 2){
+                print("tag _2")
+                self.onlinePlayerTouchedUpdate(dict!)
+                print("tag 2")
+            }else if(tag == 0){
+                print("tag _0")
+                self.createFood(dict!)
+                print("tag 0")
+            }else if(tag == 3){
+                print("tag _3")
+                self.addUpdateFood(dict!)
+                print("tag 3")
+            }else if(tag == 4){
+                print("tag _4")
+                self.removeFood(dict!)
+                print("tag 4")
+            }
         }
-        
     }
     
 }
