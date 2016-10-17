@@ -385,7 +385,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     private func handleTouches(touches: Set<UITouch>) {
         
         for touch in touches {
+            
             var userDataInfo:[String:AnyObject] = [:]
+            
             let touchLocation = touch.locationInNode(self)
             let touchspeed = touch.locationInNode(camera!)
             
@@ -394,7 +396,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 player!.lastTouch = touchLocation
                 player!.touchedScreen = true
                 
-                if mode == 1{
+                if mode == 1 && player != nil{
+                    print("send touch info")
                     
                     userDataInfo["tag"] = 2
                     userDataInfo["userName"] = communicator?.getName()
@@ -412,6 +415,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                     let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
 
                     communicator!.sendData(string_data)
+                    print("send touch info done")
                 }
             }
             else{
