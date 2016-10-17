@@ -69,13 +69,14 @@ class MultiNodeCommunication : NSObject {
     
     func sendData(dataContent : String) {
         //NSLog("%@", "sendColor: \(dataContent)")
+        let dataContent_copy = dataContent
         let lockQueue = dispatch_queue_create("com.test.LockQueue", nil)
         dispatch_sync(lockQueue) {
             // code
             
             if session.connectedPeers.count > 0 {
                 
-                if let data = dataContent.dataUsingEncoding(NSUTF8StringEncoding){
+                if let data = dataContent_copy.dataUsingEncoding(NSUTF8StringEncoding){
                     
                     do {
                         try self.session.sendData(data, toPeers: session.connectedPeers, withMode: MCSessionSendDataMode.Reliable)
