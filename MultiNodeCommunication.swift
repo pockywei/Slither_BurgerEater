@@ -24,8 +24,8 @@ class MultiNodeCommunication : NSObject {
     
     private let myPeerId:MCPeerID?
     
-    private let serviceAdvertiser : MCNearbyServiceAdvertiser
-    private let serviceBrowser : MCNearbyServiceBrowser
+    public let serviceAdvertiser : MCNearbyServiceAdvertiser
+    public let serviceBrowser : MCNearbyServiceBrowser
     var displayName:String?
     var delegate : MultiNodeCommunicationManagerDelegate?
     var mainScenceDelegate: OnlineModeSearchDelegate?
@@ -111,9 +111,9 @@ extension MultiNodeCommunication : MCNearbyServiceAdvertiserDelegate {
         
         findGameRoomTag = true
         invitationHandler(true, self.session)
-        
+    
         //if accept {
-        //    stopAdvertising()
+        //   stopAdvertising()
         //}
     }
     

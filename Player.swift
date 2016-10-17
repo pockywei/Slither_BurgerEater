@@ -80,6 +80,7 @@ class Player{
             self.touchedScreen = false
         }
         self.snake.gameScence.updateCamera()
+        
     }
 	
 	func updatePlayerByJoystick(){
@@ -95,6 +96,7 @@ class Player{
     class func updateOnlinePlayer(players:[Player]){
         for player in players{
             player.updatePlayer()
+            player.snake.gameScence.checkHeadPositionOtherPlayer(player.snake.snakeBodyPoints[0], player: player)
         }
     }
     

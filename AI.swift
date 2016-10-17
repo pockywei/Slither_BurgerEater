@@ -31,7 +31,7 @@ class AI{
 		let newVelocity = CGVector(dx: velocotyX, dy: velocityY)
 		self.snake.snakeBodyPoints[0].physicsBody!.velocity = newVelocity
 		self.snake.BodyMoveTwardHead()
-        self.snake.gameScence.checkheadposition(self.snake.snakeBodyPoints[0])
+        self.snake.gameScence.checkHeadPositionAI(self.snake.snakeBodyPoints[0], ai:self)
 		
 	}
 	
