@@ -12,7 +12,7 @@ import GoogleMobileAds
 import Social
 
 
-
+var hardOrNot = 0
 var Player_unlock_skin = 0
 var mode = 0
 var colorCode = 0

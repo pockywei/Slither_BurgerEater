@@ -90,7 +90,7 @@ class MultiScene: SKScene {
             
             if(findGameRoomTag == false){
                 if CGRectContainsPoint(createRoom!.frame, position) {
-                    
+                    self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
                     let gameScene = GameScene(fileNamed: "GameScene")
                     let transition = SKTransition.fadeWithDuration(1)
                     let skView = self.view as SKView!
@@ -99,8 +99,19 @@ class MultiScene: SKScene {
                         skView.presentScene(gameScene!, transition: transition)
                     })
                 }
+                else if(CGRectContainsPoint(cancel!.frame, position)){
+                    self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
+                    let mainScene = MainScene(fileNamed: "MainScene")
+                    let transition = SKTransition.fadeWithDuration(1)
+                    let skView = self.view as SKView!
+                    mainScene?.scaleMode = .AspectFill
+                    
+                    skView.presentScene(mainScene!, transition: transition)
+                    
+                }
             }else if(findGameRoomTag == true){
                 if CGRectContainsPoint(sucess!.frame, position) {
+                    self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
                     joinedGame = true
                     let gameScene = GameScene(fileNamed: "GameScene")
                     let transition = SKTransition.fadeWithDuration(1)
@@ -109,6 +120,15 @@ class MultiScene: SKScene {
                     dispatch_async(dispatch_get_main_queue(), {
                         skView.presentScene(gameScene!, transition: transition)
                     })
+                }else if(CGRectContainsPoint(cancel!.frame, position)){
+                    self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
+                    let mainScene = MainScene(fileNamed: "MainScene")
+                    let transition = SKTransition.fadeWithDuration(1)
+                    let skView = self.view as SKView!
+                    mainScene?.scaleMode = .AspectFill
+                    
+                    skView.presentScene(mainScene!, transition: transition)
+                
                 }
             }
         }

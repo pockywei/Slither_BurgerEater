@@ -24,6 +24,8 @@ class MainScene:SKScene,UITextFieldDelegate {
     
 	var Play_ai: SKLabelNode!
 	
+    var Play_ai_hard: SKLabelNode!
+    
 	var Multi_mode: SKLabelNode!
 	
 	var kbframe : CGRect?
@@ -68,7 +70,7 @@ class MainScene:SKScene,UITextFieldDelegate {
 		
 		
 		
-		inputText = UITextField(frame: CGRect(x:80,y:320,width:200,height:40))//如何居中
+		inputText = UITextField(frame: CGRect(x:70,y:200,width:200,height:40))//如何居中
 		
 //		let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
 //		dispatch_after(delayTime, dispatch_get_main_queue()) {
@@ -82,12 +84,18 @@ class MainScene:SKScene,UITextFieldDelegate {
 		inputText!.placeholder="Username"
 		
 		
-		
-
+        Play_ai_hard = SKLabelNode(fontNamed: "Chalkduster")
+        Play_ai_hard.text = "Survive 30 seconds to be a real man"
+        //Play_ai.zRotation = CGFloat(-M_PI_2)
+        Play_ai_hard.fontSize = 30
+        Play_ai_hard.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-100)
+        Play_ai_hard.zPosition=3
+        addChild(Play_ai_hard)
 		
 		
 		Play_ai = SKLabelNode(fontNamed: "Chalkduster")
 		Play_ai.text = "Play with AI"
+        Play_ai.fontSize = 30
 		//Play_ai.zRotation = CGFloat(-M_PI_2)
 		Play_ai.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-250)
 		Play_ai.zPosition=3
@@ -95,6 +103,7 @@ class MainScene:SKScene,UITextFieldDelegate {
 		
 		Multi_mode = SKLabelNode(fontNamed: "Chalkduster")
 		Multi_mode.text = "Online Game"
+        Multi_mode.fontSize = 30
 		Multi_mode.zPosition=3
 		//Multi_mode.zRotation = CGFloat(-M_PI_2)
 		Multi_mode.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame)-450)
@@ -116,6 +125,7 @@ class MainScene:SKScene,UITextFieldDelegate {
 			let position = touch.locationInNode(self) // Get the x,y point of the touch
 			if CGRectContainsPoint(Play_ai.frame, position) {
                 mode = 0
+                hardOrNot = 0
 				Play_ai?.setScale(0.8)
 				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				let gameScene = GameScene(fileNamed: "GameScene")
@@ -140,7 +150,22 @@ class MainScene:SKScene,UITextFieldDelegate {
 					skView.presentScene(changeSkinScene!, transition: transition)
 				})
 				view!.endEditing(true)
-			}else if CGRectContainsPoint(change_mode.frame, position) {
+            }else if CGRectContainsPoint(Play_ai_hard.frame, position) {
+                mode = 0
+                hardOrNot = 1
+                Play_ai_hard?.setScale(0.8)
+                self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
+                let gameScene = GameScene(fileNamed: "GameScene")
+                inputText?.hidden = true
+                let transition = SKTransition.fadeWithDuration(1)
+                let skView = self.view as SKView!
+                gameScene?.scaleMode = .AspectFill
+                dispatch_async(dispatch_get_main_queue(), {
+                    skView.presentScene(gameScene!, transition: transition)
+                })
+                view!.endEditing(true)
+            }
+            else if CGRectContainsPoint(change_mode.frame, position) {
 				change_mode.setScale(0.8)
 				self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				let changeGameModelScene = ChangeGameModelScene(fileNamed: "ChangeGameModelScene")
@@ -155,7 +180,7 @@ class MainScene:SKScene,UITextFieldDelegate {
             }else if CGRectContainsPoint(Multi_mode.frame, position) {
                 mode = 1
                 communicator = MultiNodeCommunication()
-                Play_ai?.setScale(0.8)
+                Multi_mode?.setScale(0.8)
                 self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
                 
                 let multi = MultiScene(size: self.size)

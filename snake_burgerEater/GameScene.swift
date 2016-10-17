@@ -16,14 +16,14 @@ var countfood = 0
 class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDelegate{
     
     
-    
+    let label = SKLabelNode()
     
     let lblScore = SKLabelNode()
     var color = UIColor.grayColor()
     //Game Class
     //var time: NSTimeInterval = 0
     
-    /*摇杆的代码*/
+    
     var stickActive : Bool = false
     let base = SKSpriteNode(imageNamed:"circle")
     let ball = SKSpriteNode(imageNamed:"ball")
@@ -36,13 +36,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
     let userDefaults = NSUserDefaults.standardUserDefaults()
     
-    //加速按钮
+   
     var speed_up: SKSpriteNode?
     
     var player:Player?
     var otherPlayers:[String:Player] = [:]
     var otherPlayersList:[Player] = []
-    //这是AI snake 的数组
+    
     var AIs:[AI] = []
     
     
@@ -104,7 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             self.AIs = AI.initialAiSnake(14,gameScence: self, xMin: 1024, xMax:leftwall.frame.width, yMin:(leftwall.frame.height - downwall.frame.height), yMax:downwall.frame.height)
         }
         // Setup player
-        //开启多点触控模式
+        
         self.view?.multipleTouchEnabled = true
         
         //add food
@@ -113,7 +113,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             self.addsuperfood(80)
         }
         
-        //设置用户的皮肤和操作模式
+        
         setDefaultSkin(self.player!.snake.snakeBodyPoints)
         setDefaultModel()
         
@@ -126,7 +126,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
     
     
-    /*=============================神级update函数=====================================================*/
+    /*==================================================================================*/
     
     override func update(currentTime: NSTimeInterval) {
         
@@ -146,7 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
                     self.player!.updatePlayerByJoystick()
-                    updateScore()
+                    displayScore()
                     self.updateCamera()
                 }
                 
@@ -163,7 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
                     self.player!.updatePlayer()
-                    updateScore()
+                    displayScore()
                     self.updateCamera()
                 }
                 
@@ -180,7 +180,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                 else{
                     AI.updateAllAISnakes(AIs, player: player!)
                     self.player!.updatePlayer()
-                    updateScore()
+                    displayScore()
                     self.updateCamera()
                 }
                 
@@ -196,7 +196,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             else{
                 AI.updateAllAISnakes(AIs, player: player!)
                 self.player!.updatePlayer()
-                updateScore()
+                displayScore()
                 self.updateCamera()
             }
             
@@ -208,8 +208,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     
-    /*=============================touch点相关=======================================================*/
-    //这是函数是你刚tap下去就会发生的事
+    /*====================================================================================*/
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         if let count_modelAnyobj = self.player!.userDefaults!.valueForKey("model")
@@ -243,18 +243,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             handleTouches(touches)
         }
         
-        //这是当用户按到加速按钮时的时候，会加速的
+        
         for touch: AnyObject in touches {
             //let position = touch.locationInNode(self) // Get the x,y point of the touch
             
             let touchspeed = touch.locationInNode(camera!)
             if CGRectContainsPoint(speed_up!.frame, touchspeed) {
                 //print("HI")
-                self.player!.snake.snakeSpeed = 125.0
+                self.player!.snake.snakeSpeed = 180.0
+                //self.sendSpeedUpInfo()
             }
         }
         
     }
+    
+  
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let count_modelAnyobj = player!.userDefaults!.valueForKey("model")
@@ -280,7 +283,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
     }
     
-    //这个是你放手的时候，才会执行的
+    
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         if let count_modelAnyobj = player!.userDefaults!.valueForKey("model")
@@ -317,9 +320,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }
         
         self.player!.snake.snakeSpeed = 75.0
+        //sendSpeedUpEndInfo()
     }
     
-    //箭头模式
+    
     private func handleArrow(touches: Set<UITouch>){
         print("handleArrow")
         if(ArrowActive==true){
@@ -356,7 +360,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         
     }
     
-    //摇杆模式的函数
+    
     private func handJoyStick(touches: Set<UITouch>){
         
         if(stickActive==true){
@@ -392,7 +396,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     
-    //主要是更新最后的tap 点坐标，lastTouch是个全局变量
+    
     private func handleTouches(touches: Set<UITouch>) {
         
         for touch in touches {
@@ -473,9 +477,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     
     
     
-    /*===============================物理碰撞相关=================================================*/
+    /*================================================================================*/
     // MARK: - SKPhysicsContactDelegate
-    //搞懂这个函数。
     
     
     func didBeginContact(contact: SKPhysicsContact) {
@@ -597,11 +600,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                     if(contact.bodyA.node?.name == "food")
                     {
                         contact.bodyA.node?.removeFromParent()
+                        self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
                         //sendRemoveFoodPosition((contact.bodyA.node?.position)!)
                     }
                     else
                     {
                         contact.bodyB.node?.removeFromParent()
+                        self.runAction(SKAction.playSoundFileNamed("hit.wav", waitForCompletion: false))
                         //sendRemoveFoodPosition((contact.bodyB.node?.position)!)
                     }
                     var position:CGPoint
@@ -611,7 +616,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
                         position = addsuperfood(1)
                     }
                     
-                    self.sendUpdateFoodPosition(position)
+                    //self.sendUpdateFoodPosition(position)
                     
                 }
                 else if(contact.bodyA.node?.name == "playerhead"){
@@ -709,7 +714,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
     }
     
     
-    /*===============================食物相关========================================================*/
+    /*=======================================================================================*/
     
     
     //Add super food
@@ -832,6 +837,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }
         return position!
     }
+
+    
     
     func leaveFood(){
         player?.speedupTapCount++
@@ -930,7 +937,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         findGameRoomTag = false
         
     }
-    /*===================================功能函数======================================================*/
+    /*=========================================================================================*/
     // Helper functions, to generate random CGPoints
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
@@ -959,8 +966,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         self.scene!.view?.presentScene(menuScene, transition: transition)
         
     }
-    /*设置初始的界面*/
-    /*===================================初始用户信息设置===================================================*/
+
+    /*======================================================================================*/
     //Set default skin
     func setDefaultSkin(player:[SKShapeNode]){
         let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -1069,12 +1076,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             //print(username)
             //print("gggggggg")
             lblScore.fontName = "AvenirNext-Bold"
-            lblScore.fontSize = 40
+            lblScore.fontSize = 20
             lblScore.fontColor = UIColor.whiteColor()
             lblScore.position.x = (camera_frame.position.x) + 250
-            lblScore.position.y = (camera_frame.position.y) - 1200
+            lblScore.position.y = (camera_frame.position.y) - 200
             lblScore.zRotation = CGFloat(-M_PI_2)
-            
+            lblScore.zPosition = 7
             camera_frame.addChild(lblScore)
             
             
@@ -1112,22 +1119,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }
         
         if let username = userDefaults.valueForKey("username") {
-            let label = SKLabelNode(text: username as? String)
+            
+            
+            label.text = username as? String
             //print(username)
             //print("gggggggg")
             label.fontName = "AvenirNext-Bold"
-            label.fontSize = 40
+            label.fontSize = 15
             label.fontColor = UIColor.whiteColor()
             label.position.x = (camera?.position.x)! + 250
-            label.position.y = (camera?.position.y)! - 1000
+            label.position.y = (camera?.position.y)! - 100
             label.zRotation = CGFloat(-M_PI_2)
+            label.hidden = true
             //addChild(label)
             if let camera_frame = camera{
                 camera_frame.addChild(label)
                 
             }
         }else{
-            
+            label.text = "Me"
         }
         
         
@@ -1142,7 +1152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
             var increment = length%9
             if(increment == 8 && length < 25){
                 //print(camera?.frame.size)
-                var s = 0.3 + CGFloat(Float(length)/200.0)
+                var s = 0.2 + CGFloat(Float(length)/300.0)
                 //print(s)
                 let zoomInAction = SKAction.scaleTo(s, duration: 1)
                 camera!.runAction(zoomInAction)
@@ -1371,6 +1381,121 @@ class GameScene: SKScene, SKPhysicsContactDelegate , UINavigationControllerDeleg
         }
     }
     
+    
+    
+    
+    
+    func sendSpeedUpEndInfo(){
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.sendRemoveFood", nil)
+        dispatch_sync(lockQueue) {
+            self.userDataInfo["tag"] = 6
+            self.userDataInfo["userName"] = communicator!.getName()
+            let dict = self.userDataInfo as NSDictionary
+            
+            var data:NSData?
+            do{
+                data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
+            }catch{
+                print("Send error")
+            }
+            //print(data?.description)
+            let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
+            
+            //print("begin send data")
+            communicator!.sendData(string_data)
+            print("send remove food done")
+        }
+    }
+    
+    
+    func speedUpEndUser(dict:Dictionary<String, AnyObject>){
+        
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.onlinePlayerTouchUpdate", nil)
+        dispatch_sync(lockQueue) {
+            
+            let userName = dict["userName"] as! String
+            
+            print("get user touched uPDATE1")
+            print("user name1")
+            print(userName)
+            print("my name1")
+            print(communicator?.displayName)
+            let updatePlayer = otherPlayers[userName]
+            if updatePlayer != nil{
+                updatePlayer?.snake.snakeSpeed = 75.0
+            }
+        }
+        
+        
+    }
+
+    
+    
+    func sendSpeedUpInfo(){
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.sendRemoveFood", nil)
+        dispatch_sync(lockQueue) {
+            self.userDataInfo["tag"] = 5
+            self.userDataInfo["userName"] = communicator!.getName()
+            let dict = self.userDataInfo as NSDictionary
+        
+            var data:NSData?
+            do{
+                data = try NSJSONSerialization.dataWithJSONObject(dict, options:NSJSONWritingOptions.PrettyPrinted)
+            }catch{
+                print("Send error")
+            }
+            //print(data?.description)
+            let string_data = NSString(data: data!, encoding: NSUTF8StringEncoding)! as String
+        
+            //print("begin send data")
+            communicator!.sendData(string_data)
+            print("send remove food done")
+        }
+    }
+    
+    func speedUpUser(dict:Dictionary<String, AnyObject>){
+        
+        let lockQueue = dispatch_queue_create("com.test.LockQueue.onlinePlayerTouchUpdate", nil)
+        dispatch_sync(lockQueue) {
+            
+            let userName = dict["userName"] as! String
+            
+            print("get user touched uPDATE1")
+            print("user name1")
+            print(userName)
+            print("my name1")
+            print(communicator?.displayName)
+            let updatePlayer = otherPlayers[userName]
+            if updatePlayer != nil{
+                updatePlayer?.snake.snakeSpeed = 180.0
+            }
+        }
+
+        
+    }
+
+
+
+    func displayScore(){
+        //print(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
+        var TEMPsAI = AIs
+        var str = "[" + label.text!
+        str = str + String((player?.snake.length)!*100) + "]"
+        
+        TEMPsAI = TEMPsAI.sort({$0.0.snake.length>$0.1.snake.length})
+        
+        for(var i=0;i<10;i++){
+            str = str + " [" + TEMPsAI[i].snake.snakeBodyPoints[0].name!
+            str = str + ":" + String(TEMPsAI[i].snake.length*100) + "] "
+            
+        }
+        
+        lblScore.text = (str)
+        
+    }
+    
+    
+    
     func sendRemoveFoodPosition(position: CGPoint){
         
         let lockQueue = dispatch_queue_create("com.test.LockQueue.sendRemoveFood", nil)
@@ -1581,6 +1706,10 @@ extension GameScene :MultiNodeCommunicationManagerDelegate{
                 print("tag _4")
                 //self.removeFood(dict_copy!)
                 print("tag 4")
+            }else if("tag" == 5){
+                //speedUpUser(dict_copy!)
+            }else if("tag" == 6){
+                //speedUpEndUser(dict_copy!)
             }
         }
     }

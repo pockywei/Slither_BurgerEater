@@ -31,9 +31,9 @@ class MenuScene: SKScene {
 		
 		share = SKLabelNode(text: "Share to Twitter")
 		share.fontName = "AvenirNext-Bold"
-		share.fontSize = 75
+		share.fontSize = 130
 		share.fontColor = UIColor.whiteColor()
-		share.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)+200)
+		share.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)+400)
 		
 		
 		
@@ -53,8 +53,11 @@ class MenuScene: SKScene {
 			if(CGRectContainsPoint(share.frame, position) ){
 				NSNotificationCenter.defaultCenter().postNotificationName("WhateverYouCalledTheAlertInTheOtherLineOfCode", object: nil)
 				print("touchesEnded")
+                
+            self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				
 			}else{
+                self.runAction(SKAction.playSoundFileNamed("click.wav", waitForCompletion: false))
 				let mainScene = MainScene(fileNamed: "MainScene")
 				let transition = SKTransition.fadeWithDuration(1)
 				let skView = self.view as SKView!

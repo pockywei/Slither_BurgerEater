@@ -17,13 +17,19 @@ class AI{
 	}
 	
 	func updateAISnake(player: Player){
-		
+		var y1 = CGFloat(0)
 		
 		let x = self.snake.snakeBodyPoints[0].position.x
 		let y = self.snake.snakeBodyPoints[0].position.y
 		
 		let x1 = player.snake.snakeBodyPoints[0].position.x
-		let y1 = player.snake.snakeBodyPoints[0].position.x
+        
+        if(hardOrNot == 0){
+            y1 = player.snake.snakeBodyPoints[0].position.x
+        }
+        else{
+            y1 = player.snake.snakeBodyPoints[0].position.y
+        }
 		
 		self.snake.angle = atan2(y - y1, x - x1) + CGFloat(M_PI)
 		let velocotyX = self.snake.snakeSpeed * cos(self.snake.angle)

@@ -34,7 +34,7 @@ class ChangeGameModelScene: SKScene {
 		Narmal_model = self.childNodeWithName("Narmal_model") as? SKSpriteNode
 		
 		Narmal_model?.setScale(0.5)
-		Arrow_model?.setScale(0.5)
+		Arrow_model?.setScale(0.8)
 		Rocker_model?.setScale(0.42)
 		Back_button?.setScale(0.5)
 		
@@ -60,7 +60,7 @@ class ChangeGameModelScene: SKScene {
 				userDefaults.setValue("Rocker_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
 				Narmal_model?.setScale(0.5)
-				Arrow_model?.setScale(0.5)
+				Arrow_model?.setScale(0.8)
 				Rocker_model?.setScale(0.3)
 				
 				
@@ -69,7 +69,7 @@ class ChangeGameModelScene: SKScene {
 				userDefaults.setValue("Arrow_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
 				Narmal_model?.setScale(0.5)
-				Arrow_model?.setScale(0.3)
+				Arrow_model?.setScale(0.2)
 				Rocker_model?.setScale(0.42)
 
 				
@@ -78,7 +78,7 @@ class ChangeGameModelScene: SKScene {
 				userDefaults.setValue("Narmal_model", forKey: "model")
 				userDefaults.synchronize() // don't forget this!!!!
 				Narmal_model?.setScale(0.3)
-				Arrow_model?.setScale(0.5)
+				Arrow_model?.setScale(0.8)
 				Rocker_model?.setScale(0.42)
 
 			
