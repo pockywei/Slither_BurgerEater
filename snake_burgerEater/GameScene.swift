@@ -1558,11 +1558,11 @@ extension GameScene :MultiNodeCommunicationManagerDelegate{
                 print("tag 0")
             }else if(tag == 3){
                 print("tag _3")
-                self.addUpdateFood(dict_copy!)
+                //self.addUpdateFood(dict_copy!)
                 print("tag 3")
             }else if(tag == 4){
                 print("tag _4")
-                self.removeFood(dict_copy!)
+                //self.removeFood(dict_copy!)
                 print("tag 4")
             }
         }
